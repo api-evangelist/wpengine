@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SiteTransfer",
+  "type": "object",
+  "required": [
+    "id",
+    "site",
+    "installs",
+    "origin_account",
+    "destination_account",
+    "status",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the site transfer",
+      "example": "7c3e1a2b-4f5d-4e6c-b7a8-d9e0f1a2b3c4"
+    },
+    "site": {
+      "type": "string",
+      "description": "Name of the site being transferred (as it was at time of transfer)",
+      "example": "my-wordpress-site"
+    },
+    "installs": {
+      "type": "array",
+      "description": "Names of the installs associated with the site at time of transfer",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "mysite",
+        "mysitestg"
+      ]
+    },
+    "origin_account": {
+      "type": "string",
+      "description": "Name of the account the site is transferring from",
+      "example": "Acme Corp"
+    },
+    "destination_account": {
+      "type": "string",
+      "description": "Name of the account the site is transferring to",
+      "example": "New Owner Inc"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the transfer",
+      "enum": [
+        "pending",
+        "scheduled",
+        "in_progress",
+        "completed",
+        "failed",
+        "cancelled"
+      ],
+      "example": "scheduled"
+    },
+    "scheduled_time": {
+      "type": "string",
+      "format": "date-time",
+      "x-nullable": true,
+      "description": "The time at which the transfer is scheduled to execute. Null for immediate transfers.",
+      "example": "2026-06-01T14:30:00Z"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the transfer was created",
+      "example": "2026-05-15T10:00:00Z"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the transfer was last updated",
+      "example": "2026-05-15T10:05:00Z"
+    }
+  }
+}

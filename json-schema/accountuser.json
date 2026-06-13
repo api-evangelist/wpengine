@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AccountUser",
+  "type": "object",
+  "required": [
+    "user_id",
+    "account_id",
+    "first_name",
+    "last_name",
+    "email",
+    "phone",
+    "invite_accepted",
+    "mfa_enabled",
+    "roles"
+  ],
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "The user ID",
+      "format": "uuid",
+      "example": "28c78b6d-c2da-4f09-85f5-1ad588089b2d"
+    },
+    "account_id": {
+      "type": "string",
+      "description": "The account ID",
+      "format": "uuid",
+      "example": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+    },
+    "first_name": {
+      "type": "string",
+      "description": "The first name of the user",
+      "example": "Joe"
+    },
+    "last_name": {
+      "type": "string",
+      "description": "The last name of the user",
+      "example": "Smith"
+    },
+    "email": {
+      "type": "string",
+      "description": "The email of the user",
+      "example": "joeSmith@test.com"
+    },
+    "phone": {
+      "type": "string",
+      "x-nullable": true,
+      "description": "The phone number of the user",
+      "example": "1234567890"
+    },
+    "invite_accepted": {
+      "type": "boolean",
+      "description": "Whether or not the user has accepted their invitation",
+      "example": false
+    },
+    "mfa_enabled": {
+      "type": "boolean",
+      "description": "Whether or not the user has multi-factor authentication enabled",
+      "example": true
+    },
+    "roles": {
+      "type": "string",
+      "description": "The user roles",
+      "example": "billing, partial"
+    },
+    "last_owner": {
+      "type": "boolean",
+      "x-nullable": true,
+      "description": "Whether or not this owner is the last on the account. Only shows with users that have owner level roles.",
+      "example": false
+    },
+    "installs": {
+      "type": "array",
+      "description": "An array of installs tied to a partial user.",
+      "x-nullable": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the install",
+            "example": "3hda2d4h-9a39-o20x-9e14-20958bb4ekd8"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the install",
+            "example": "install1"
+          }
+        }
+      }
+    }
+  }
+}

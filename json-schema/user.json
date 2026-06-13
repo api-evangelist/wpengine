@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "type": "object",
+  "required": [
+    "id",
+    "email"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "example": "fd8e24a5-1f16-4b80-af5f-d748bcc9e64d"
+    },
+    "first_name": {
+      "type": "string",
+      "example": "Joe"
+    },
+    "last_name": {
+      "type": "string",
+      "example": "Smith"
+    },
+    "email": {
+      "type": "string",
+      "example": "joe@gmail.com"
+    },
+    "phone_number": {
+      "type": "string",
+      "x-nullable": true,
+      "example": "123456789"
+    }
+  }
+}

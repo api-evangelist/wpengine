@@ -1,0 +1,12 @@
+{
+  "operationId": "refreshEnvironmentDiskUsage",
+  "summary": "Refresh disk usage for the given WordPress site environment",
+  "method": "POST",
+  "path": "/installs/{install_id}/usage/refresh_disk_usage",
+  "tags": [
+    "Usage"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

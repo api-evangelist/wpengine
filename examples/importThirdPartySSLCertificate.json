@@ -1,0 +1,12 @@
+{
+  "operationId": "importThirdPartySSLCertificate",
+  "summary": "Import third-party SSL certificate for an install",
+  "method": "POST",
+  "path": "/installs/{install_id}/ssl_certificates/third_party",
+  "tags": [
+    "Certificates"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

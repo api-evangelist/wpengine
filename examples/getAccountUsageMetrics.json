@@ -1,0 +1,12 @@
+{
+  "operationId": "getAccountUsageMetrics",
+  "summary": "Get account usage metrics",
+  "method": "GET",
+  "path": "/accounts/{account_id}/usage",
+  "tags": [
+    "Usage"
+  ],
+  "parameters": {
+    "account_id": "<account_id>"
+  }
+}

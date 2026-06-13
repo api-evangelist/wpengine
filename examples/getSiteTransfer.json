@@ -1,0 +1,13 @@
+{
+  "operationId": "getSiteTransfer",
+  "summary": "Get a site transfer by ID",
+  "method": "GET",
+  "path": "/sites/{site_id}/site_transfers/{transfer_id}",
+  "tags": [
+    "Site Transfer"
+  ],
+  "parameters": {
+    "site_id": "<site_id>",
+    "transfer_id": "<transfer_id>"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "operationId": "deleteSshKey",
+  "summary": "Delete an existing SSH key",
+  "method": "DELETE",
+  "path": "/ssh_keys/{ssh_key_id}",
+  "tags": [
+    "SSH Key"
+  ],
+  "parameters": {
+    "ssh_key_id": "<ssh_key_id>"
+  }
+}

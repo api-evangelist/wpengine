@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DailyUsageMetrics",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "description": "The date (ISO 8601)."
+    },
+    "visit_count": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "Total visits."
+    },
+    "network_origin_bytes": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "Data served over HTTP by the origin server.\n\nThis does not include cached data served from a CDN.\n"
+    },
+    "storage_file_bytes": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "Storage used by this environment's files.\n\nThis includes all files in the web root directory.\n"
+    },
+    "storage_database_bytes": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "Storage used by this environment's database."
+    },
+    "billable_visits": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "Billable visits."
+    },
+    "request_origin_count": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "The total number of HTTP requests received by the origin server.\n\nThis does not include cached requests that were served from a CDN.\n"
+    },
+    "network_cdn_bytes": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "The data served by the CDN."
+    },
+    "storage_update_time": {
+      "type": "string",
+      "format": "date-time",
+      "x-nullable": true,
+      "description": "The most recent storage usage measurement time (in UTC)."
+    },
+    "network_total_bytes": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "The sum of CDN and origin network bytes."
+    },
+    "traffic_metrics_source": {
+      "$ref": "#/definitions/DailyUsageMetricsTrafficMetricsSource",
+      "x-nullable": true,
+      "description": "The source of the traffic metrics."
+    },
+    "database_tables_count": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "The number of tables in the install's database."
+    },
+    "database_sql_bytes": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "The sum of bytes of the database content in MySQL for an install."
+    },
+    "autoloaded_bytes": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "The sum of bytes that is automatically loaded on each request to the install."
+    }
+  },
+  "description": "Usage metrics collected over the period of one day.\n\nIn JSON format, the DailyUsageMetrics int64 values are encoded as a string rather\nthan a number, following the [proto3 specification](https://developers.google.com/protocol-buffers/docs/proto3#json).\n"
+}

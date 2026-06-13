@@ -1,0 +1,10 @@
+{
+  "operationId": "listInstalls",
+  "summary": "List your WordPress installations",
+  "method": "GET",
+  "path": "/installs",
+  "tags": [
+    "Install"
+  ],
+  "parameters": {}
+}

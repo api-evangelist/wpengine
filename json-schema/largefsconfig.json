@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LargeFSConfig",
+  "type": "object",
+  "properties": {
+    "largefs_settings": {
+      "type": "object",
+      "properties": {
+        "cloud": {
+          "type": "string",
+          "enum": [
+            "s3"
+          ]
+        },
+        "bucket": {
+          "type": "string"
+        },
+        "bucket_region": {
+          "type": "string"
+        },
+        "path_settings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "excluded_paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "redirect_type": {
+                "type": "string",
+                "enum": [
+                  "break",
+                  "permanent"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

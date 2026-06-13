@@ -1,0 +1,12 @@
+{
+  "operationId": "listAccountSiteTransfers",
+  "summary": "List site transfers for an account",
+  "method": "GET",
+  "path": "/accounts/{account_id}/site_transfers",
+  "tags": [
+    "Site Transfer"
+  ],
+  "parameters": {
+    "account_id": "<account_id>"
+  }
+}

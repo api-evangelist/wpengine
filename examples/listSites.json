@@ -1,0 +1,10 @@
+{
+  "operationId": "listSites",
+  "summary": "List your sites",
+  "method": "GET",
+  "path": "/sites",
+  "tags": [
+    "Site"
+  ],
+  "parameters": {}
+}

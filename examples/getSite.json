@@ -1,0 +1,12 @@
+{
+  "operationId": "getSite",
+  "summary": "Get a site by ID",
+  "method": "GET",
+  "path": "/sites/{site_id}",
+  "tags": [
+    "Site"
+  ],
+  "parameters": {
+    "site_id": "<site_id>"
+  }
+}

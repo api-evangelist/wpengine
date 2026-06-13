@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UsageRollup",
+  "type": "object",
+  "properties": {
+    "average": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "The average value of the metric."
+    },
+    "sum": {
+      "type": "string",
+      "format": "int64",
+      "x-nullable": true,
+      "description": "The total sum value of the metric."
+    },
+    "latest": {
+      "$ref": "#/definitions/LatestMetricValue",
+      "x-nullable": true,
+      "description": "The latest value of the metric."
+    }
+  },
+  "description": "A metric rollup."
+}

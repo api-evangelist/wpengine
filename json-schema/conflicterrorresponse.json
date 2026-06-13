@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ConflictErrorResponse",
+  "type": "object",
+  "required": [
+    "message"
+  ],
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "A message regarding the conflict that occurred",
+      "example": "Transfer has already started and cannot be cancelled"
+    },
+    "documentation_url": {
+      "type": "string",
+      "description": "(Optional) A URL where documentation regarding this specific error can be found"
+    }
+  }
+}

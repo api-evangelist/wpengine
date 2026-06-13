@@ -1,0 +1,12 @@
+{
+  "operationId": "getInstallUsageMetrics",
+  "summary": "Get a list of daily usage metrics",
+  "method": "GET",
+  "path": "/installs/{install_id}/usage",
+  "tags": [
+    "Usage"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

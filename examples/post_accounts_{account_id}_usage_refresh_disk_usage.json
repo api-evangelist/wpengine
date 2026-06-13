@@ -1,0 +1,12 @@
+{
+  "operationId": "post_accounts_{account_id}_usage_refresh_disk_usage",
+  "summary": "Refresh Disk Usage for all installs associated with account",
+  "method": "POST",
+  "path": "/accounts/{account_id}/usage/refresh_disk_usage",
+  "tags": [
+    "Usage"
+  ],
+  "parameters": {
+    "account_id": "<account_id>"
+  }
+}

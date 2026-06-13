@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Status",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "boolean",
+      "example": true
+    },
+    "created_on": {
+      "type": "string",
+      "example": "2018-05-17T16:20:40+00:00",
+      "description": "The time when the status was requested in rfc3339 format"
+    }
+  }
+}

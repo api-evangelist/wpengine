@@ -1,0 +1,469 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WP Engine Hosting Platform API Vocabulary",
+  "description": "Terms and tags used in the WP Engine API",
+  "terms": [
+    {
+      "term": "Status",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "status",
+          "method": "GET",
+          "path": "/status",
+          "summary": "The status of the WP Engine Hosting Platform API"
+        }
+      ]
+    },
+    {
+      "term": "Swagger",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "swagger",
+          "method": "GET",
+          "path": "/swagger",
+          "summary": "The current swagger specification"
+        }
+      ]
+    },
+    {
+      "term": "Account",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listAccounts",
+          "method": "GET",
+          "path": "/accounts",
+          "summary": "List your WP Engine accounts"
+        },
+        {
+          "operationId": "getAccount",
+          "method": "GET",
+          "path": "/accounts/{account_id}",
+          "summary": "Get an account by ID"
+        },
+        {
+          "operationId": "getAccountsLimits",
+          "method": "GET",
+          "path": "/accounts/{account_id}/limits",
+          "summary": "Fetch account usage limits"
+        }
+      ]
+    },
+    {
+      "term": "Usage",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "getAccountUsageMetrics",
+          "method": "GET",
+          "path": "/accounts/{account_id}/usage",
+          "summary": "Get account usage metrics"
+        },
+        {
+          "operationId": "",
+          "method": "POST",
+          "path": "/accounts/{account_id}/usage/refresh_disk_usage",
+          "summary": "Refresh Disk Usage for all installs associated with account"
+        },
+        {
+          "operationId": "getAccountUsageSummary",
+          "method": "GET",
+          "path": "/accounts/{account_id}/usage/summary",
+          "summary": "Get account level usage summary"
+        },
+        {
+          "operationId": "getAccountUsageInsights",
+          "method": "GET",
+          "path": "/accounts/{account_id}/usage/insights",
+          "summary": "Get account usage insights"
+        },
+        {
+          "operationId": "getInstallUsageMetrics",
+          "method": "GET",
+          "path": "/installs/{install_id}/usage",
+          "summary": "Get a list of daily usage metrics"
+        },
+        {
+          "operationId": "refreshEnvironmentDiskUsage",
+          "method": "POST",
+          "path": "/installs/{install_id}/usage/refresh_disk_usage",
+          "summary": "Refresh disk usage for the given WordPress site environment"
+        }
+      ]
+    },
+    {
+      "term": "Account User",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listAccountUsers",
+          "method": "GET",
+          "path": "/accounts/{account_id}/account_users",
+          "summary": "List your account users"
+        },
+        {
+          "operationId": "createAccountUser",
+          "method": "POST",
+          "path": "/accounts/{account_id}/account_users",
+          "summary": "Create a new account user"
+        },
+        {
+          "operationId": "getAccountUser",
+          "method": "GET",
+          "path": "/accounts/{account_id}/account_users/{user_id}",
+          "summary": "Get an account user by ID"
+        },
+        {
+          "operationId": "updateAccountUser",
+          "method": "PATCH",
+          "path": "/accounts/{account_id}/account_users/{user_id}",
+          "summary": "Update an account user"
+        },
+        {
+          "operationId": "deleteAccountUser",
+          "method": "DELETE",
+          "path": "/accounts/{account_id}/account_users/{user_id}",
+          "summary": "Delete an account user"
+        }
+      ]
+    },
+    {
+      "term": "Site Transfer",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listAccountSiteTransfers",
+          "method": "GET",
+          "path": "/accounts/{account_id}/site_transfers",
+          "summary": "List site transfers for an account"
+        },
+        {
+          "operationId": "listSiteTransfers",
+          "method": "GET",
+          "path": "/sites/{site_id}/site_transfers",
+          "summary": "List site transfers for a site"
+        },
+        {
+          "operationId": "createSiteTransfer",
+          "method": "POST",
+          "path": "/sites/{site_id}/site_transfers",
+          "summary": "Initiate a site transfer"
+        },
+        {
+          "operationId": "getSiteTransfer",
+          "method": "GET",
+          "path": "/sites/{site_id}/site_transfers/{transfer_id}",
+          "summary": "Get a site transfer by ID"
+        },
+        {
+          "operationId": "cancelSiteTransfer",
+          "method": "DELETE",
+          "path": "/sites/{site_id}/site_transfers/{transfer_id}",
+          "summary": "Cancel a scheduled site transfer"
+        }
+      ]
+    },
+    {
+      "term": "Site Reports",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listSiteReportTemplates",
+          "method": "GET",
+          "path": "/site_reports/templates",
+          "summary": "List report templates"
+        }
+      ]
+    },
+    {
+      "term": "Site",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listSites",
+          "method": "GET",
+          "path": "/sites",
+          "summary": "List your sites"
+        },
+        {
+          "operationId": "createSite",
+          "method": "POST",
+          "path": "/sites",
+          "summary": "Create a new site"
+        },
+        {
+          "operationId": "getSite",
+          "method": "GET",
+          "path": "/sites/{site_id}",
+          "summary": "Get a site by ID"
+        },
+        {
+          "operationId": "updateSite",
+          "method": "PATCH",
+          "path": "/sites/{site_id}",
+          "summary": "Change a site name"
+        },
+        {
+          "operationId": "deleteSite",
+          "method": "DELETE",
+          "path": "/sites/{site_id}",
+          "summary": "Delete a site"
+        }
+      ]
+    },
+    {
+      "term": "Install",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listInstalls",
+          "method": "GET",
+          "path": "/installs",
+          "summary": "List your WordPress installations"
+        },
+        {
+          "operationId": "createInstall",
+          "method": "POST",
+          "path": "/installs",
+          "summary": "Create a new WordPress installation"
+        },
+        {
+          "operationId": "getInstall",
+          "method": "GET",
+          "path": "/installs/{install_id}",
+          "summary": "Get an install by ID"
+        },
+        {
+          "operationId": "deleteInstall",
+          "method": "DELETE",
+          "path": "/installs/{install_id}",
+          "summary": "Delete an install by ID"
+        },
+        {
+          "operationId": "updateInstall",
+          "method": "PATCH",
+          "path": "/installs/{install_id}",
+          "summary": "Update a WordPress installation"
+        },
+        {
+          "operationId": "copyInstall",
+          "method": "POST",
+          "path": "/install_copy",
+          "summary": "Copy the full file system and database from one WordPress installation to another"
+        }
+      ]
+    },
+    {
+      "term": "Offload Settings",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "getLargeFSValidationFile",
+          "method": "GET",
+          "path": "/installs/{install_id}/offload_settings/largefs_validation_file",
+          "summary": "Get the validation file needed to configure LargeFS"
+        },
+        {
+          "operationId": "getOffloadSettings",
+          "method": "GET",
+          "path": "/installs/{install_id}/offload_settings/files",
+          "summary": "Get the offload settings for an install"
+        },
+        {
+          "operationId": "updateOffloadSettings",
+          "method": "POST",
+          "path": "/installs/{install_id}/offload_settings/files",
+          "summary": "Configure offload settings for an install"
+        },
+        {
+          "operationId": "patchOffloadSettings",
+          "method": "PATCH",
+          "path": "/installs/{install_id}/offload_settings/files",
+          "summary": "Update specific offload settings for an install"
+        }
+      ]
+    },
+    {
+      "term": "Domain",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listDomains",
+          "method": "GET",
+          "path": "/installs/{install_id}/domains",
+          "summary": "Get the domains for an install by install id"
+        },
+        {
+          "operationId": "createDomain",
+          "method": "POST",
+          "path": "/installs/{install_id}/domains",
+          "summary": "Add a new domain or redirect to an existing install"
+        },
+        {
+          "operationId": "createBulkDomains",
+          "method": "POST",
+          "path": "/installs/{install_id}/domains/bulk",
+          "summary": "Add multiple domains and redirects to an existing install"
+        },
+        {
+          "operationId": "getDomain",
+          "method": "GET",
+          "path": "/installs/{install_id}/domains/{domain_id}",
+          "summary": "Get a specific domain for an install"
+        },
+        {
+          "operationId": "updateDomain",
+          "method": "PATCH",
+          "path": "/installs/{install_id}/domains/{domain_id}",
+          "summary": "Update an existing domain for an install"
+        },
+        {
+          "operationId": "deleteDomain",
+          "method": "DELETE",
+          "path": "/installs/{install_id}/domains/{domain_id}",
+          "summary": "Delete a specific domain for an install"
+        },
+        {
+          "operationId": "verifyDomainTxtRecord",
+          "method": "POST",
+          "path": "/installs/{install_id}/domains/{domain_id}/verification",
+          "summary": "Trigger domain TXT record verification"
+        },
+        {
+          "operationId": "checkStatus",
+          "method": "POST",
+          "path": "/installs/{install_id}/domains/{domain_id}/check_status",
+          "summary": "Submit a status report for a domain"
+        },
+        {
+          "operationId": "getDomainReportStatus",
+          "method": "GET",
+          "path": "/installs/{install_id}/domains/check_status/{report_id}",
+          "summary": "Retrieve a status report for a domain"
+        }
+      ]
+    },
+    {
+      "term": "Certificates",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "getInstallCertificates",
+          "method": "GET",
+          "path": "/installs/{install_id}/ssl_certificates",
+          "summary": "List SSL certificates for an install"
+        },
+        {
+          "operationId": "getDomainCertificate",
+          "method": "GET",
+          "path": "/installs/{install_id}/domains/{domain_id}/ssl_certificate",
+          "summary": "Get SSL certificate information for a domain"
+        },
+        {
+          "operationId": "createDomainCertificateOrder",
+          "method": "POST",
+          "path": "/installs/{install_id}/domains/{domain_id}/ssl_certificate",
+          "summary": "Request a Let's Encrypt Certificate for a legacy domain"
+        },
+        {
+          "operationId": "importThirdPartySSLCertificate",
+          "method": "POST",
+          "path": "/installs/{install_id}/ssl_certificates/third_party",
+          "summary": "Import third-party SSL certificate for an install"
+        }
+      ]
+    },
+    {
+      "term": "Backup",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listBackups",
+          "method": "GET",
+          "path": "/installs/{install_id}/backups",
+          "summary": "List backups for a WordPress installation"
+        },
+        {
+          "operationId": "createBackup",
+          "method": "POST",
+          "path": "/installs/{install_id}/backups",
+          "summary": "Requests a new backup of a WordPress installation"
+        },
+        {
+          "operationId": "showBackup",
+          "method": "GET",
+          "path": "/installs/{install_id}/backups/{backup_id}",
+          "summary": "Retrieves the status of a backup of a WordPress installation"
+        },
+        {
+          "operationId": "restoreBackup",
+          "method": "POST",
+          "path": "/installs/{install_id}/backups/{backup_id}/restore",
+          "summary": "Restores a WordPress installation from a backup"
+        }
+      ]
+    },
+    {
+      "term": "Cache",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "purgeCache",
+          "method": "POST",
+          "path": "/installs/{install_id}/purge_cache",
+          "summary": "Purge an install's cache"
+        }
+      ]
+    },
+    {
+      "term": "Archive",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listArchives",
+          "method": "GET",
+          "path": "/installs/{install_id}/archives",
+          "summary": "List archives for a WordPress installation"
+        }
+      ]
+    },
+    {
+      "term": "User",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "getCurrentUser",
+          "method": "GET",
+          "path": "/user",
+          "summary": "Get the current user"
+        }
+      ]
+    },
+    {
+      "term": "SSH Key",
+      "type": "tag",
+      "operations": [
+        {
+          "operationId": "listSshKeys",
+          "method": "GET",
+          "path": "/ssh_keys",
+          "summary": "Get your SSH keys"
+        },
+        {
+          "operationId": "createSshKey",
+          "method": "POST",
+          "path": "/ssh_keys",
+          "summary": "Add a new SSH key"
+        },
+        {
+          "operationId": "deleteSshKey",
+          "method": "DELETE",
+          "path": "/ssh_keys/{ssh_key_id}",
+          "summary": "Delete an existing SSH key"
+        }
+      ]
+    }
+  ]
+}

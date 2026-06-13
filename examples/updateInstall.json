@@ -1,0 +1,12 @@
+{
+  "operationId": "updateInstall",
+  "summary": "Update a WordPress installation",
+  "method": "PATCH",
+  "path": "/installs/{install_id}",
+  "tags": [
+    "Install"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

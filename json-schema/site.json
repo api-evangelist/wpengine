@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Site",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "account"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "example": "28c78b6d-c2da-4f09-85f5-1ad588089b2d"
+    },
+    "name": {
+      "type": "string",
+      "example": "Torque Magazine"
+    },
+    "account": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The account ID",
+          "format": "uuid",
+          "example": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+        }
+      }
+    },
+    "group_name": {
+      "type": "string",
+      "example": "Overdue",
+      "x-nullable": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Tag name"
+      },
+      "example": [
+        "tag1",
+        "tag2",
+        "tag3"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the site was created in UTC",
+      "example": "2025-07-10T09:59:58.684Z"
+    },
+    "sandbox": {
+      "type": "boolean",
+      "description": "Whether the site is a sandbox site",
+      "example": false
+    },
+    "transferable": {
+      "type": "boolean",
+      "description": "Whether the site is transferable",
+      "example": false
+    },
+    "installs": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "294deacc-d8b8-4005-82c4-0727ba8ddde0"
+          },
+          "name": {
+            "type": "string",
+            "example": "torquemag"
+          },
+          "environment": {
+            "type": "string",
+            "x-nullable": true,
+            "enum": [
+              "production",
+              "staging",
+              "development",
+              null
+            ]
+          },
+          "cname": {
+            "type": "string",
+            "description": "Returns the CNAME of the install",
+            "example": "mywebsite.wpengine.com"
+          },
+          "php_version": {
+            "type": "string",
+            "description": "The PHP version used to run WordPress",
+            "example": "7.3",
+            "x-nullable": true
+          },
+          "is_multisite": {
+            "type": "boolean",
+            "x-nullable": true,
+            "example": false
+          }
+        }
+      }
+    }
+  }
+}

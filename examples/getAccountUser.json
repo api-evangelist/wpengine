@@ -1,0 +1,13 @@
+{
+  "operationId": "getAccountUser",
+  "summary": "Get an account user by ID",
+  "method": "GET",
+  "path": "/accounts/{account_id}/account_users/{user_id}",
+  "tags": [
+    "Account User"
+  ],
+  "parameters": {
+    "account_id": "<account_id>",
+    "user_id": "<user_id>"
+  }
+}

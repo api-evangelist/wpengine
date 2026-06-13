@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Certificate",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "The id of the certificate"
+    },
+    "account": {
+      "type": "string",
+      "description": "The account name of the owner of the certificate",
+      "example": "myaccountname"
+    },
+    "auto_renew": {
+      "type": "boolean",
+      "description": "Whether auto renew is enabled (true) or disabled (false)"
+    },
+    "auth_file": {
+      "type": "string",
+      "description": "The auth file for the certificate"
+    },
+    "approver_email": {
+      "type": "string",
+      "description": "The approver email for the certificate"
+    },
+    "common_name": {
+      "type": "string",
+      "description": "The common name for the domain",
+      "example": "customdomain.com"
+    },
+    "cancel_time": {
+      "type": "string",
+      "description": "The time when the certificate was cancelled"
+    },
+    "cert_source": {
+      "type": "string",
+      "description": "The source of the certificate",
+      "enum": [
+        "CERT_SOURCE_UNSPECIFIED",
+        "THIRD_PARTY",
+        "LETS_ENCRYPT",
+        "SELF_SIGNED"
+      ]
+    },
+    "ordered_time": {
+      "type": "string",
+      "description": "The time when the certificate was ordered"
+    },
+    "wildcard": {
+      "type": "boolean",
+      "description": "A boolean flag that indicates if the certificate is for a wildcard domain"
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "A list of domains for the certificate",
+      "example": [
+        "customdomain.com",
+        "www.customdomain.com"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "SSL_STATE_UNSPECIFIED",
+        "ENABLED",
+        "DISABLED",
+        "EXPIRED",
+        "CANCELED",
+        "REJECTED",
+        "SUBMITTED"
+      ],
+      "description": "The current status of the certificate"
+    },
+    "approved_time": {
+      "type": "string",
+      "description": "The time the certificate was approved"
+    },
+    "expires_time": {
+      "type": "string",
+      "description": "The time when the certificate expires"
+    },
+    "serial_number": {
+      "type": "string",
+      "description": "The **Certificate Serial Number** as defined in the X.509 standard. Presented as a **hexadecimal string**.",
+      "example": "18F662FB207C19E7841E8F41E6771BEE"
+    }
+  }
+}

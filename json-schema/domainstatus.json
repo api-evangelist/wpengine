@@ -1,0 +1,267 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DomainStatus",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The domain name"
+    },
+    "cname": {
+      "type": "string",
+      "description": "The CNAME of the domain"
+    },
+    "a_record": {
+      "type": "string",
+      "description": "The A record of the domain"
+    },
+    "aaaa_record": {
+      "type": "string",
+      "description": "The AAAA record of the domain"
+    },
+    "complete": {
+      "type": "boolean",
+      "description": "The status of the request to ping the domain",
+      "example": true
+    },
+    "result": {
+      "type": "string",
+      "description": "The result of the request to ping the domain"
+    },
+    "dns_provider": {
+      "type": "string",
+      "description": "The DNS provider of the domain"
+    },
+    "dns_error": {
+      "type": "boolean",
+      "description": "Indicates if there was an error retrieving DNS information",
+      "example": false
+    },
+    "install_name": {
+      "type": "string",
+      "description": "The name of the install"
+    },
+    "cluster_id": {
+      "type": "string",
+      "description": "The cluster ID of the install"
+    },
+    "http_forwarded": {
+      "type": "string",
+      "description": "The HTTP forwarded value of the domain"
+    },
+    "http_forwarded_list": {
+      "type": "string",
+      "description": "The HTTP forwarded list of the domain"
+    },
+    "http_error": {
+      "type": "boolean",
+      "description": "Indicates if there was an error retrieving HTTP information",
+      "example": false
+    },
+    "atlas_env_id": {
+      "type": "string",
+      "description": "Atlas environment ID associated with this domain"
+    },
+    "ns": {
+      "type": "array",
+      "description": "The name servers of the domain",
+      "items": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "Hostname of the name server"
+          }
+        }
+      }
+    },
+    "mx": {
+      "type": "array",
+      "description": "Mail exchange record information",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Host": {
+            "type": "string",
+            "description": "Hostname of the mail server"
+          },
+          "Pref": {
+            "type": "integer",
+            "description": "Priority of the mail server (lower values have higher priority)"
+          }
+        }
+      }
+    },
+    "txt": {
+      "type": "array",
+      "description": "TXT records for the domain",
+      "items": {
+        "type": "string"
+      }
+    },
+    "soa": {
+      "type": "array",
+      "description": "The start of authority records of the domain",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hdr": {
+            "type": "object",
+            "description": "Header of the start of authority record"
+          },
+          "ns": {
+            "type": "string",
+            "description": "Primary name server for the zone",
+            "example": "ns1.example.com"
+          },
+          "mbox": {
+            "type": "string",
+            "description": "Email address of the zone administrator (@ replaced with .)",
+            "example": "hostmaster.example.com"
+          },
+          "serial": {
+            "type": "integer",
+            "description": "Zone file version number"
+          },
+          "refresh": {
+            "type": "integer",
+            "description": "Time in seconds secondary servers wait before refreshing zone data"
+          },
+          "retry": {
+            "type": "integer",
+            "description": "Time in seconds to wait before retrying failed zone transfers"
+          },
+          "expire": {
+            "type": "integer",
+            "description": "Time in seconds zone data is valid without refreshing"
+          },
+          "minttl": {
+            "type": "integer",
+            "description": "Minimum time-to-live in seconds for negative responses"
+          }
+        }
+      }
+    },
+    "caa": {
+      "type": "array",
+      "description": "The certification authority authorization records of the domain",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hdr": {
+            "type": "object",
+            "description": "Header of the start of authority record"
+          },
+          "flag": {
+            "type": "integer",
+            "description": "The flags for the CAA record"
+          },
+          "tag": {
+            "type": "string",
+            "description": "The tag for the CAA record"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value for the CAA record"
+          }
+        }
+      }
+    },
+    "ip": {
+      "type": "array",
+      "description": "The IP addresses of the domain",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "192.0.2.10",
+        "192.0.2.11"
+      ]
+    },
+    "address": {
+      "type": "array",
+      "description": "The addresses of the domain",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "192.0.2.10",
+        "192.0.2.11"
+      ]
+    },
+    "aname": {
+      "type": "array",
+      "description": "The A name records of the domain",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hdr": {
+            "type": "object",
+            "description": "Header of the start of authority record"
+          },
+          "a": {
+            "type": "string",
+            "description": "The A name record"
+          }
+        }
+      }
+    },
+    "ssl": {
+      "type": "object",
+      "description": "The SSL information of the domain",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "Status of the SSL certificate",
+          "example": "verified"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Certificate issuer name"
+        },
+        "not_before": {
+          "type": "string",
+          "description": "Certificate validity start date"
+        },
+        "not_after": {
+          "type": "string",
+          "description": "Certificate expiration date"
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message if certificate validation failed"
+        },
+        "dns_names": {
+          "type": "array",
+          "description": "DNS names included in the certificate",
+          "items": {
+            "type": "string"
+          }
+        },
+        "serial_number": {
+          "type": "string",
+          "description": "Certificate serial number"
+        },
+        "signature_algorithm": {
+          "type": "integer",
+          "description": "Signature algorithm identifier used in the certificate"
+        },
+        "subject": {
+          "type": "object",
+          "description": "Certificate subject information"
+        },
+        "common_name": {
+          "type": "string",
+          "description": "Common name in the certificate"
+        },
+        "sans": {
+          "type": "array",
+          "description": "Subject Alternative Names in the certificate",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

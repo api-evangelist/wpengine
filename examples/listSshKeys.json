@@ -1,0 +1,10 @@
+{
+  "operationId": "listSshKeys",
+  "summary": "Get your SSH keys",
+  "method": "GET",
+  "path": "/ssh_keys",
+  "tags": [
+    "SSH Key"
+  ],
+  "parameters": {}
+}

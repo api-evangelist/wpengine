@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DomainVerification",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The UUID of the domain",
+      "example": "e41fa98f-ea80-4654-b229-a9b765d0863a"
+    },
+    "name": {
+      "type": "string",
+      "description": "The domain name",
+      "example": "example.com"
+    },
+    "txt_verified_time": {
+      "type": "string",
+      "description": "The time when the TXT record was verified",
+      "x-nullable": true,
+      "example": "2026-04-20T16:00:00.007Z"
+    },
+    "txt_verified_domain": {
+      "type": "string",
+      "description": "The domain that the TXT record was verified for",
+      "example": "example.com"
+    },
+    "txt_verification_key": {
+      "type": "string",
+      "description": "The TXT record verification key. Null if the domain is already verified.",
+      "x-nullable": true,
+      "example": "_wpe_verification"
+    },
+    "txt_verification_value": {
+      "type": "string",
+      "description": "The TXT record verification value. Null if the domain is already verified.",
+      "x-nullable": true
+    }
+  }
+}

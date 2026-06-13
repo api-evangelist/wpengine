@@ -1,0 +1,10 @@
+{
+  "operationId": "createSshKey",
+  "summary": "Add a new SSH key",
+  "method": "POST",
+  "path": "/ssh_keys",
+  "tags": [
+    "SSH Key"
+  ],
+  "parameters": {}
+}

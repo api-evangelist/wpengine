@@ -1,0 +1,12 @@
+{
+  "operationId": "getOffloadSettings",
+  "summary": "Get the offload settings for an install",
+  "method": "GET",
+  "path": "/installs/{install_id}/offload_settings/files",
+  "tags": [
+    "Offload Settings"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

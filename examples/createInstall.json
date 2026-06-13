@@ -1,0 +1,10 @@
+{
+  "operationId": "createInstall",
+  "summary": "Create a new WordPress installation",
+  "method": "POST",
+  "path": "/installs",
+  "tags": [
+    "Install"
+  ],
+  "parameters": {}
+}

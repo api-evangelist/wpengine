@@ -1,0 +1,12 @@
+{
+  "operationId": "deleteInstall",
+  "summary": "Delete an install by ID",
+  "method": "DELETE",
+  "path": "/installs/{install_id}",
+  "tags": [
+    "Install"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

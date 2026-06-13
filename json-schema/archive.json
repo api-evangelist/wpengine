@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Archive",
+  "type": "object",
+  "required": [
+    "id",
+    "backup",
+    "state"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the archive",
+      "example": "a6d86d4b-0860-4e2c-870b-0aae34ecf085"
+    },
+    "backup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Unique identifier of the backup this archive was created from",
+          "example": "ac237e1c-3182-4c15-9a3f-6d58a57cbb44"
+        }
+      }
+    },
+    "notification_emails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Email addresses that will receive notifications about the archive operation"
+    },
+    "state": {
+      "type": "string",
+      "description": "Current state of the archive operation",
+      "enum": [
+        "requested",
+        "in_progress",
+        "completed",
+        "aborted"
+      ]
+    },
+    "create_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the archive was created"
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the archive operation started"
+    },
+    "complete_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the archive operation completed. This field is only populated when state is `completed`",
+      "x-nullable": true
+    },
+    "abort_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the archive operation was aborted. This field is only populated when state is `aborted`",
+      "x-nullable": true
+    },
+    "download_uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "Download URL for the completed archive. This field is only populated when state is `completed`",
+      "x-nullable": true
+    }
+  }
+}

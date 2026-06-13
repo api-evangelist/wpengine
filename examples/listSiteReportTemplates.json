@@ -1,0 +1,10 @@
+{
+  "operationId": "listSiteReportTemplates",
+  "summary": "List report templates",
+  "method": "GET",
+  "path": "/site_reports/templates",
+  "tags": [
+    "Site Reports"
+  ],
+  "parameters": {}
+}

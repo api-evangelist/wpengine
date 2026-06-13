@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InstallSSLCertificatesResponse",
+  "type": "object",
+  "required": [
+    "certificates"
+  ],
+  "properties": {
+    "certificates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Certificate"
+      }
+    },
+    "next_page_token": {
+      "type": "string",
+      "description": "A token to retrieve the next page of results, if available.",
+      "example": "1"
+    }
+  }
+}

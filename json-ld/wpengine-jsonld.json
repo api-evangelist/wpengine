@@ -1,0 +1,49 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "api": "https://api.wpengineapi.com/v1/",
+    "wpengine": "https://wpengine.com/vocab#"
+  },
+  "@type": "WebAPI",
+  "@id": "https://api.wpengineapi.com/v1",
+  "name": "WP Engine Hosting Platform API",
+  "description": "The API described in this document is subject to change.",
+  "version": "1.17.0",
+  "termsOfService": "https://wpengine.com/legal/terms-of-service/",
+  "url": "https://api.wpengineapi.com/v1",
+  "documentation": "https://developers.wpengine.com/docs/managed-hosting-platform/api",
+  "provider": {
+    "@type": "Organization",
+    "name": "WP Engine",
+    "url": "https://wpengine.com",
+    "sameAs": [
+      "https://github.com/wpengine",
+      "https://x.com/wpengine",
+      "https://www.linkedin.com/company/wpengine"
+    ]
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://wpengine.com/pricing/"
+  },
+  "endpointUrl": "https://api.wpengineapi.com/v1",
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "https://api.wpengineapi.com/v1",
+    "serviceType": "REST"
+  },
+  "featureList": [
+    "Managed WordPress Hosting",
+    "Site Management",
+    "Install/Environment Management",
+    "Domain Management",
+    "SSL Certificate Management",
+    "Backup and Restore",
+    "SSH Key Management",
+    "Cache Management",
+    "Usage Metrics",
+    "Account Administration"
+  ],
+  "inLanguage": "en",
+  "license": "https://wpengine.com/legal/terms-of-service/"
+}

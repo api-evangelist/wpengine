@@ -1,0 +1,12 @@
+{
+  "operationId": "listDomains",
+  "summary": "Get the domains for an install by install id",
+  "method": "GET",
+  "path": "/installs/{install_id}/domains",
+  "tags": [
+    "Domain"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

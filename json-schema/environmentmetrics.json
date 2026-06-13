@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EnvironmentMetrics",
+  "type": "object",
+  "properties": {
+    "environment_name": {
+      "type": "string",
+      "description": "The name of the environment"
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/DailyUsageMetrics"
+      },
+      "description": "Daily usage metrics for this environment"
+    },
+    "metrics_rollup": {
+      "$ref": "#/definitions/UsageMetricsRollup",
+      "description": "Rollup of the usage metrics for this environment"
+    },
+    "storage_refresh_expected_time": {
+      "type": "string",
+      "format": "date-time",
+      "x-nullable": true,
+      "description": "The expected time when the storage refresh will complete for this environment"
+    }
+  }
+}

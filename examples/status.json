@@ -1,0 +1,9 @@
+{
+  "operationId": "status",
+  "summary": "The status of the WP Engine Hosting Platform API",
+  "method": "GET",
+  "path": "/status",
+  "tags": [
+    "Status"
+  ]
+}

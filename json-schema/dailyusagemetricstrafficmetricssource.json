@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DailyUsageMetricsTrafficMetricsSource",
+  "type": "string",
+  "enum": [
+    "TRAFFIC_METRICS_SOURCE_UNSPECIFIED",
+    "ONHOST",
+    "BIGQUERY"
+  ],
+  "default": "TRAFFIC_METRICS_SOURCE_UNSPECIFIED",
+  "description": "The source of the traffic metrics.\n\n - TRAFFIC_METRICS_SOURCE_UNSPECIFIED: The source of the traffic metrics is unknown.\n - ONHOST: The traffic metrics is sourced from onhost logcrunch (legacy).\n - BIGQUERY: The traffic metrics is sourced from BigQuery logcrunch.\n"
+}

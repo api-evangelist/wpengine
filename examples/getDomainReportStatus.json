@@ -1,0 +1,13 @@
+{
+  "operationId": "getDomainReportStatus",
+  "summary": "Retrieve a status report for a domain",
+  "method": "GET",
+  "path": "/installs/{install_id}/domains/check_status/{report_id}",
+  "tags": [
+    "Domain"
+  ],
+  "parameters": {
+    "install_id": "<install_id>",
+    "report_id": "<report_id>"
+  }
+}

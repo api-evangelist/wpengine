@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PreviousPage",
+  "type": "string",
+  "example": "https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0",
+  "x-nullable": true,
+  "description": "Path to the previous page of results"
+}

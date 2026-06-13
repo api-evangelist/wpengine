@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UsageErrorResponse",
+  "type": "object",
+  "required": [
+    "message"
+  ],
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "A message explaining the error.",
+      "example": "Must provide or omit both first_date and last_date."
+    }
+  }
+}

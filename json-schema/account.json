@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Account",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "nickname"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "example": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+    },
+    "name": {
+      "type": "string",
+      "description": "The account name",
+      "example": "joesaccount"
+    },
+    "nickname": {
+      "type": "string",
+      "description": "The account nickname",
+      "example": "joesaccount"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "operationId": "getAccountsLimits",
+  "summary": "Fetch account usage limits",
+  "method": "GET",
+  "path": "/accounts/{account_id}/limits",
+  "tags": [
+    "Account"
+  ],
+  "parameters": {
+    "account_id": "<account_id>"
+  }
+}

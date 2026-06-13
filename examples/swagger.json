@@ -1,0 +1,9 @@
+{
+  "operationId": "swagger",
+  "summary": "The current swagger specification",
+  "method": "GET",
+  "path": "/swagger",
+  "tags": [
+    "Swagger"
+  ]
+}

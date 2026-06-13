@@ -1,0 +1,12 @@
+{
+  "operationId": "listArchives",
+  "summary": "List archives for a WordPress installation",
+  "method": "GET",
+  "path": "/installs/{install_id}/archives",
+  "tags": [
+    "Archive"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "operationId": "restoreBackup",
+  "summary": "Restores a WordPress installation from a backup",
+  "method": "POST",
+  "path": "/installs/{install_id}/backups/{backup_id}/restore",
+  "tags": [
+    "Backup"
+  ],
+  "parameters": {
+    "install_id": "<install_id>",
+    "backup_id": "<backup_id>"
+  }
+}

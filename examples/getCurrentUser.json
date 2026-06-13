@@ -1,0 +1,10 @@
+{
+  "operationId": "getCurrentUser",
+  "summary": "Get the current user",
+  "method": "GET",
+  "path": "/user",
+  "tags": [
+    "User"
+  ],
+  "parameters": {}
+}

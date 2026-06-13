@@ -1,0 +1,12 @@
+{
+  "operationId": "createAccountUser",
+  "summary": "Create a new account user",
+  "method": "POST",
+  "path": "/accounts/{account_id}/account_users",
+  "tags": [
+    "Account User"
+  ],
+  "parameters": {
+    "account_id": "<account_id>"
+  }
+}

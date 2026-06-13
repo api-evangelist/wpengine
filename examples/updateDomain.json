@@ -1,0 +1,13 @@
+{
+  "operationId": "updateDomain",
+  "summary": "Update an existing domain for an install",
+  "method": "PATCH",
+  "path": "/installs/{install_id}/domains/{domain_id}",
+  "tags": [
+    "Domain"
+  ],
+  "parameters": {
+    "install_id": "<install_id>",
+    "domain_id": "<domain_id>"
+  }
+}

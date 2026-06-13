@@ -1,0 +1,12 @@
+{
+  "operationId": "updateOffloadSettings",
+  "summary": "Configure offload settings for an install",
+  "method": "POST",
+  "path": "/installs/{install_id}/offload_settings/files",
+  "tags": [
+    "Offload Settings"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

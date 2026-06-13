@@ -1,0 +1,13 @@
+{
+  "operationId": "showBackup",
+  "summary": "Retrieves the status of a backup of a WordPress installation",
+  "method": "GET",
+  "path": "/installs/{install_id}/backups/{backup_id}",
+  "tags": [
+    "Backup"
+  ],
+  "parameters": {
+    "install_id": "<install_id>",
+    "backup_id": "<backup_id>"
+  }
+}

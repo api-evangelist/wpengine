@@ -1,0 +1,12 @@
+{
+  "operationId": "listAccountUsers",
+  "summary": "List your account users",
+  "method": "GET",
+  "path": "/accounts/{account_id}/account_users",
+  "tags": [
+    "Account User"
+  ],
+  "parameters": {
+    "account_id": "<account_id>"
+  }
+}

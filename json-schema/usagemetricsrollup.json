@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UsageMetricsRollup",
+  "type": "object",
+  "properties": {
+    "visit_count": {
+      "$ref": "#/definitions/UsageRollup",
+      "description": "A rollup of total visits.\n\nThe average field represents the average total visits per day on all installs.\nThe sum field represents the sum of all the total visits on all installs.\nThe latest field is not applicable to the total visits and will be empty.\n"
+    },
+    "network_origin_bytes": {
+      "$ref": "#/definitions/UsageRollup",
+      "description": "A Rollup of data transfer metrics.\n\nThe average field represents the average data transfer metrics per day on all installs.\nThe sum field represents the sum of all the data transfer metrics on all installs.\nThe latest field is not applicable to the data transfer metrics and will be empty.\n"
+    },
+    "storage_file_bytes": {
+      "$ref": "#/definitions/UsageRollup",
+      "description": "A rollup of file storage metrics.\n\nThe latest field represents the sum of all the latest metrics for file storage on all installs.\nThe average and sum fields will be empty.\n"
+    },
+    "storage_database_bytes": {
+      "$ref": "#/definitions/UsageRollup",
+      "description": "A rollup of database storage metrics.\n\nThe latest field represents the sum of all the latest metrics for database storage on all installs.\nThe average and sum fields will be empty.\n"
+    },
+    "billable_visits": {
+      "$ref": "#/definitions/UsageRollup",
+      "description": "A rollup of billable visits.\n\nThe average field represents the average billable visits per day on all installs.\nThe sum field represents the sum of all the billable visits on all installs.\nThe latest field is not applicable to the billable visits and will be empty.\n"
+    },
+    "request_origin_count": {
+      "$ref": "#/definitions/UsageRollup",
+      "description": "A rollup of total number of requests.\n\nThe average field represents the average requests per day on all installs.\nThe sum field represents the sum of all requests on all installs.\nThe latest field is not applicable to the requests and will be empty.\n"
+    },
+    "network_cdn_bytes": {
+      "$ref": "#/definitions/UsageRollup",
+      "description": "A rollup of total number of bytes served by CDN.\n\nThe average field represents the average bytes per day on all installs.\nThe sum field represents the sum of all bytes on all installs.\nThe latest field is not applicable to the bytes and will be empty.\n"
+    },
+    "network_total_bytes": {
+      "$ref": "#/definitions/UsageRollup",
+      "description": "A rollup of total number of bytes served by CDN and origin.\n\nThe average field represents the average bytes per day on all installs.\nThe sum field represents the sum of all network bytes on all installs.\nThe latest field is not applicable to the bytes and will be empty.\n"
+    }
+  },
+  "description": "A rollup of usage metrics."
+}

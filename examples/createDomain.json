@@ -1,0 +1,12 @@
+{
+  "operationId": "createDomain",
+  "summary": "Add a new domain or redirect to an existing install",
+  "method": "POST",
+  "path": "/installs/{install_id}/domains",
+  "tags": [
+    "Domain"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

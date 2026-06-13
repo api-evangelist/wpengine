@@ -1,0 +1,12 @@
+{
+  "operationId": "listBackups",
+  "summary": "List backups for a WordPress installation",
+  "method": "GET",
+  "path": "/installs/{install_id}/backups",
+  "tags": [
+    "Backup"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

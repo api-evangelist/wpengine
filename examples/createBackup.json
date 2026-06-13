@@ -1,0 +1,12 @@
+{
+  "operationId": "createBackup",
+  "summary": "Requests a new backup of a WordPress installation",
+  "method": "POST",
+  "path": "/installs/{install_id}/backups",
+  "tags": [
+    "Backup"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

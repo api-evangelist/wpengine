@@ -1,0 +1,13 @@
+{
+  "operationId": "deleteAccountUser",
+  "summary": "Delete an account user",
+  "method": "DELETE",
+  "path": "/accounts/{account_id}/account_users/{user_id}",
+  "tags": [
+    "Account User"
+  ],
+  "parameters": {
+    "account_id": "<account_id>",
+    "user_id": "<user_id>"
+  }
+}

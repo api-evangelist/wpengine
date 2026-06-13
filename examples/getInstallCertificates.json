@@ -1,0 +1,12 @@
+{
+  "operationId": "getInstallCertificates",
+  "summary": "List SSL certificates for an install",
+  "method": "GET",
+  "path": "/installs/{install_id}/ssl_certificates",
+  "tags": [
+    "Certificates"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

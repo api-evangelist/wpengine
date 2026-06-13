@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Installation",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "account",
+    "php_version"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "example": "294deacc-d8b8-4005-82c4-0727ba8ddde0"
+    },
+    "name": {
+      "type": "string",
+      "example": "torquemag",
+      "pattern": "^[a-z][a-z0-9]{2,13}$"
+    },
+    "account": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "example": "eeda3227-9a39-46ae-9e14-20958bb4e6c9",
+          "description": "The account ID"
+        }
+      }
+    },
+    "php_version": {
+      "type": "string",
+      "description": "The PHP version used to run WordPress (read-only)",
+      "example": "7.0",
+      "x-nullable": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "pending"
+      ]
+    },
+    "site": {
+      "type": "object",
+      "x-nullable": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "example": "28c78b6d-c2da-4f09-85f5-1ad588089b2d"
+        }
+      }
+    },
+    "cname": {
+      "type": "string",
+      "description": "Returns the CNAME of the install",
+      "example": "mywebsite.wpengine.com"
+    },
+    "stable_ips": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "A list of stable IPs bound to the install. This will only apply to some premium/enterprise plans",
+      "example": [
+        "1.2.3.2",
+        "1.1.1.2"
+      ],
+      "x-nullable": true
+    },
+    "environment": {
+      "type": "string",
+      "x-nullable": true,
+      "enum": [
+        "production",
+        "staging",
+        "development",
+        null
+      ]
+    },
+    "primary_domain": {
+      "type": "string",
+      "x-nullable": true,
+      "description": "The primary domain for the install.",
+      "example": "mywebsite.wpengine.com"
+    },
+    "is_multisite": {
+      "type": "boolean",
+      "x-nullable": true,
+      "example": false
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the install was created in UTC.",
+      "example": "2025-06-12T09:56:42.386Z"
+    },
+    "wp_version": {
+      "type": "string",
+      "x-nullable": true,
+      "description": "The WordPress version installed on the install. Only returned when requesting an individual install.",
+      "example": "6.8.1"
+    },
+    "defer_wordpress_upgrades_until": {
+      "type": "string",
+      "format": "date-time",
+      "x-nullable": true,
+      "description": "If set, automatic WordPress core major updates will be deferred until this date. Only returned when requesting an individual install.",
+      "example": "2025-12-31T23:59:59.999Z"
+    }
+  }
+}

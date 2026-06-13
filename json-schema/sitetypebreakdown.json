@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SiteTypeBreakdown",
+  "type": "object",
+  "properties": {
+    "standard": {
+      "type": "string",
+      "description": "Usage for standard sites",
+      "example": "1683",
+      "x-nullable": true
+    },
+    "transferable": {
+      "type": "string",
+      "description": "Usage for transferable sites",
+      "example": "7",
+      "x-nullable": true
+    },
+    "sandbox": {
+      "type": "string",
+      "description": "Usage for sandbox sites",
+      "example": "5",
+      "x-nullable": true
+    }
+  },
+  "description": "Breakdown of usage by site type"
+}

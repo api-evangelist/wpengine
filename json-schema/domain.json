@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Domain",
+  "type": "object",
+  "required": [
+    "name",
+    "duplicate",
+    "primary",
+    "id",
+    "secure_all_urls"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "example": "torquemag.io"
+    },
+    "duplicate": {
+      "type": "boolean",
+      "example": true
+    },
+    "primary": {
+      "type": "boolean",
+      "example": true
+    },
+    "id": {
+      "type": "string",
+      "example": "e41fa98f-ea80-4654-b229-a9b765d0863a"
+    },
+    "network_type": {
+      "type": "string",
+      "description": "The WP Engine network type configured for the domain. Possible values are 'AN' (Advanced Network) 'GES' (Global Edge Security) and 'LEGACY'.",
+      "example": "AN"
+    },
+    "network_details": {
+      "type": "object",
+      "description": "Details about the network configuration for the domain.",
+      "properties": {
+        "dns_config_info": {
+          "type": "object",
+          "description": "DNS configuration information for the domain.",
+          "properties": {
+            "cname": {
+              "type": "string",
+              "description": "The CNAME value to use to configure a DNS CNAME record for the domain.",
+              "example": "wp.wpenginepowered.com"
+            },
+            "a_records": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "IP addresses that can be used to configure a DNS A record for the domain.",
+              "example": [
+                "127.0.0.1"
+              ]
+            }
+          }
+        },
+        "network_info": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The status of the network configuration for the domain.",
+              "example": "ACTIVE"
+            },
+            "ssl": {
+              "type": "object",
+              "description": "SSL configuration status",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "active"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "redirects_to": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "e41fa98f-ea80-4006-b229-a9b765d0863a"
+          },
+          "name": {
+            "type": "string",
+            "example": "redirect.com"
+          }
+        }
+      }
+    },
+    "secure_all_urls": {
+      "type": "boolean",
+      "example": false
+    },
+    "txt_verified_time": {
+      "type": "string",
+      "description": "The time when the TXT record was verified",
+      "x-nullable": true,
+      "example": "2026-04-20T16:00:00.007Z"
+    },
+    "txt_verified_domain": {
+      "type": "string",
+      "description": "The domain that the TXT record was verified for",
+      "example": "example.com"
+    },
+    "txt_verification_key": {
+      "type": "string",
+      "description": "The TXT record verification key. Null if the domain is already verified.",
+      "x-nullable": true,
+      "example": "_wpe_verification"
+    },
+    "txt_verification_value": {
+      "type": "string",
+      "description": "The TXT record verification value. Null if the domain is already verified.",
+      "x-nullable": true
+    },
+    "ownership_status": {
+      "type": "string",
+      "enum": [
+        "TXT_VERIFIED",
+        "TXT_VERIFICATION_PENDING"
+      ],
+      "description": "Ownership verification status of the domain.\n* TXT_VERIFIED indicates the domain ownership has been verified.\n* TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.\n\n**NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`\nand `txt_verification_value` fields provided with the domain. After the TXT record is in place, POST to\n`/installs/{install_id}/domains/{domain_id}/verification` to complete verification.\n"
+    }
+  }
+}

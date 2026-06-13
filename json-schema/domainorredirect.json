@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DomainOrRedirect",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "duplicate",
+    "primary"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "example": "e41fa98f-ea80-4654-b229-a9b765d0863a"
+    },
+    "name": {
+      "type": "string",
+      "example": "example.com"
+    },
+    "duplicate": {
+      "type": "boolean",
+      "example": false
+    },
+    "primary": {
+      "type": "boolean",
+      "example": true
+    },
+    "redirects_to": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "example": "e41fa98f-ea80-4006-b229-a9b765d0863a"
+        },
+        "name": {
+          "type": "string",
+          "example": "redirect.com"
+        }
+      }
+    },
+    "txt_verified_time": {
+      "type": "string",
+      "description": "The time when the TXT record was verified",
+      "x-nullable": true,
+      "example": "2026-04-20T16:00:00.007Z"
+    },
+    "txt_verified_domain": {
+      "type": "string",
+      "description": "The domain that the TXT record was verified for",
+      "example": "example.com"
+    },
+    "txt_verification_key": {
+      "type": "string",
+      "description": "The TXT record verification key. Null if the domain is already verified.",
+      "x-nullable": true,
+      "example": "_wpe_verification"
+    },
+    "txt_verification_value": {
+      "type": "string",
+      "description": "The TXT record verification value. Null if the domain is already verified.",
+      "x-nullable": true
+    },
+    "ownership_status": {
+      "type": "string",
+      "enum": [
+        "TXT_VERIFIED",
+        "TXT_VERIFICATION_PENDING"
+      ],
+      "description": "Ownership verification status of the domain.\n* TXT_VERIFIED indicates the domain ownership has been verified.\n* TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.\n\n**NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`\nand `txt_verification_value` fields provided with the domain. After the TXT record is in place, POST to\n`/installs/{install_id}/domains/{domain_id}/verification` to complete verification.\n"
+    }
+  }
+}

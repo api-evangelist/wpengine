@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AccountUsageMetricsResponse",
+  "type": "object",
+  "properties": {
+    "environment_metrics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/EnvironmentMetrics"
+      },
+      "description": "Usage metrics for each environment in the account"
+    },
+    "total_size": {
+      "type": "integer",
+      "description": "Total number of environments"
+    },
+    "next_page_token": {
+      "type": "string",
+      "description": "Token for the next page of results",
+      "x-nullable": true
+    },
+    "all_environments_included": {
+      "type": "boolean",
+      "description": "Whether all environments can be returned based on account permissions",
+      "x-nullable": true
+    },
+    "last_account_storage_refresh_time": {
+      "type": "string",
+      "format": "date-time",
+      "x-nullable": true,
+      "description": "The time when the account storage was last refreshed"
+    },
+    "account_storage_refresh_expected_time": {
+      "type": "string",
+      "format": "date-time",
+      "x-nullable": true,
+      "description": "The expected time when the account storage refresh will complete"
+    }
+  }
+}

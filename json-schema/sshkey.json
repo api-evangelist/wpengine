@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SshKey",
+  "type": "object",
+  "properties": {
+    "comment": {
+      "type": "string",
+      "example": "joe@gmail.com"
+    },
+    "created_at": {
+      "type": "string",
+      "example": "2019-09-01T15:59:24.277Z"
+    },
+    "fingerprint": {
+      "type": "string",
+      "example": "a1:b2:c3:d4:e5:46:a7:88:c9:40:d2:d7:9b:cd:42:05"
+    },
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "example": "e41fa98f-ea80-1f16-a7b7-d748bcc9e64d"
+    }
+  }
+}

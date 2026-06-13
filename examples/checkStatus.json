@@ -1,0 +1,13 @@
+{
+  "operationId": "checkStatus",
+  "summary": "Submit a status report for a domain",
+  "method": "POST",
+  "path": "/installs/{install_id}/domains/{domain_id}/check_status",
+  "tags": [
+    "Domain"
+  ],
+  "parameters": {
+    "install_id": "<install_id>",
+    "domain_id": "<domain_id>"
+  }
+}

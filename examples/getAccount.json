@@ -1,0 +1,12 @@
+{
+  "operationId": "getAccount",
+  "summary": "Get an account by ID",
+  "method": "GET",
+  "path": "/accounts/{account_id}",
+  "tags": [
+    "Account"
+  ],
+  "parameters": {
+    "account_id": "<account_id>"
+  }
+}

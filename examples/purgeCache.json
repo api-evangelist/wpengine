@@ -1,0 +1,12 @@
+{
+  "operationId": "purgeCache",
+  "summary": "Purge an install's cache",
+  "method": "POST",
+  "path": "/installs/{install_id}/purge_cache",
+  "tags": [
+    "Cache"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

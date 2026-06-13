@@ -1,0 +1,10 @@
+{
+  "operationId": "createSite",
+  "summary": "Create a new site",
+  "method": "POST",
+  "path": "/sites",
+  "tags": [
+    "Site"
+  ],
+  "parameters": {}
+}

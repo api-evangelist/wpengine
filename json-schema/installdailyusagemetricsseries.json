@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InstallDailyUsageMetricsSeries",
+  "type": "object",
+  "properties": {
+    "install_name": {
+      "type": "string",
+      "description": "The name of the install for the included metrics."
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "#/definitions/DailyUsageMetrics"
+      },
+      "description": "The requested metrics for an install.\nMetrics will include daily usage metrics for the last 30 days.\nMetrics will be sorted in descending order (most recent date first).\n"
+    },
+    "metrics_rollup": {
+      "$ref": "#/definitions/UsageMetricsRollup",
+      "description": "Rollup of the usage metrics."
+    },
+    "storage_refresh_expected_time": {
+      "type": "string",
+      "format": "date-time",
+      "x-nullable": true,
+      "description": "Represents the estimated completion time (in UTC) for a refresh disk usage operation.\nIf a refresh is not in progress, then this field will be null.\n"
+    }
+  },
+  "description": "A daily usage metrics series."
+}

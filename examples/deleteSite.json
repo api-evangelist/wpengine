@@ -1,0 +1,12 @@
+{
+  "operationId": "deleteSite",
+  "summary": "Delete a site",
+  "method": "DELETE",
+  "path": "/sites/{site_id}",
+  "tags": [
+    "Site"
+  ],
+  "parameters": {
+    "site_id": "<site_id>"
+  }
+}

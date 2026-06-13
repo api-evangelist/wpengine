@@ -1,0 +1,10 @@
+{
+  "operationId": "listAccounts",
+  "summary": "List your WP Engine accounts",
+  "method": "GET",
+  "path": "/accounts",
+  "tags": [
+    "Account"
+  ],
+  "parameters": {}
+}

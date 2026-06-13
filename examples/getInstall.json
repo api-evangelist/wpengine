@@ -1,0 +1,12 @@
+{
+  "operationId": "getInstall",
+  "summary": "Get an install by ID",
+  "method": "GET",
+  "path": "/installs/{install_id}",
+  "tags": [
+    "Install"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

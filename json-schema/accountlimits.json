@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AccountLimits",
+  "type": "object",
+  "properties": {
+    "visitors": {
+      "type": "integer",
+      "description": "Maximum number of visitors",
+      "x-nullable": true,
+      "example": 25000
+    },
+    "storage": {
+      "type": "integer",
+      "description": "Maximum storage allowance in GB",
+      "x-nullable": true,
+      "example": 150
+    },
+    "bandwidth": {
+      "type": "integer",
+      "description": "Maximum bandwidth allowance in GB",
+      "x-nullable": true,
+      "example": 1000
+    }
+  },
+  "description": "Account limits for environments, storage, bandwidth, and billable visits"
+}

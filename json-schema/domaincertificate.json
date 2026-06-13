@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DomainCertificate",
+  "type": "object",
+  "properties": {
+    "cert_name": {
+      "type": "string",
+      "description": "The name of the certificate",
+      "example": "customdomain.com"
+    },
+    "cert_info": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "The private key of the certificate"
+        },
+        "cert": {
+          "type": "string",
+          "description": "The certificate"
+        }
+      }
+    },
+    "certificate": {
+      "$ref": "#/definitions/Certificate"
+    },
+    "criteria": {
+      "type": "string",
+      "description": "The criteria of the certificate"
+    }
+  }
+}

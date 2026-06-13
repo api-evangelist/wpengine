@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ThirdPartySuccessfulImportResponse",
+  "type": "object",
+  "required": [
+    "certificate",
+    "private_key"
+  ],
+  "properties": {
+    "certificate": {
+      "type": "string",
+      "description": "Base64 encoded PEM certificate",
+      "example": "aGVsbG8gd29ybGQK"
+    },
+    "private_key": {
+      "type": "string",
+      "description": "Base64 encoded PEM private key",
+      "example": "aGVsbG8gd29ybGQK"
+    }
+  }
+}

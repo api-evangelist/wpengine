@@ -1,0 +1,13 @@
+{
+  "operationId": "createDomainCertificateOrder",
+  "summary": "Request a Let's Encrypt Certificate for a legacy domain",
+  "method": "POST",
+  "path": "/installs/{install_id}/domains/{domain_id}/ssl_certificate",
+  "tags": [
+    "Certificates"
+  ],
+  "parameters": {
+    "install_id": "<install_id>",
+    "domain_id": "<domain_id>"
+  }
+}

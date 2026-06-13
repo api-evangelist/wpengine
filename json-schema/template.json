@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Template",
+  "type": "object",
+  "required": [
+    "template_uuid",
+    "template_name"
+  ],
+  "properties": {
+    "template_uuid": {
+      "type": "string",
+      "format": "uuid",
+      "example": "123e4567-e89b-12d3-a456-426614174000",
+      "description": "Unique identifier for the template"
+    },
+    "template_name": {
+      "type": "string",
+      "maxLength": 100,
+      "example": "Site Report",
+      "description": "Display name of the template"
+    },
+    "description": {
+      "type": "string",
+      "example": "Comprehensive site performance and analytics report",
+      "description": "Detailed description of what the template includes"
+    },
+    "company_name": {
+      "type": "string",
+      "example": "WP Engine",
+      "description": "Company name displayed on the report"
+    },
+    "brand_colour": {
+      "type": "string",
+      "example": "#0ECAD4",
+      "description": "Brand color used in the report (hex format)"
+    },
+    "logo_url": {
+      "type": "string",
+      "format": "uri",
+      "example": "https://storage.googleapis.com/crs-assets/logos/wpengine-logo.png",
+      "description": "URL to the company logo"
+    },
+    "preview_image_url": {
+      "type": "string",
+      "format": "uri",
+      "example": "https://storage.googleapis.com/crs-assets/previews/site-report-preview.png",
+      "description": "URL to template preview image"
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "cover"
+          }
+        }
+      },
+      "example": [
+        {
+          "name": "cover"
+        },
+        {
+          "name": "overview"
+        },
+        {
+          "name": "usage"
+        },
+        {
+          "name": "themes"
+        }
+      ],
+      "description": "List of sections included in this template"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2024-01-15T10:30:00Z",
+      "description": "Timestamp when the template was created"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2024-03-20T14:45:00Z",
+      "description": "Timestamp when the template was last updated"
+    }
+  },
+  "description": "Report template defining structure and branding for generated reports"
+}

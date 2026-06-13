@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CertificateOrder",
+  "type": "object",
+  "required": [
+    "email_address",
+    "given_name",
+    "family_name",
+    "region_code"
+  ],
+  "properties": {
+    "email_address": {
+      "type": "string",
+      "description": "The certificate's holder's email address",
+      "example": "jane@example.com"
+    },
+    "given_name": {
+      "type": "string",
+      "description": "The certificate holder's first / given name",
+      "example": "Jane"
+    },
+    "family_name": {
+      "type": "string",
+      "description": "The certificate holder's last / family name",
+      "example": "Doe"
+    },
+    "region_code": {
+      "type": "string",
+      "description": "The two-letter ISO 3166-1 alpha-2 code for the certificate's country",
+      "example": "US"
+    },
+    "state": {
+      "type": "string",
+      "description": "The certificate's state/region",
+      "example": "Texas"
+    },
+    "city": {
+      "type": "string",
+      "description": "The certificate's city/locality",
+      "example": "Austin"
+    },
+    "phone": {
+      "type": "string",
+      "description": "The certificate holder's phone number",
+      "example": "800-123-4567"
+    }
+  }
+}

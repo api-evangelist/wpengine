@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UnprocessableEntityErrorResponse",
+  "type": "object",
+  "required": [
+    "message"
+  ],
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "A message regarding the unprocessable entity that occurred",
+      "example": "Validation failed on transfer parameters"
+    },
+    "documentation_url": {
+      "type": "string",
+      "description": "(Optional) A URL where documentation regarding this specific error can be found"
+    },
+    "errors": {
+      "type": "array",
+      "description": "An array of error objects describing specific errors that arose when servicing the request",
+      "items": {
+        "$ref": "#/definitions/ResourceError"
+      }
+    }
+  }
+}

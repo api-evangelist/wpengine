@@ -1,0 +1,12 @@
+{
+  "operationId": "createBulkDomains",
+  "summary": "Add multiple domains and redirects to an existing install",
+  "method": "POST",
+  "path": "/installs/{install_id}/domains/bulk",
+  "tags": [
+    "Domain"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

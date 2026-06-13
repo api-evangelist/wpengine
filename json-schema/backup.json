@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Backup",
+  "type": "object",
+  "required": [
+    "id",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The unique identifier of the backup",
+      "example": "e41fa98f-ea80-4654-b229-a9b765d0863a"
+    },
+    "status": {
+      "type": "string",
+      "description": "State of the backup.",
+      "enum": [
+        "requested",
+        "in_progress",
+        "completed",
+        "aborted"
+      ],
+      "example": "completed"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description provided when the backup was requested",
+      "example": "Pre-deploy snapshot",
+      "x-nullable": true
+    },
+    "create_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the backup was created",
+      "example": "2024-01-15T10:00:00Z",
+      "x-nullable": true
+    },
+    "complete_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the backup completed. `null` while the backup is still in progress.",
+      "example": "2024-01-15T10:30:00Z",
+      "x-nullable": true
+    },
+    "wordpress_version": {
+      "type": "string",
+      "description": "WordPress version of the install at the time the backup was taken",
+      "example": "6.4.2",
+      "x-nullable": true
+    }
+  }
+}

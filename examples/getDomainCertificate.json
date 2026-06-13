@@ -1,0 +1,13 @@
+{
+  "operationId": "getDomainCertificate",
+  "summary": "Get SSL certificate information for a domain",
+  "method": "GET",
+  "path": "/installs/{install_id}/domains/{domain_id}/ssl_certificate",
+  "tags": [
+    "Certificates"
+  ],
+  "parameters": {
+    "install_id": "<install_id>",
+    "domain_id": "<domain_id>"
+  }
+}

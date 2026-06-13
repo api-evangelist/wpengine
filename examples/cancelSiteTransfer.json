@@ -1,0 +1,13 @@
+{
+  "operationId": "cancelSiteTransfer",
+  "summary": "Cancel a scheduled site transfer",
+  "method": "DELETE",
+  "path": "/sites/{site_id}/site_transfers/{transfer_id}",
+  "tags": [
+    "Site Transfer"
+  ],
+  "parameters": {
+    "site_id": "<site_id>",
+    "transfer_id": "<transfer_id>"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "operationId": "createSiteTransfer",
+  "summary": "Initiate a site transfer",
+  "method": "POST",
+  "path": "/sites/{site_id}/site_transfers",
+  "tags": [
+    "Site Transfer"
+  ],
+  "parameters": {
+    "site_id": "<site_id>"
+  }
+}

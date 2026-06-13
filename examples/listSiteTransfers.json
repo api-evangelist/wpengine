@@ -1,0 +1,12 @@
+{
+  "operationId": "listSiteTransfers",
+  "summary": "List site transfers for a site",
+  "method": "GET",
+  "path": "/sites/{site_id}/site_transfers",
+  "tags": [
+    "Site Transfer"
+  ],
+  "parameters": {
+    "site_id": "<site_id>"
+  }
+}

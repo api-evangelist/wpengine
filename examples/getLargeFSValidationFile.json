@@ -1,0 +1,12 @@
+{
+  "operationId": "getLargeFSValidationFile",
+  "summary": "Get the validation file needed to configure LargeFS",
+  "method": "GET",
+  "path": "/installs/{install_id}/offload_settings/largefs_validation_file",
+  "tags": [
+    "Offload Settings"
+  ],
+  "parameters": {
+    "install_id": "<install_id>"
+  }
+}

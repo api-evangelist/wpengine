@@ -1,0 +1,12 @@
+{
+  "operationId": "updateSite",
+  "summary": "Change a site name",
+  "method": "PATCH",
+  "path": "/sites/{site_id}",
+  "tags": [
+    "Site"
+  ],
+  "parameters": {
+    "site_id": "<site_id>"
+  }
+}

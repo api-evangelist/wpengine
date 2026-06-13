@@ -1,0 +1,10 @@
+{
+  "operationId": "copyInstall",
+  "summary": "Copy the full file system and database from one WordPress installation to another",
+  "method": "POST",
+  "path": "/install_copy",
+  "tags": [
+    "Install"
+  ],
+  "parameters": {}
+}

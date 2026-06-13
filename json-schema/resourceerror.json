@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ResourceError",
+  "type": "object",
+  "required": [
+    "resource",
+    "field",
+    "type",
+    "code",
+    "message"
+  ],
+  "properties": {
+    "resource": {
+      "type": "string",
+      "description": "The name of the resource that was being processed when the error occurred",
+      "example": "Site"
+    },
+    "field": {
+      "type": "string",
+      "description": "(Optional) The specific field associated with the error",
+      "example": "name"
+    },
+    "type": {
+      "type": "string",
+      "description": "(Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`",
+      "example": "invalid_value"
+    },
+    "code": {
+      "type": "string",
+      "description": "(Optional) A machine code relating to the error that occurred with the field and resource",
+      "example": "too_long"
+    },
+    "message": {
+      "type": "string",
+      "description": "(Optional) A human-readable message relating to the error that occurred with the field and resource",
+      "example": "Name is too long (maximum is 40 characters)"
+    }
+  }
+}
