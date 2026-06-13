@@ -1,0 +1,168 @@
+name: WP Engine Plans and Pricing
+description: WP Engine managed WordPress hosting plans with visit-based pricing tiers.
+url: https://wpengine.com/pricing/
+plans:
+  - name: Startup
+    description: Entry-level managed WordPress hosting for a single site.
+    url: https://wpengine.com/pricing/
+    price: 30.00
+    unit: month
+    currency: USD
+    pricingModel: flat-rate
+    billingCycle: monthly
+    annualPrice: 360.00
+    limits:
+      - name: Sites
+        value: 1
+        unit: sites
+      - name: Monthly Visits
+        value: 25000
+        unit: visits/month
+      - name: Storage
+        value: 10
+        unit: GB
+      - name: Bandwidth
+        value: 50
+        unit: GB
+      - name: Local Environments
+        value: 1
+        unit: environments
+    features:
+      - Daily automated backups (40-day retention)
+      - Free SSL certificates
+      - Cloudflare CDN integration
+      - 24/7 chat support
+      - PHP version management
+      - Staging environment
+      - WP Engine CDN
+      - Global edge security
+
+  - name: Professional
+    description: Managed WordPress hosting for up to 3 sites with phone support.
+    url: https://wpengine.com/pricing/
+    price: 55.00
+    unit: month
+    currency: USD
+    pricingModel: flat-rate
+    billingCycle: monthly
+    annualPrice: 660.00
+    limits:
+      - name: Sites
+        value: 3
+        unit: sites
+      - name: Monthly Visits
+        value: 75000
+        unit: visits/month
+      - name: Storage
+        value: 15
+        unit: GB
+      - name: Bandwidth
+        value: 75
+        unit: GB
+    features:
+      - All Startup features
+      - 24/7 chat and phone support
+      - Advanced development tools
+      - Transferable sites
+
+  - name: Growth
+    description: Managed WordPress hosting for agencies and growing teams with up to 10 sites.
+    url: https://wpengine.com/pricing/
+    price: 109.00
+    unit: month
+    currency: USD
+    pricingModel: flat-rate
+    billingCycle: monthly
+    annualPrice: 1308.00
+    limits:
+      - name: Sites
+        value: 10
+        unit: sites
+      - name: Monthly Visits
+        value: 100000
+        unit: visits/month
+      - name: Storage
+        value: 20
+        unit: GB
+      - name: Bandwidth
+        value: 100
+        unit: GB
+    features:
+      - All Professional features
+      - Multisite support
+      - Advanced site management
+
+  - name: Scale
+    description: High-volume managed WordPress hosting for large agencies with up to 30 sites.
+    url: https://wpengine.com/pricing/
+    price: 276.00
+    unit: month
+    currency: USD
+    pricingModel: flat-rate
+    billingCycle: monthly
+    annualPrice: 3312.00
+    limits:
+      - name: Sites
+        value: 30
+        unit: sites
+      - name: Monthly Visits
+        value: 400000
+        unit: visits/month
+      - name: Storage
+        value: 50
+        unit: GB
+      - name: Bandwidth
+        value: 400
+        unit: GB
+    features:
+      - All Growth features
+      - Dedicated account management
+      - Priority support
+
+  - name: Enterprise
+    description: Custom enterprise-grade managed WordPress hosting with dedicated support.
+    url: https://wpengine.com/pricing/
+    price: custom
+    unit: month
+    currency: USD
+    pricingModel: custom
+    billingCycle: annual
+    limits:
+      - name: Sites
+        value: custom
+        unit: sites
+      - name: Monthly Visits
+        value: custom
+        unit: visits/month
+      - name: Storage
+        value: custom
+        unit: GB
+    features:
+      - Enterprise-grade security
+      - Advanced DDoS protection
+      - 99.9% uptime SLA
+      - 24/7 WordPress technical support
+      - Dedicated account team
+      - Custom integrations
+
+overages:
+  - name: Visitor Overage
+    description: Charged per 1,000 excess monthly visits beyond plan allocation.
+    price: 2.00
+    unit: per 1,000 visits
+    currency: USD
+  - name: Additional Sites
+    description: Extra sites beyond plan allocation on Startup plan.
+    price: 20.00
+    unit: per site/month
+    currency: USD
+  - name: Additional Storage
+    description: Extra storage beyond plan allocation.
+    price: 1.00
+    unit: per GB/month
+    currency: USD
+
+notes:
+  - Annual billing provides approximately 16.7% savings (roughly 2 months free).
+  - WP Engine counts visitors by unique IP addresses daily, which typically runs 20-50% higher than standard analytics tools.
+  - Visitor counting methodology may cause unexpected overages if budgeting against Google Analytics data.

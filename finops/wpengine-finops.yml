@@ -1,0 +1,99 @@
+name: WP Engine FinOps
+description: Financial operations guidance for managing WP Engine API and hosting costs.
+url: https://wpengine.com/pricing/
+
+costDrivers:
+  - name: Monthly Hosting Plan
+    description: Base subscription cost for managed WordPress hosting. Tier is determined by number of sites, monthly visits, and storage required.
+    type: subscription
+    billing: monthly or annual
+    plans:
+      - name: Startup
+        monthlyPrice: 30.00
+        annualPrice: 360.00
+        currency: USD
+      - name: Professional
+        monthlyPrice: 55.00
+        annualPrice: 660.00
+        currency: USD
+      - name: Growth
+        monthlyPrice: 109.00
+        annualPrice: 1308.00
+        currency: USD
+      - name: Scale
+        monthlyPrice: 276.00
+        annualPrice: 3312.00
+        currency: USD
+
+  - name: Visitor Overages
+    description: Additional charges when monthly visitor count exceeds plan allocation. WP Engine measures unique daily IP addresses, which typically runs 20-50% higher than analytics tools like Google Analytics.
+    type: usage-overage
+    price: 2.00
+    unit: per 1,000 excess visits
+    currency: USD
+    risk: high
+    notes: Visitor counting methodology differs from standard analytics; budget conservatively.
+
+  - name: Additional Sites
+    description: Extra sites beyond the plan's included site count.
+    type: add-on
+    price: 20.00
+    unit: per site/month
+    currency: USD
+
+  - name: Additional Storage
+    description: Storage beyond the plan's included allocation.
+    type: usage-overage
+    price: 1.00
+    unit: per GB/month
+    currency: USD
+
+  - name: Add-on Products
+    description: Optional paid add-ons available across plans.
+    type: add-on
+    items:
+      - name: Global Edge Security
+        description: Enterprise-grade DDoS protection and WAF powered by Cloudflare.
+        pricing: contact sales
+      - name: Smart Plugin Manager
+        description: Automated WordPress plugin update management with visual regression testing.
+        pricing: contact sales
+      - name: Genesis Pro
+        description: Access to Genesis Framework and StudioPress themes.
+        pricing: contact sales
+
+savingsOpportunities:
+  - name: Annual Billing Discount
+    description: Choosing annual billing saves approximately 16.7% compared to monthly billing (equivalent to roughly 2 months free).
+    savingsPercent: 16.7
+    action: Switch to annual billing for all active plans.
+
+  - name: Right-size Plan Selection
+    description: Monitor actual monthly visitor counts using WP Engine portal analytics before selecting a plan. Avoid over-provisioning on sites or storage.
+    action: Review monthly visit reports in the WP Engine User Portal and align plan to actual traffic patterns.
+
+  - name: Visitor Count Reconciliation
+    description: WP Engine counts unique daily IPs, which can run significantly higher than Google Analytics sessions. Understand the delta before committing to a plan tier.
+    action: Run both WP Engine and analytics tool reports side-by-side for at least 30 days before choosing a plan.
+
+  - name: Consolidate Sites onto Higher Plan
+    description: If running multiple separate Startup accounts, consolidating onto a Growth or Scale plan may reduce per-site cost.
+    action: Calculate total cost of individual plans vs. consolidated plan including any needed add-ons.
+
+  - name: API-Driven Automation
+    description: Use the WP Engine REST API to automate site creation, backup scheduling, and cache purging rather than manual portal operations, reducing operational overhead.
+    action: Implement API-driven workflows for repetitive tasks such as staging environment creation and teardown.
+
+costVisibility:
+  - name: User Portal Usage Dashboard
+    description: The WP Engine User Portal at my.wpengine.com provides monthly visitor counts, storage usage, and bandwidth consumption.
+    url: https://my.wpengine.com
+  - name: Overage Pricing Page
+    description: Official WP Engine documentation on overage pricing and visitor limit methodology.
+    url: https://wpengine.com/overage-pricing/
+  - name: Account Usage API
+    description: Programmatic access to account usage limits and metrics via the WP Engine REST API.
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api/reference/operations/getaccountslimits
+    endpoints:
+      - GET /accounts/{account_id}/limits
+      - GET /accounts/{account_id}/usage

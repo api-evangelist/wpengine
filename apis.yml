@@ -1,0 +1,65 @@
+aid: wpengine
+name: WP Engine
+description: WP Engine is a WordPress digital experience platform offering managed WordPress hosting with a REST API for programmatically managing sites, environments (installs), domains, SSH keys, SSL certificates, backups, and cache operations. The API uses Basic Authentication with credentials generated from the WP Engine User Portal.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/wpengine/refs/heads/main/apis.yml
+created: "2026-06-13"
+modified: "2026-06-13"
+specificationVersion: "0.19"
+tags:
+  - WordPress
+  - Managed Hosting
+  - WordPress Hosting
+  - Site Management
+  - Digital Experience Platform
+apis:
+  - aid: wpengine:wpengine-hosting-platform-api
+    name: WP Engine Hosting Platform API
+    description: REST API for programmatically managing WP Engine WordPress hosting accounts, sites, installs (environments), domains, SSH keys, SSL certificates, backups, users, and cache operations.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+    baseURL: https://api.wpengineapi.com/v1
+    tags:
+      - WordPress
+      - Managed Hosting
+      - Site Management
+      - Environments
+      - Domains
+      - Backups
+      - SSH Keys
+      - SSL Certificates
+    properties:
+      - type: Documentation
+        url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+      - type: OpenAPI
+        url: https://developers.wpengine.com/docs/managed-hosting-platform/api/reference
+    contact:
+      - FN: WP Engine Support
+        url: https://wpengine.com/support/
+        email: support@wpengine.com
+common:
+  - type: Website
+    url: https://wpengine.com
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  - type: GitHubOrg
+    url: https://github.com/wpengine
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/wpengine
+  - type: Blog
+    url: https://wpengine.com/blog/
+  - type: Pricing
+    url: https://wpengine.com/pricing/
+  - type: StatusPage
+    url: https://wpenginestatus.com/
+  - type: X
+    url: https://x.com/wpengine
+  - type: Plans
+    url: plans/wpengine-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/wpengine-rate-limits.yml
+  - type: FinOps
+    url: finops/wpengine-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

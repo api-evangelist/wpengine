@@ -1,0 +1,78 @@
+name: WP Engine API Rate Limits
+description: Rate limiting policies for the WP Engine Hosting Platform REST API v1.
+url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+version: "1.17.0"
+
+general:
+  description: The WP Engine API enforces rate limits per account and per IP address. When limits are exceeded, the API responds with HTTP 429 Too Many Requests. Developers should implement retry logic with exponential backoff to handle rate limit errors gracefully.
+  errorCode: 429
+  errorMessage: Too Many Requests
+  retryStrategy: exponential backoff
+
+limits:
+  - name: General API Rate Limit
+    description: General per-account rate limit applying to most API endpoints.
+    scope: account
+    header: Retry-After
+    notes: Exact numeric thresholds are not publicly documented. Contact WP Engine support for specifics.
+
+  - name: Install Creation Throttle
+    description: Install (environment) creation operations are throttled to prevent cluster degradation.
+    scope: account
+    operations:
+      - POST /installs
+    notes: Batch creation of installs can impact cluster performance; requests are throttled accordingly.
+
+  - name: Domain Creation Succession Limit
+    description: Domain creation and update operations enforce succession limits to prevent abuse.
+    scope: install
+    operations:
+      - POST /installs/{install_id}/domains
+      - PUT /installs/{install_id}/domains/{domain_id}
+    notes: Rapid successive domain operations are restricted.
+
+  - name: Cache Purge Rate Limits
+    description: Cache purging operations have type-specific rate limits for object cache, page cache, and CDN cache.
+    scope: install
+    types:
+      - name: Object Cache Purge
+        operation: POST /installs/{install_id}/purgeCache
+        cacheType: object
+      - name: Page Cache Purge
+        operation: POST /installs/{install_id}/purgeCache
+        cacheType: page
+      - name: CDN Cache Purge
+        operation: POST /installs/{install_id}/purgeCache
+        cacheType: cdn
+    notes: Each cache type has its own rate limit. Purging all cache types simultaneously counts against each respective limit.
+
+pagination:
+  description: API responses are paginated using offset-based pagination.
+  maxLimit: 100
+  defaultLimit: 100
+  parameters:
+    - name: limit
+      description: Number of results per page (maximum 100)
+      type: integer
+      maximum: 100
+    - name: offset
+      description: Starting position for results
+      type: integer
+      minimum: 0
+
+headers:
+  - name: Authorization
+    description: Basic Auth credentials encoded as base64(username:password)
+    required: true
+    format: "Basic <base64-encoded-credentials>"
+
+errorHandling:
+  - code: 429
+    message: Too Many Requests
+    action: Implement exponential backoff and retry after the period indicated in Retry-After header
+  - code: 401
+    message: Unauthorized
+    action: Verify API credentials are valid and properly base64-encoded
+  - code: 403
+    message: Forbidden
+    action: Verify the authenticated user has permission for the requested resource
