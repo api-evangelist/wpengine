@@ -1,7 +1,7 @@
 aid: wpengine
 name: WP Engine
 description: WP Engine is a WordPress digital experience platform offering managed WordPress hosting with a REST API for programmatically managing sites, environments (installs), domains, SSH keys, SSL certificates, backups, and cache operations. The API uses Basic Authentication with credentials generated from the WP Engine User Portal.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/wpengine/refs/heads/main/apis.yml
 created: "2026-06-13"
 modified: "2026-06-13"
@@ -16,7 +16,7 @@ apis:
   - aid: wpengine:wpengine-hosting-platform-api
     name: WP Engine Hosting Platform API
     description: REST API for programmatically managing WP Engine WordPress hosting accounts, sites, installs (environments), domains, SSH keys, SSL certificates, backups, users, and cache operations.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
     baseURL: https://api.wpengineapi.com/v1
     tags:
