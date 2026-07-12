@@ -38,6 +38,12 @@ apis:
         url: https://wpengine.com/support/
         email: support@wpengine.com
 common:
+  - type: VulnerabilityDisclosure
+    url: security/wpengine-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/wpengine-domain-security.yml
+  - type: Authentication
+    url: authentication/wpengine-authentication.yml
   - type: Website
     url: https://wpengine.com
   - type: Documentation

@@ -1,0 +1,13 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/wpengine-hosting-platform-api-openapi.json
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'
+  sources:
+  - openapi/wpengine-hosting-platform-api-openapi.json
