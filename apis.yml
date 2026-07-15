@@ -38,6 +38,8 @@ apis:
         url: https://wpengine.com/support/
         email: support@wpengine.com
 common:
+  - type: AgenticAccess
+    url: agentic-access/wpengine-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/wpengine-vulnerability-disclosure.yml
   - type: DomainSecurity
