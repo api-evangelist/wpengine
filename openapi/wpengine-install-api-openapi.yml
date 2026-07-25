@@ -1,0 +1,760 @@
+swagger: '2.0'
+info:
+  description: 'The API described in this document is subject to change.
+
+    '
+  version: 1.17.0
+  title: WP Engine Hosting Platform Account Install API
+  termsOfService: https://wpengine.com/legal/terms-of-service/
+host: api.wpengineapi.com
+basePath: /v1
+schemes:
+- https
+tags:
+- name: Install
+paths:
+  /installs:
+    get:
+      tags:
+      - Install
+      summary: List your WordPress installations
+      description: ''
+      operationId: listInstalls
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - $ref: '#/parameters/limitParam'
+      - $ref: '#/parameters/offsetParam'
+      - $ref: '#/parameters/account_id'
+      responses:
+        '200':
+          description: List of WordPress installations
+          schema:
+            type: object
+            properties:
+              previous:
+                $ref: '#/definitions/PreviousPage'
+              next:
+                $ref: '#/definitions/NextPage'
+              count:
+                $ref: '#/definitions/ResultsCount'
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/Installation'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.querystring.offset: method.request.querystring.offset
+          integration.request.querystring.limit: method.request.querystring.limit
+          integration.request.querystring.account_id: method.request.querystring.account_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    post:
+      tags:
+      - Install
+      summary: Create a new WordPress installation
+      description: ''
+      operationId: createInstall
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - in: body
+        name: body
+        description: '##### Properties
+
+          * name  - **required** - The name of the install
+
+          * account_id - **required**  - The ID of the account that the install will belong to
+
+          * site_id - **required for accounts with sites enabled** - The ID of the site that the install will belong to
+
+          * environment - **required for accounts with sites enabled** - The site environment that the install will fill
+
+          '
+        required: true
+        schema:
+          type: object
+          required:
+          - name
+          - account_id
+          properties:
+            name:
+              type: string
+              description: The name of the install
+            account_id:
+              type: string
+              description: The ID of the account that the install will belong to
+              format: uuid
+            site_id:
+              type: string
+              description: The ID of the site that the install will belong to
+              format: uuid
+              x-nullable: true
+            environment:
+              type: string
+              description: The site environment that the install will fill
+              x-nullable: true
+              enum:
+              - production
+              - staging
+              - development
+              - null
+          example:
+            name: torquemag
+            account_id: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+            site_id: 28c78b6d-c2da-4f09-85f5-1ad588089b2d
+            environment: staging
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/Installation'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '429':
+          description: Too many requests
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs
+        responses:
+          '201':
+            statusCode: '201'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+  /installs/{install_id}:
+    get:
+      tags:
+      - Install
+      summary: Get an install by ID
+      description: Returns a single Install
+      operationId: getInstall
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Installation'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '401':
+            statusCode: '401'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    delete:
+      tags:
+      - Install
+      summary: Delete an install by ID
+      description: This will delete the install, The delete is permanent and there is no confirmation prompt.
+      operationId: deleteInstall
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}
+        responses:
+          '204':
+            statusCode: '204'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http
+    patch:
+      tags:
+      - Install
+      summary: Update a WordPress installation
+      description: ''
+      operationId: updateInstall
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        description: The install ID
+        required: true
+        type: string
+        format: uuid
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - in: body
+        name: body
+        description: '##### Properties
+
+          * site_id - **optional** - The ID of the site that the install will belong to *(For accounts with sites enabled)*
+
+          * environment - **optional** - The site environment that the install will fill *(For accounts with sites enabled)*
+
+          '
+        required: true
+        schema:
+          type: object
+          properties:
+            site_id:
+              type: string
+              description: The site ID
+              format: uuid
+              example: 28c78b6d-c2da-4f09-85f5-1ad588089b2d
+            environment:
+              type: string
+              x-nullable: true
+              enum:
+              - production
+              - staging
+              - development
+              - null
+          example:
+            site_id: 28c78b6d-c2da-4f09-85f5-1ad588089b2d
+            environment: development
+      responses:
+        '200':
+          description: Updated
+          schema:
+            $ref: '#/definitions/Installation'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+        passthroughBehavior: when_no_match
+        httpMethod: PATCH
+        type: http
+  /install_copy:
+    post:
+      tags:
+      - Install
+      summary: Copy the full file system and database from one WordPress installation to another
+      description: ''
+      operationId: copyInstall
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - in: body
+        name: body
+        description: "##### Properties\n* source_environment_id - **required** - The ID of the environment to copy from. Must be on the same account as destination_environment_id\n* destination_environment_id - **required** - The ID of the environment to copy to. The contents of this environment will be overwritten. Must be on the same account as source_environment_id\n* notification_emails - **optional** - An array of email addresses to notify when the copy is complete\n* custom_options - **optional** - Optional fields to customize how the install should be copied\n  * include_files - **optional** - Should files be copied? Boolean where true means include files in the copy. Default is true.\n  * include_db - **optional** - Should the database be copied? Boolean where true means include the database in the copy. Default is true.\n  * db_tables - **optional** - A list of tables to include in the copy. If unspecified, the full database will be copied. Cannot specifiy tables if `include_db` is `false`.\n"
+        required: true
+        schema:
+          type: object
+          required:
+          - source_environment_id
+          - destination_environment_id
+          properties:
+            source_environment_id:
+              type: string
+              description: The ID of the environment to copy from
+              format: uuid
+              example: 8f14e45f-ceea-4b5b-9f6d-8f14e45fceea
+            destination_environment_id:
+              type: string
+              description: The ID of the environment to copy to
+              format: uuid
+              example: c9f0f895-fb98-4f3c-9f0f-c9f0f895fb98
+            notification_emails:
+              type: array
+              description: An array of email addresses to notify when the copy is complete
+              items:
+                type: string
+            custom_options:
+              type: object
+              description: Optional fields to customize how the install should be copied
+              properties:
+                include_files:
+                  type: boolean
+                  description: Should files be included in the copy. True means include files. Default is true.
+                include_db:
+                  type: boolean
+                  description: Should the database be included in the copy. True means include the database. Default is true.
+                db_tables:
+                  type: array
+                  description: A list of tables to include in the copy. If unspecified, the full database will be copied. Cannot specifiy tables if `include_db` is `false`.
+                  example:
+                  - wp_posts
+                  - wp_comments
+                  items:
+                    type: string
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/TooManyRequestsOperation'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+        '502':
+          $ref: '#/definitions/BadGatewayOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/install_copy
+        responses:
+          '202':
+            statusCode: '202'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '500':
+            statusCode: '500'
+          '502':
+            statusCode: '502'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+definitions:
+  Installation:
+    type: object
+    required:
+    - id
+    - name
+    - account
+    - php_version
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      name:
+        type: string
+        example: torquemag
+        pattern: ^[a-z][a-z0-9]{2,13}$
+      account:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+            description: The account ID
+      php_version:
+        type: string
+        description: The PHP version used to run WordPress (read-only)
+        example: '7.0'
+        x-nullable: true
+      status:
+        type: string
+        enum:
+        - active
+        - pending
+      site:
+        type: object
+        x-nullable: true
+        properties:
+          id:
+            type: string
+            format: uuid
+            example: 28c78b6d-c2da-4f09-85f5-1ad588089b2d
+      cname:
+        type: string
+        description: Returns the CNAME of the install
+        example: mywebsite.wpengine.com
+      stable_ips:
+        type: array
+        items:
+          type: string
+        description: A list of stable IPs bound to the install. This will only apply to some premium/enterprise plans
+        example:
+        - 1.2.3.2
+        - 1.1.1.2
+        x-nullable: true
+      environment:
+        type: string
+        x-nullable: true
+        enum:
+        - production
+        - staging
+        - development
+        - null
+      primary_domain:
+        type: string
+        x-nullable: true
+        description: The primary domain for the install.
+        example: mywebsite.wpengine.com
+      is_multisite:
+        type: boolean
+        x-nullable: true
+        example: false
+      created_at:
+        type: string
+        format: date-time
+        description: The date and time the install was created in UTC.
+        example: '2025-06-12T09:56:42.386Z'
+      wp_version:
+        type: string
+        x-nullable: true
+        description: The WordPress version installed on the install. Only returned when requesting an individual install.
+        example: 6.8.1
+      defer_wordpress_upgrades_until:
+        type: string
+        format: date-time
+        x-nullable: true
+        description: If set, automatic WordPress core major updates will be deferred until this date. Only returned when requesting an individual install.
+        example: '2025-12-31T23:59:59.999Z'
+  InternalServerErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: An unexpected error occurred, please try again in a few minutes
+  NotFoundErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Not Found
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  PreviousPage:
+    type: string
+    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+    x-nullable: true
+    description: Path to the previous page of results
+  NextPage:
+    type: string
+    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+    x-nullable: true
+    description: Path to the next page of results
+  TooManyRequestsOperation:
+    description: Too many requests
+  BadRequestErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: 'Invalid Site: Name cannot be empty.'
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+      errors:
+        type: array
+        description: An array of error objects describing specific errors that arose when servicing the request
+        items:
+          $ref: '#/definitions/ResourceError'
+  ResourceError:
+    type: object
+    required:
+    - resource
+    - field
+    - type
+    - code
+    - message
+    properties:
+      resource:
+        type: string
+        description: The name of the resource that was being processed when the error occurred
+        example: Site
+      field:
+        type: string
+        description: (Optional) The specific field associated with the error
+        example: name
+      type:
+        type: string
+        description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+        example: invalid_value
+      code:
+        type: string
+        description: (Optional) A machine code relating to the error that occurred with the field and resource
+        example: too_long
+      message:
+        type: string
+        description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+        example: Name is too long (maximum is 40 characters)
+  ServiceUnavailableOperation:
+    description: Service unavailable
+  BadGatewayOperation:
+    description: An invalid response was received from an upstream server
+  ResultsCount:
+    type: integer
+    example: 225
+    description: The total number of results
+  ForbiddenErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: You don't have permission to perform that action
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  AuthenticationErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Bad Credentials
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+parameters:
+  offsetParam:
+    name: offset
+    in: query
+    type: integer
+    required: false
+    default: 0
+    minimum: 0
+    description: (Optional) The first record of the result set to be retrieved
+  account_id:
+    name: account_id
+    in: query
+    type: string
+    format: uuid
+    required: false
+    description: (Optional) The uuid of an account
+    x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+  authorization:
+    name: Authorization
+    in: header
+    type: string
+    format: uuid
+  limitParam:
+    name: limit
+    in: query
+    type: integer
+    required: false
+    default: 100
+    minimum: 0
+    maximum: 100
+    description: (Optional) The number of records to return
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

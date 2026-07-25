@@ -1,0 +1,641 @@
+swagger: '2.0'
+info:
+  description: 'The API described in this document is subject to change.
+
+    '
+  version: 1.17.0
+  title: WP Engine Hosting Platform Account Account User API
+  termsOfService: https://wpengine.com/legal/terms-of-service/
+host: api.wpengineapi.com
+basePath: /v1
+schemes:
+- https
+tags:
+- name: Account User
+paths:
+  /accounts/{account_id}/account_users:
+    get:
+      tags:
+      - Account User
+      summary: List your account users
+      description: ''
+      operationId: listAccountUsers
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      responses:
+        '200':
+          description: List of account users
+          schema:
+            type: object
+            properties:
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/AccountUser'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/account_users
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    post:
+      tags:
+      - Account User
+      summary: Create a new account user
+      description: ''
+      operationId: createAccountUser
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      - in: body
+        name: body
+        description: "##### Properties\n* user - **required** - The user that will be created\n  * account_id - **required** - The ID of the account that the account_user will belong to\n  * first_name - **required** - The first name of the user\n  * last_name - **required** - The last name of the user\n  * email - **required** - The email of the user\n  * roles -- **required** - The roles the user is allowed. The following roles are valid\n    * owner\n    * full\n    * full,billing\n    * partial\n    * partial,billing\n  * install_ids - **optional** - Used with partial role selection. The ids of the installs the user will have access to.\n"
+        required: true
+        schema:
+          type: object
+          required:
+          - user
+          properties:
+            user:
+              type: object
+              description: The user that will be created
+              required:
+              - account_id
+              - first_name
+              - last_name
+              - email
+              - roles
+              properties:
+                account_id:
+                  type: string
+                  format: uuid
+                  example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+                  description: The account ID
+                first_name:
+                  type: string
+                  example: Joe
+                last_name:
+                  type: string
+                  example: Smith
+                email:
+                  type: string
+                  example: joe@gmail.com
+                roles:
+                  type: string
+                  example: full,billing
+                  description: choose from 'owner', 'full,billing', 'full', 'partial,billing', and 'partial'
+                install_ids:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - ddda3227-9a39-46ae-9e14-20958bb4e6c9
+                  - qada3227-9a39-46ae-9e14-20958bb4e45y
+      responses:
+        '201':
+          description: Created
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Your change was successful.
+              account_user:
+                $ref: '#/definitions/AccountUser'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/account_users
+        responses:
+          '201':
+            statusCode: '201'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+  /accounts/{account_id}/account_users/{user_id}:
+    get:
+      tags:
+      - Account User
+      summary: Get an account user by ID
+      description: Returns a single account user
+      operationId: getAccountUser
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      - name: user_id
+        in: path
+        format: uuid
+        description: ID of the user
+        required: true
+        type: string
+        x-example: a1b2c3d4-e5f6-41b2-b3d4-e5f6a1b2c3d4
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/AccountUser'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/account_users/{user_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+          integration.request.path.user_id: method.request.path.user_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    patch:
+      tags:
+      - Account User
+      summary: Update an account user
+      description: ''
+      operationId: updateAccountUser
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      - name: user_id
+        in: path
+        format: uuid
+        description: ID of the user
+        required: true
+        type: string
+        x-example: a1b2c3d4-e5f6-41b2-b3d4-e5f6a1b2c3d4
+      - in: body
+        name: body
+        description: "##### Properties\n* roles -- **required** - The roles the user is allowed. The following roles are valid\n  * owner\n  * full\n  * full,billing\n  * partial\n  * partial,billing\n* install_ids - **optional** - Used with partial role selection. The ids of the installs the user will have access to.\n"
+        required: true
+        schema:
+          type: object
+          required:
+          - roles
+          properties:
+            roles:
+              type: string
+              example: full,billing
+              description: choose from 'owner', 'full,billing', 'full', 'partial,billing', and 'partial'
+            install_ids:
+              type: array
+              items:
+                type: string
+              example:
+              - ddda3227-9a39-46ae-9e14-20958bb4e6c9
+              - qada3227-9a39-46ae-9e14-20958bb4e45y
+      responses:
+        '200':
+          description: Updated
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Your change was successful.
+              account_user:
+                $ref: '#/definitions/AccountUser'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/account_users/{user_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '500':
+            statusCode: '500'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+          integration.request.path.user_id: method.request.path.user_id
+        passthroughBehavior: when_no_match
+        httpMethod: PATCH
+        type: http
+    delete:
+      tags:
+      - Account User
+      summary: Delete an account user
+      description: This will remove the association this user has to this account. This delete is permanent and there is no confirmation prompt.
+      operationId: deleteAccountUser
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      - name: user_id
+        in: path
+        format: uuid
+        description: ID of the user
+        required: true
+        type: string
+        x-example: a1b2c3d4-e5f6-41b2-b3d4-e5f6a1b2c3d4
+      responses:
+        '204':
+          description: Deleted
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/account_users/{user_id}
+        responses:
+          '204':
+            statusCode: '204'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+          integration.request.path.user_id: method.request.path.user_id
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http
+definitions:
+  InternalServerErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: An unexpected error occurred, please try again in a few minutes
+  NotFoundErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Not Found
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  BadRequestErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: 'Invalid Site: Name cannot be empty.'
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+      errors:
+        type: array
+        description: An array of error objects describing specific errors that arose when servicing the request
+        items:
+          $ref: '#/definitions/ResourceError'
+  TooManyRequestsOperation:
+    description: Too many requests
+  ResourceError:
+    type: object
+    required:
+    - resource
+    - field
+    - type
+    - code
+    - message
+    properties:
+      resource:
+        type: string
+        description: The name of the resource that was being processed when the error occurred
+        example: Site
+      field:
+        type: string
+        description: (Optional) The specific field associated with the error
+        example: name
+      type:
+        type: string
+        description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+        example: invalid_value
+      code:
+        type: string
+        description: (Optional) A machine code relating to the error that occurred with the field and resource
+        example: too_long
+      message:
+        type: string
+        description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+        example: Name is too long (maximum is 40 characters)
+  ServiceUnavailableOperation:
+    description: Service unavailable
+  AccountUser:
+    type: object
+    required:
+    - user_id
+    - account_id
+    - first_name
+    - last_name
+    - email
+    - phone
+    - invite_accepted
+    - mfa_enabled
+    - roles
+    properties:
+      user_id:
+        type: string
+        description: The user ID
+        format: uuid
+        example: 28c78b6d-c2da-4f09-85f5-1ad588089b2d
+      account_id:
+        type: string
+        description: The account ID
+        format: uuid
+        example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      first_name:
+        type: string
+        description: The first name of the user
+        example: Joe
+      last_name:
+        type: string
+        description: The last name of the user
+        example: Smith
+      email:
+        type: string
+        description: The email of the user
+        example: joeSmith@test.com
+      phone:
+        type: string
+        x-nullable: true
+        description: The phone number of the user
+        example: '1234567890'
+      invite_accepted:
+        type: boolean
+        description: Whether or not the user has accepted their invitation
+        example: false
+      mfa_enabled:
+        type: boolean
+        description: Whether or not the user has multi-factor authentication enabled
+        example: true
+      roles:
+        type: string
+        description: The user roles
+        example: billing, partial
+      last_owner:
+        type: boolean
+        x-nullable: true
+        description: Whether or not this owner is the last on the account. Only shows with users that have owner level roles.
+        example: false
+      installs:
+        type: array
+        description: An array of installs tied to a partial user.
+        x-nullable: true
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The ID of the install
+              example: 3hda2d4h-9a39-o20x-9e14-20958bb4ekd8
+            name:
+              type: string
+              description: The name of the install
+              example: install1
+  ForbiddenErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: You don't have permission to perform that action
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  AuthenticationErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Bad Credentials
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+parameters:
+  authorization:
+    name: Authorization
+    in: header
+    type: string
+    format: uuid
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

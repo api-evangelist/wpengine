@@ -1,0 +1,61 @@
+swagger: '2.0'
+info:
+  description: 'The API described in this document is subject to change.
+
+    '
+  version: 1.17.0
+  title: WP Engine Hosting Platform Account Swagger API
+  termsOfService: https://wpengine.com/legal/terms-of-service/
+host: api.wpengineapi.com
+basePath: /v1
+schemes:
+- https
+tags:
+- name: Swagger
+paths:
+  /swagger:
+    get:
+      tags:
+      - Swagger
+      summary: The current swagger specification
+      description: '# Description
+
+        This will output the current swagger specification
+
+        '
+      operationId: swagger
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Current swagger specification
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/swagger
+        responses:
+          '200':
+            statusCode: '200'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        passthroughBehavior: when_no_match
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+        httpMethod: GET
+        type: http
+definitions:
+  ServiceUnavailableOperation:
+    description: Service unavailable
+  TooManyRequestsOperation:
+    description: Too many requests
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

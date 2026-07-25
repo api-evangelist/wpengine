@@ -1,0 +1,407 @@
+swagger: '2.0'
+info:
+  description: 'The API described in this document is subject to change.
+
+    '
+  version: 1.17.0
+  title: WP Engine Hosting Platform Account API
+  termsOfService: https://wpengine.com/legal/terms-of-service/
+host: api.wpengineapi.com
+basePath: /v1
+schemes:
+- https
+tags:
+- name: Account
+paths:
+  /accounts:
+    get:
+      tags:
+      - Account
+      summary: List your WP Engine accounts
+      description: '# Description
+
+        Use this to list your WP Engine accounts.
+
+        '
+      operationId: listAccounts
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - $ref: '#/parameters/limitParam'
+      - $ref: '#/parameters/offsetParam'
+      responses:
+        '200':
+          description: List of WP Engine accounts
+          schema:
+            type: object
+            properties:
+              previous:
+                $ref: '#/definitions/PreviousPage'
+              next:
+                $ref: '#/definitions/NextPage'
+              count:
+                $ref: '#/definitions/ResultsCount'
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/Account'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.querystring.offset: method.request.querystring.offset
+          integration.request.querystring.limit: method.request.querystring.limit
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+  /accounts/{account_id}:
+    get:
+      tags:
+      - Account
+      summary: Get an account by ID
+      description: Returns a single Account
+      operationId: getAccount
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Account'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '401':
+            statusCode: '401'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+  /accounts/{account_id}/limits:
+    get:
+      tags:
+      - Account
+      summary: Fetch account usage limits
+      description: Fetch account limits such as visitors, storage (GB) and bandwidth (GB) to compare against your current usage.
+      operationId: getAccountsLimits
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        description: ID of account
+        required: true
+        type: string
+        format: uuid
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountLimits'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+        '502':
+          $ref: '#/definitions/BadGatewayOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/limits
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '500':
+            statusCode: '500'
+          '502':
+            statusCode: '502'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+definitions:
+  InternalServerErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: An unexpected error occurred, please try again in a few minutes
+  AccountLimits:
+    type: object
+    properties:
+      visitors:
+        type: integer
+        description: Maximum number of visitors
+        x-nullable: true
+        example: 25000
+      storage:
+        type: integer
+        description: Maximum storage allowance in GB
+        x-nullable: true
+        example: 150
+      bandwidth:
+        type: integer
+        description: Maximum bandwidth allowance in GB
+        x-nullable: true
+        example: 1000
+    description: Account limits for environments, storage, bandwidth, and billable visits
+  NotFoundErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Not Found
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  PreviousPage:
+    type: string
+    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+    x-nullable: true
+    description: Path to the previous page of results
+  BadGatewayOperation:
+    description: An invalid response was received from an upstream server
+  NextPage:
+    type: string
+    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+    x-nullable: true
+    description: Path to the next page of results
+  TooManyRequestsOperation:
+    description: Too many requests
+  BadRequestErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: 'Invalid Site: Name cannot be empty.'
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+      errors:
+        type: array
+        description: An array of error objects describing specific errors that arose when servicing the request
+        items:
+          $ref: '#/definitions/ResourceError'
+  ResourceError:
+    type: object
+    required:
+    - resource
+    - field
+    - type
+    - code
+    - message
+    properties:
+      resource:
+        type: string
+        description: The name of the resource that was being processed when the error occurred
+        example: Site
+      field:
+        type: string
+        description: (Optional) The specific field associated with the error
+        example: name
+      type:
+        type: string
+        description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+        example: invalid_value
+      code:
+        type: string
+        description: (Optional) A machine code relating to the error that occurred with the field and resource
+        example: too_long
+      message:
+        type: string
+        description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+        example: Name is too long (maximum is 40 characters)
+  ServiceUnavailableOperation:
+    description: Service unavailable
+  Account:
+    type: object
+    required:
+    - id
+    - name
+    - nickname
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      name:
+        type: string
+        description: The account name
+        example: joesaccount
+      nickname:
+        type: string
+        description: The account nickname
+        example: joesaccount
+  ResultsCount:
+    type: integer
+    example: 225
+    description: The total number of results
+  ForbiddenErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: You don't have permission to perform that action
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  AuthenticationErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Bad Credentials
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+parameters:
+  offsetParam:
+    name: offset
+    in: query
+    type: integer
+    required: false
+    default: 0
+    minimum: 0
+    description: (Optional) The first record of the result set to be retrieved
+  authorization:
+    name: Authorization
+    in: header
+    type: string
+    format: uuid
+  limitParam:
+    name: limit
+    in: query
+    type: integer
+    required: false
+    default: 100
+    minimum: 0
+    maximum: 100
+    description: (Optional) The number of records to return
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

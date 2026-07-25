@@ -1,0 +1,108 @@
+swagger: '2.0'
+info:
+  description: 'The API described in this document is subject to change.
+
+    '
+  version: 1.17.0
+  title: WP Engine Hosting Platform Account User API
+  termsOfService: https://wpengine.com/legal/terms-of-service/
+host: api.wpengineapi.com
+basePath: /v1
+schemes:
+- https
+tags:
+- name: User
+paths:
+  /user:
+    get:
+      tags:
+      - User
+      summary: Get the current user
+      description: Returns the currently authenticated user
+      operationId: getCurrentUser
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      responses:
+        '200':
+          description: The currently authenticated user
+          schema:
+            $ref: '#/definitions/User'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '429':
+          description: Too many requests
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/user
+        responses:
+          '200':
+            statusCode: '200'
+          '401':
+            statusCode: '401'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+definitions:
+  ServiceUnavailableOperation:
+    description: Service unavailable
+  User:
+    type: object
+    required:
+    - id
+    - email
+    properties:
+      id:
+        type: string
+        example: fd8e24a5-1f16-4b80-af5f-d748bcc9e64d
+      first_name:
+        type: string
+        example: Joe
+      last_name:
+        type: string
+        example: Smith
+      email:
+        type: string
+        example: joe@gmail.com
+      phone_number:
+        type: string
+        x-nullable: true
+        example: '123456789'
+  AuthenticationErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Bad Credentials
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+parameters:
+  authorization:
+    name: Authorization
+    in: header
+    type: string
+    format: uuid
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

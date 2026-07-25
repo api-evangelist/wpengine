@@ -1,0 +1,1421 @@
+swagger: '2.0'
+info:
+  description: 'The API described in this document is subject to change.
+
+    '
+  version: 1.17.0
+  title: WP Engine Hosting Platform Account Domain API
+  termsOfService: https://wpengine.com/legal/terms-of-service/
+host: api.wpengineapi.com
+basePath: /v1
+schemes:
+- https
+tags:
+- name: Domain
+paths:
+  /installs/{install_id}/domains:
+    get:
+      tags:
+      - Domain
+      summary: Get the domains for an install by install id
+      description: Returns domains for a specific install
+      operationId: listDomains
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - $ref: '#/parameters/limitParam'
+      - $ref: '#/parameters/offsetParam'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      responses:
+        '200':
+          description: List of domains for install
+          schema:
+            type: object
+            properties:
+              previous:
+                $ref: '#/definitions/PreviousPage'
+              next:
+                $ref: '#/definitions/NextPage'
+              count:
+                $ref: '#/definitions/ResultsCount'
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/Domain'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains
+        responses:
+          '200':
+            statusCode: '200'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+          integration.request.querystring.offset: method.request.querystring.offset
+          integration.request.querystring.limit: method.request.querystring.limit
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    post:
+      tags:
+      - Domain
+      summary: Add a new domain or redirect to an existing install
+      description: Adds a domain or redirect to a specific install and optionally sets it as the primary domain. For domain verification, see the [Adding and Verifying Domains](https://developers.wpengine.com/docs/managed-hosting-platform/api/guides/adding-and-verifying-domains) guide.
+      operationId: createDomain
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - in: body
+        name: body
+        description: '##### Properties
+
+          * name  - **required** - The name of the new domain
+
+          * primary - **optional**  - Sets the domain as the primary domain on the install
+
+          * redirect_to - **optional** - ID of a domain to create a redirect to
+
+          '
+        required: true
+        schema:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+            primary:
+              type: boolean
+            redirect_to:
+              type: string
+              format: uuid
+          example:
+            name: example.com
+            primary: true
+      responses:
+        '201':
+          description: 'Created
+
+
+            Domain will be created, but not serving traffic unless it is verified. Verification status is
+
+            provided in the `ownership_status` field:
+
+            * TXT_VERIFIED indicates the domain ownership has been verified.
+
+            * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
+
+
+            **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
+
+            and `txt_verification_value` fields provided on the newly created domain. After the TXT record is in place, POST to
+
+            `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
+
+            '
+          schema:
+            $ref: '#/definitions/Domain'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '429':
+          description: Too many requests
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains
+        responses:
+          '201':
+            statusCode: '201'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+  /installs/{install_id}/domains/bulk:
+    post:
+      tags:
+      - Domain
+      summary: Add multiple domains and redirects to an existing install
+      description: Adds multiple domains and redirects to a specific install
+      operationId: createBulkDomains
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - in: body
+        name: body
+        description: "##### Properties\n* domains - **required** - array of domains to be created, min size: 1, max size: 20\n  * items:\n    * name  - **required** - The name of the new domain (or redirect)\n    * redirect_to - **optional**  - Name of the domain to set redirect to\n"
+        required: true
+        schema:
+          type: object
+          required:
+          - domains
+          properties:
+            domains:
+              type: array
+              minItems: 1
+              maxItems: 20
+              items:
+                type: object
+                required:
+                - name
+                properties:
+                  name:
+                    type: string
+                  redirect_to:
+                    type: string
+          example:
+            domains:
+            - name: example.com
+            - name: www.example.com
+              redirect_to: example.com
+      responses:
+        '201':
+          description: 'Created
+
+
+            Domains will be created, but not serving traffic unless it is verified. Verification status is
+
+            provided in the `ownership_status` field:
+
+            * TXT_VERIFIED indicates the domain ownership has been verified.
+
+            * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
+
+
+            **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
+
+            and `txt_verification_value` fields provided on the newly created domain. After the TXT record is in place, POST to
+
+            `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
+
+            '
+          schema:
+            $ref: '#/definitions/DomainOrRedirect'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '429':
+          description: Too many requests
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains/bulk
+        responses:
+          '201':
+            statusCode: '201'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+  /installs/{install_id}/domains/{domain_id}:
+    get:
+      tags:
+      - Domain
+      summary: Get a specific domain for an install
+      description: Returns specific domain for an install
+      operationId: getDomain
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - name: domain_id
+        in: path
+        format: uuid
+        description: ID of domain
+        required: true
+        type: string
+        x-example: e41fa98f-ea80-4654-b229-a9b765d0863a
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Domain'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains/{domain_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+          integration.request.path.domain_id: method.request.path.domain_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    patch:
+      tags:
+      - Domain
+      summary: Update an existing domain for an install
+      description: Updates an existing domain for an install. Cannot set a duplicate, wildcard, or redirected domain as the primary. For domain verification, see the [Adding and Verifying Domains](https://developers.wpengine.com/docs/managed-hosting-platform/api/guides/adding-and-verifying-domains) guide.
+      operationId: updateDomain
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        description: The install ID
+        required: true
+        type: string
+        format: uuid
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - name: domain_id
+        in: path
+        format: uuid
+        description: ID of domain
+        required: true
+        type: string
+        x-example: e41fa98f-ea80-4654-b229-a9b765d0863a
+      - in: body
+        name: body
+        description: '##### Properties
+
+          * primary - **optional** - Boolean value to make the domain primary on the given install
+
+          * redirect_to - **optional** - The UUID of another Domain record, or "nil" to remove an existing redirect.
+
+          * secure_all_urls - **optional** - Boolean value to force all URLs to use HTTPS
+
+          '
+        required: true
+        schema:
+          type: object
+          properties:
+            primary:
+              type: boolean
+              example: true
+            redirect_to:
+              type: string
+              example: 6977805b-1f65-4a5d-8d36-6fe609a4d9f3
+            secure_all_urls:
+              type: boolean
+              example: false
+      responses:
+        '200':
+          description: 'Updated
+
+
+            Domain will be updated, but not serving traffic unless it is verified. Verification status is
+
+            provided in the `ownership_status` field:
+
+            * TXT_VERIFIED indicates the domain ownership has been verified.
+
+            * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
+
+
+            **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
+
+            and `txt_verification_value` fields provided on the domain. After the TXT record is in place, POST to
+
+            `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
+
+            '
+          schema:
+            $ref: '#/definitions/Domain'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          description: Too many requests
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains/{domain_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+          integration.request.path.domain_id: method.request.path.domain_id
+        passthroughBehavior: when_no_match
+        httpMethod: PATCH
+        type: http
+    delete:
+      tags:
+      - Domain
+      summary: Delete a specific domain for an install
+      description: Delete specific domain for an install
+      operationId: deleteDomain
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - name: domain_id
+        in: path
+        format: uuid
+        description: ID of domain
+        required: true
+        type: string
+        x-example: e41fa98f-ea80-4654-b229-a9b765d0863a
+      responses:
+        '204':
+          description: Deleted
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains/{domain_id}
+        responses:
+          '204':
+            statusCode: '204'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+          integration.request.path.domain_id: method.request.path.domain_id
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http
+  /installs/{install_id}/domains/{domain_id}/verification:
+    post:
+      tags:
+      - Domain
+      summary: Trigger domain TXT record verification
+      description: Triggers verification of the TXT record for a domain to confirm ownership.
+      operationId: verifyDomainTxtRecord
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - name: domain_id
+        in: path
+        format: uuid
+        description: ID of domain
+        required: true
+        type: string
+        x-example: e41fa98f-ea80-4654-b229-a9b765d0863a
+      responses:
+        '200':
+          description: Domain verification successful
+          schema:
+            $ref: '#/definitions/DomainVerification'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          description: Too many requests
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains/{domain_id}/verification
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '500':
+            statusCode: '500'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+          integration.request.path.domain_id: method.request.path.domain_id
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+  /installs/{install_id}/domains/{domain_id}/check_status:
+    post:
+      tags:
+      - Domain
+      summary: Submit a status report for a domain
+      description: Submit a status report for a domain. Returns a `report_id` that can be used to check the domain's status.
+      operationId: checkStatus
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        format: uuid
+        description: ID of install
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - name: domain_id
+        in: path
+        format: uuid
+        description: ID of domain
+        required: true
+        type: string
+        x-example: e41fa98f-ea80-4654-b229-a9b765d0863a
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/DomainReport'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          description: Too many requests
+          schema:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+                description: A message regarding the error that occurred on the server
+                example: Domain status checks are rate-limited to one request every 5 seconds for each install
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains/{domain_id}/check_status
+        responses:
+          '202':
+            statusCode: '202'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '500':
+            statusCode: '500'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+          integration.request.path.domain_id: method.request.path.domain_id
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+  /installs/{install_id}/domains/check_status/{report_id}:
+    get:
+      tags:
+      - Domain
+      summary: Retrieve a status report for a domain
+      description: Fetches a status report for a specific domain. Accepts a `report_id`.
+      operationId: getDomainReportStatus
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        required: true
+        type: string
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - name: report_id
+        in: path
+        required: true
+        type: string
+        x-example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              report:
+                $ref: '#/definitions/DomainStatusReport'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/domains/check_status/{report_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '500':
+            statusCode: '500'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+          integration.request.path.report_id: method.request.path.report_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+definitions:
+  InternalServerErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: An unexpected error occurred, please try again in a few minutes
+  NotFoundErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Not Found
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  DomainOrRedirect:
+    type: object
+    required:
+    - id
+    - name
+    - duplicate
+    - primary
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: e41fa98f-ea80-4654-b229-a9b765d0863a
+      name:
+        type: string
+        example: example.com
+      duplicate:
+        type: boolean
+        example: false
+      primary:
+        type: boolean
+        example: true
+      redirects_to:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            example: e41fa98f-ea80-4006-b229-a9b765d0863a
+          name:
+            type: string
+            example: redirect.com
+      txt_verified_time:
+        type: string
+        description: The time when the TXT record was verified
+        x-nullable: true
+        example: '2026-04-20T16:00:00.007Z'
+      txt_verified_domain:
+        type: string
+        description: The domain that the TXT record was verified for
+        example: example.com
+      txt_verification_key:
+        type: string
+        description: The TXT record verification key. Null if the domain is already verified.
+        x-nullable: true
+        example: _wpe_verification
+      txt_verification_value:
+        type: string
+        description: The TXT record verification value. Null if the domain is already verified.
+        x-nullable: true
+      ownership_status:
+        type: string
+        enum:
+        - TXT_VERIFIED
+        - TXT_VERIFICATION_PENDING
+        description: 'Ownership verification status of the domain.
+
+          * TXT_VERIFIED indicates the domain ownership has been verified.
+
+          * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
+
+
+          **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
+
+          and `txt_verification_value` fields provided with the domain. After the TXT record is in place, POST to
+
+          `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
+
+          '
+  Domain:
+    type: object
+    required:
+    - name
+    - duplicate
+    - primary
+    - id
+    - secure_all_urls
+    properties:
+      name:
+        type: string
+        example: torquemag.io
+      duplicate:
+        type: boolean
+        example: true
+      primary:
+        type: boolean
+        example: true
+      id:
+        type: string
+        example: e41fa98f-ea80-4654-b229-a9b765d0863a
+      network_type:
+        type: string
+        description: The WP Engine network type configured for the domain. Possible values are 'AN' (Advanced Network) 'GES' (Global Edge Security) and 'LEGACY'.
+        example: AN
+      network_details:
+        type: object
+        description: Details about the network configuration for the domain.
+        properties:
+          dns_config_info:
+            type: object
+            description: DNS configuration information for the domain.
+            properties:
+              cname:
+                type: string
+                description: The CNAME value to use to configure a DNS CNAME record for the domain.
+                example: wp.wpenginepowered.com
+              a_records:
+                type: array
+                items:
+                  type: string
+                description: IP addresses that can be used to configure a DNS A record for the domain.
+                example:
+                - 127.0.0.1
+          network_info:
+            type: object
+            properties:
+              status:
+                type: string
+                description: The status of the network configuration for the domain.
+                example: ACTIVE
+              ssl:
+                type: object
+                description: SSL configuration status
+                properties:
+                  status:
+                    type: string
+                    example: active
+      redirects_to:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: e41fa98f-ea80-4006-b229-a9b765d0863a
+            name:
+              type: string
+              example: redirect.com
+      secure_all_urls:
+        type: boolean
+        example: false
+      txt_verified_time:
+        type: string
+        description: The time when the TXT record was verified
+        x-nullable: true
+        example: '2026-04-20T16:00:00.007Z'
+      txt_verified_domain:
+        type: string
+        description: The domain that the TXT record was verified for
+        example: example.com
+      txt_verification_key:
+        type: string
+        description: The TXT record verification key. Null if the domain is already verified.
+        x-nullable: true
+        example: _wpe_verification
+      txt_verification_value:
+        type: string
+        description: The TXT record verification value. Null if the domain is already verified.
+        x-nullable: true
+      ownership_status:
+        type: string
+        enum:
+        - TXT_VERIFIED
+        - TXT_VERIFICATION_PENDING
+        description: 'Ownership verification status of the domain.
+
+          * TXT_VERIFIED indicates the domain ownership has been verified.
+
+          * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
+
+
+          **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
+
+          and `txt_verification_value` fields provided with the domain. After the TXT record is in place, POST to
+
+          `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
+
+          '
+  PreviousPage:
+    type: string
+    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+    x-nullable: true
+    description: Path to the previous page of results
+  ResourceError:
+    type: object
+    required:
+    - resource
+    - field
+    - type
+    - code
+    - message
+    properties:
+      resource:
+        type: string
+        description: The name of the resource that was being processed when the error occurred
+        example: Site
+      field:
+        type: string
+        description: (Optional) The specific field associated with the error
+        example: name
+      type:
+        type: string
+        description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+        example: invalid_value
+      code:
+        type: string
+        description: (Optional) A machine code relating to the error that occurred with the field and resource
+        example: too_long
+      message:
+        type: string
+        description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+        example: Name is too long (maximum is 40 characters)
+  ServiceUnavailableOperation:
+    description: Service unavailable
+  ResultsCount:
+    type: integer
+    example: 225
+    description: The total number of results
+  NextPage:
+    type: string
+    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+    x-nullable: true
+    description: Path to the next page of results
+  DomainStatus:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The domain name
+      cname:
+        type: string
+        description: The CNAME of the domain
+      a_record:
+        type: string
+        description: The A record of the domain
+      aaaa_record:
+        type: string
+        description: The AAAA record of the domain
+      complete:
+        type: boolean
+        description: The status of the request to ping the domain
+        example: true
+      result:
+        type: string
+        description: The result of the request to ping the domain
+      dns_provider:
+        type: string
+        description: The DNS provider of the domain
+      dns_error:
+        type: boolean
+        description: Indicates if there was an error retrieving DNS information
+        example: false
+      install_name:
+        type: string
+        description: The name of the install
+      cluster_id:
+        type: string
+        description: The cluster ID of the install
+      http_forwarded:
+        type: string
+        description: The HTTP forwarded value of the domain
+      http_forwarded_list:
+        type: string
+        description: The HTTP forwarded list of the domain
+      http_error:
+        type: boolean
+        description: Indicates if there was an error retrieving HTTP information
+        example: false
+      atlas_env_id:
+        type: string
+        description: Atlas environment ID associated with this domain
+      ns:
+        type: array
+        description: The name servers of the domain
+        items:
+          type: object
+          properties:
+            host:
+              type: string
+              description: Hostname of the name server
+      mx:
+        type: array
+        description: Mail exchange record information
+        items:
+          type: object
+          properties:
+            Host:
+              type: string
+              description: Hostname of the mail server
+            Pref:
+              type: integer
+              description: Priority of the mail server (lower values have higher priority)
+      txt:
+        type: array
+        description: TXT records for the domain
+        items:
+          type: string
+      soa:
+        type: array
+        description: The start of authority records of the domain
+        items:
+          type: object
+          properties:
+            hdr:
+              type: object
+              description: Header of the start of authority record
+            ns:
+              type: string
+              description: Primary name server for the zone
+              example: ns1.example.com
+            mbox:
+              type: string
+              description: Email address of the zone administrator (@ replaced with .)
+              example: hostmaster.example.com
+            serial:
+              type: integer
+              description: Zone file version number
+            refresh:
+              type: integer
+              description: Time in seconds secondary servers wait before refreshing zone data
+            retry:
+              type: integer
+              description: Time in seconds to wait before retrying failed zone transfers
+            expire:
+              type: integer
+              description: Time in seconds zone data is valid without refreshing
+            minttl:
+              type: integer
+              description: Minimum time-to-live in seconds for negative responses
+      caa:
+        type: array
+        description: The certification authority authorization records of the domain
+        items:
+          type: object
+          properties:
+            hdr:
+              type: object
+              description: Header of the start of authority record
+            flag:
+              type: integer
+              description: The flags for the CAA record
+            tag:
+              type: string
+              description: The tag for the CAA record
+            value:
+              type: string
+              description: The value for the CAA record
+      ip:
+        type: array
+        description: The IP addresses of the domain
+        items:
+          type: string
+        example:
+        - 192.0.2.10
+        - 192.0.2.11
+      address:
+        type: array
+        description: The addresses of the domain
+        items:
+          type: string
+        example:
+        - 192.0.2.10
+        - 192.0.2.11
+      aname:
+        type: array
+        description: The A name records of the domain
+        items:
+          type: object
+          properties:
+            hdr:
+              type: object
+              description: Header of the start of authority record
+            a:
+              type: string
+              description: The A name record
+      ssl:
+        type: object
+        description: The SSL information of the domain
+        properties:
+          status:
+            type: string
+            description: Status of the SSL certificate
+            example: verified
+          issuer:
+            type: string
+            description: Certificate issuer name
+          not_before:
+            type: string
+            description: Certificate validity start date
+          not_after:
+            type: string
+            description: Certificate expiration date
+          error:
+            type: string
+            description: Error message if certificate validation failed
+          dns_names:
+            type: array
+            description: DNS names included in the certificate
+            items:
+              type: string
+          serial_number:
+            type: string
+            description: Certificate serial number
+          signature_algorithm:
+            type: integer
+            description: Signature algorithm identifier used in the certificate
+          subject:
+            type: object
+            description: Certificate subject information
+          common_name:
+            type: string
+            description: Common name in the certificate
+          sans:
+            type: array
+            description: Subject Alternative Names in the certificate
+            items:
+              type: string
+  TooManyRequestsOperation:
+    description: Too many requests
+  DomainVerification:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: The UUID of the domain
+        example: e41fa98f-ea80-4654-b229-a9b765d0863a
+      name:
+        type: string
+        description: The domain name
+        example: example.com
+      txt_verified_time:
+        type: string
+        description: The time when the TXT record was verified
+        x-nullable: true
+        example: '2026-04-20T16:00:00.007Z'
+      txt_verified_domain:
+        type: string
+        description: The domain that the TXT record was verified for
+        example: example.com
+      txt_verification_key:
+        type: string
+        description: The TXT record verification key. Null if the domain is already verified.
+        x-nullable: true
+        example: _wpe_verification
+      txt_verification_value:
+        type: string
+        description: The TXT record verification value. Null if the domain is already verified.
+        x-nullable: true
+  BadRequestErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: 'Invalid Site: Name cannot be empty.'
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+      errors:
+        type: array
+        description: An array of error objects describing specific errors that arose when servicing the request
+        items:
+          $ref: '#/definitions/ResourceError'
+  DomainReport:
+    type: object
+    required:
+    - report_id
+    properties:
+      report_id:
+        type: string
+        format: uuid
+        example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
+  DomainStatusReport:
+    type: object
+    properties:
+      complete:
+        type: boolean
+        description: The status of the report
+        example: true
+      id:
+        type: string
+        description: The UUID of the report
+        example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
+      install_name:
+        type: string
+        description: Name of the install
+      install_ip:
+        type: string
+        description: IP address for the install
+      admin:
+        type: boolean
+        description: Admin status
+        example: false
+      domains:
+        type: array
+        description: The list of domains associated with this report
+        items:
+          $ref: '#/definitions/DomainStatus'
+  ForbiddenErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: You don't have permission to perform that action
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  AuthenticationErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Bad Credentials
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+parameters:
+  authorization:
+    name: Authorization
+    in: header
+    type: string
+    format: uuid
+  limitParam:
+    name: limit
+    in: query
+    type: integer
+    required: false
+    default: 100
+    minimum: 0
+    maximum: 100
+    description: (Optional) The number of records to return
+  offsetParam:
+    name: offset
+    in: query
+    type: integer
+    required: false
+    default: 0
+    minimum: 0
+    description: (Optional) The first record of the result set to be retrieved
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

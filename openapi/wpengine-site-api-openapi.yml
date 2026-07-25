@@ -1,0 +1,608 @@
+swagger: '2.0'
+info:
+  description: 'The API described in this document is subject to change.
+
+    '
+  version: 1.17.0
+  title: WP Engine Hosting Platform Account Site API
+  termsOfService: https://wpengine.com/legal/terms-of-service/
+host: api.wpengineapi.com
+basePath: /v1
+schemes:
+- https
+tags:
+- name: Site
+paths:
+  /sites:
+    get:
+      tags:
+      - Site
+      summary: List your sites
+      description: ''
+      operationId: listSites
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - $ref: '#/parameters/limitParam'
+      - $ref: '#/parameters/offsetParam'
+      - $ref: '#/parameters/account_id'
+      responses:
+        '200':
+          description: List of sites
+          schema:
+            type: object
+            properties:
+              previous:
+                $ref: '#/definitions/PreviousPage'
+              next:
+                $ref: '#/definitions/NextPage'
+              count:
+                $ref: '#/definitions/ResultsCount'
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/Site'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/sites
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.querystring.offset: method.request.querystring.offset
+          integration.request.querystring.limit: method.request.querystring.limit
+          integration.request.querystring.account_id: method.request.querystring.account_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    post:
+      tags:
+      - Site
+      summary: Create a new site
+      description: ''
+      operationId: createSite
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - in: body
+        name: body
+        description: '##### Properties
+
+          * name - **required** - The name of the site
+
+          * account_id - **required** - The ID of the account that the site will belong to
+
+          '
+        required: true
+        schema:
+          type: object
+          required:
+          - name
+          - account_id
+          properties:
+            name:
+              type: string
+              example: Torque Magazine
+            account_id:
+              type: string
+              format: uuid
+              example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+              description: The account ID
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/Site'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/sites
+        responses:
+          '201':
+            statusCode: '201'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+  /sites/{site_id}:
+    get:
+      tags:
+      - Site
+      summary: Get a site by ID
+      description: Returns a single site
+      operationId: getSite
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: site_id
+        in: path
+        format: uuid
+        description: The site ID
+        required: true
+        type: string
+        x-example: a1b2c3d4-e5f6-41b2-b3d4-e5f6a1b2c3d4
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Site'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/sites/{site_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.site_id: method.request.path.site_id
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    patch:
+      tags:
+      - Site
+      summary: Change a site name
+      description: ''
+      operationId: updateSite
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: site_id
+        in: path
+        description: The ID of the site to change the name of *(For accounts with sites enabled)*
+        required: true
+        type: string
+        format: uuid
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - in: body
+        name: body
+        description: '##### Properties
+
+          * name - The new name for the site
+
+          '
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The new site name
+              example: My New Name
+      responses:
+        '200':
+          description: Updated
+          schema:
+            $ref: '#/definitions/Site'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/sites/{site_id}
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.site_id: method.request.path.site_id
+        passthroughBehavior: when_no_match
+        httpMethod: PATCH
+        type: http
+    delete:
+      tags:
+      - Site
+      summary: Delete a site
+      description: This will delete the site and any installs associated with this site. This delete is permanent and there is no confirmation prompt.
+      operationId: deleteSite
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: site_id
+        in: path
+        description: The ID of the site to delete *(For accounts with sites enabled)*
+        required: true
+        type: string
+        format: uuid
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      responses:
+        '204':
+          description: Deleted
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/sites/{site_id}
+        responses:
+          '204':
+            statusCode: '204'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.site_id: method.request.path.site_id
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http
+definitions:
+  NotFoundErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Not Found
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  PreviousPage:
+    type: string
+    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+    x-nullable: true
+    description: Path to the previous page of results
+  ResourceError:
+    type: object
+    required:
+    - resource
+    - field
+    - type
+    - code
+    - message
+    properties:
+      resource:
+        type: string
+        description: The name of the resource that was being processed when the error occurred
+        example: Site
+      field:
+        type: string
+        description: (Optional) The specific field associated with the error
+        example: name
+      type:
+        type: string
+        description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+        example: invalid_value
+      code:
+        type: string
+        description: (Optional) A machine code relating to the error that occurred with the field and resource
+        example: too_long
+      message:
+        type: string
+        description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+        example: Name is too long (maximum is 40 characters)
+  NextPage:
+    type: string
+    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+    x-nullable: true
+    description: Path to the next page of results
+  TooManyRequestsOperation:
+    description: Too many requests
+  BadRequestErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: 'Invalid Site: Name cannot be empty.'
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+      errors:
+        type: array
+        description: An array of error objects describing specific errors that arose when servicing the request
+        items:
+          $ref: '#/definitions/ResourceError'
+  Site:
+    type: object
+    required:
+    - id
+    - name
+    - account
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: 28c78b6d-c2da-4f09-85f5-1ad588089b2d
+      name:
+        type: string
+        example: Torque Magazine
+      account:
+        type: object
+        properties:
+          id:
+            type: string
+            description: The account ID
+            format: uuid
+            example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      group_name:
+        type: string
+        example: Overdue
+        x-nullable: true
+      tags:
+        type: array
+        items:
+          type: string
+          description: Tag name
+        example:
+        - tag1
+        - tag2
+        - tag3
+      created_at:
+        type: string
+        format: date-time
+        description: The date and time the site was created in UTC
+        example: '2025-07-10T09:59:58.684Z'
+      sandbox:
+        type: boolean
+        description: Whether the site is a sandbox site
+        example: false
+      transferable:
+        type: boolean
+        description: Whether the site is transferable
+        example: false
+      installs:
+        type: array
+        items:
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+            name:
+              type: string
+              example: torquemag
+            environment:
+              type: string
+              x-nullable: true
+              enum:
+              - production
+              - staging
+              - development
+              - null
+            cname:
+              type: string
+              description: Returns the CNAME of the install
+              example: mywebsite.wpengine.com
+            php_version:
+              type: string
+              description: The PHP version used to run WordPress
+              example: '7.3'
+              x-nullable: true
+            is_multisite:
+              type: boolean
+              x-nullable: true
+              example: false
+  ServiceUnavailableOperation:
+    description: Service unavailable
+  ResultsCount:
+    type: integer
+    example: 225
+    description: The total number of results
+  ForbiddenErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: You don't have permission to perform that action
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  AuthenticationErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Bad Credentials
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+parameters:
+  offsetParam:
+    name: offset
+    in: query
+    type: integer
+    required: false
+    default: 0
+    minimum: 0
+    description: (Optional) The first record of the result set to be retrieved
+  account_id:
+    name: account_id
+    in: query
+    type: string
+    format: uuid
+    required: false
+    description: (Optional) The uuid of an account
+    x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+  authorization:
+    name: Authorization
+    in: header
+    type: string
+    format: uuid
+  limitParam:
+    name: limit
+    in: query
+    type: integer
+    required: false
+    default: 100
+    minimum: 0
+    maximum: 100
+    description: (Optional) The number of records to return
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

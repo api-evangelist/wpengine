@@ -1,0 +1,1111 @@
+swagger: '2.0'
+info:
+  description: 'The API described in this document is subject to change.
+
+    '
+  version: 1.17.0
+  title: WP Engine Hosting Platform Account Usage API
+  termsOfService: https://wpengine.com/legal/terms-of-service/
+host: api.wpengineapi.com
+basePath: /v1
+schemes:
+- https
+tags:
+- name: Usage
+paths:
+  /accounts/{account_id}/usage:
+    get:
+      tags:
+      - Usage
+      summary: Get account usage metrics
+      description: 'Get usage metrics for all environments in an account.
+
+        If the optional `first_date` and `last_date` arguments are omitted, the response will include metrics for the last 30 days.
+
+        '
+      operationId: getAccountUsageMetrics
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      - name: first_date
+        in: query
+        description: 'The start date for the requested metrics range (inclusive).
+
+          Format: `YYYY-mm-dd`. Cannot be older than 13 months.
+
+          If `first_date` is provided, `last_date` must also be provided.'
+        required: false
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+      - name: last_date
+        in: query
+        description: 'The end date for the requested metrics range (inclusive).
+
+          Format: `YYYY-mm-dd`.
+
+          If `last_date` is provided, `first_date` must also be provided.'
+        required: false
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+      - name: limit
+        in: query
+        description: The maximum number of environments to return. A maximum of 1000 environments can be requested per page
+        required: false
+        type: integer
+        default: 100
+        maximum: 1000
+      - name: offset
+        in: query
+        description: String-encoded offset for pagination. The next_page_token from the response can be used to paginate accordingly.
+        required: false
+        type: string
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/AccountUsageMetricsResponse'
+        '400':
+          description: Bad Request. The request was improperly formatted or contained invalid parameters.
+          schema:
+            $ref: '#/definitions/UsageErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not Authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not Found. The requested account id does not exist.
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/usage
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+          integration.request.querystring.first_date: method.request.querystring.first_date
+          integration.request.querystring.last_date: method.request.querystring.last_date
+          integration.request.querystring.limit: method.request.querystring.limit
+          integration.request.querystring.offset: method.request.querystring.offset
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+  /accounts/{account_id}/usage/refresh_disk_usage:
+    post:
+      summary: Refresh Disk Usage for all installs associated with account
+      description: 'Triggers an asynchronous job to recalculate the disk usage of installs associated with a specific account.
+
+
+        This endpoint initiates the refresh process and returns immediately with a success status. **It does not return the updated usage data.**
+
+
+        To check the status of the job and view the new data once it''s available, you must poll the `GET /accounts/{account_id}/usage` endpoint. A successful request will populate the `account_storage_refresh_expected_time` attribute in that endpoint''s response, indicating when the data is expected to be fresh.
+
+
+        Multiple requests for the same environment will result in a single recalculation.
+
+        '
+      tags:
+      - Usage
+      produces:
+      - application/json
+      parameters:
+      - name: account_id
+        in: path
+        description: The unique identifier (UUID) of the account.
+        required: true
+        type: string
+        format: uuid
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      - $ref: '#/parameters/authorization'
+      responses:
+        '200':
+          description: OK. The disk usage refresh has been successfully initiated. The response body for this request is always `null`.
+        '400':
+          description: Bad Request
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not Authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not Found. The account with the specified UUID could not be found.
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '500':
+          description: Internal server error
+        '502':
+          $ref: '#/definitions/BadGatewayOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+        default:
+          description: An unexpected error occurred.
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/usage/refresh_disk_usage
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '500':
+            statusCode: '500'
+          '502':
+            statusCode: '502'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+  /accounts/{account_id}/usage/summary:
+    get:
+      tags:
+      - Usage
+      summary: Get account level usage summary
+      description: 'Get the usage summary over a time period for the specificied account. The default response is a summary of the
+
+        last 30 days. The optional `first_date` and `last_date` arguments can be specified to retrieve a summary over
+
+        a custom date range. Both arguments must be provided and the range cannot exceed 31 days.'
+      operationId: getAccountUsageSummary
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      - name: first_date
+        in: query
+        description: 'The start date for the requested metrics range (inclusive).
+
+          Format: `YYYY-mm-dd`. Cannot be older than 13 months.
+
+          If `first_date` is provided, `last_date` must also be provided.'
+        required: false
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+      - name: last_date
+        in: query
+        description: 'The end date for the requested metrics range (inclusive).
+
+          Format: `YYYY-mm-dd`.
+
+          If `last_date` is provided, `first_date` must also be provided.'
+        required: false
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UsageMetricsRollup'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '502':
+          $ref: '#/definitions/BadGatewayOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/usage/summary
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '502':
+            statusCode: '502'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+          integration.request.querystring.first_date: method.request.querystring.first_date
+          integration.request.querystring.last_date: method.request.querystring.last_date
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+  /accounts/{account_id}/usage/insights:
+    get:
+      tags:
+      - Usage
+      summary: Get account usage insights
+      description: 'Get detailed usage insights for the specified account across different environment types and site types.
+
+        The default response is a summary of the last 30 days. The optional `first_date` and `last_date` arguments
+
+        can be specified to retrieve insights over a custom date range. Both arguments must be provided and the
+
+        range cannot exceed 31 days.'
+      operationId: getAccountUsageInsights
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: account_id
+        in: path
+        format: uuid
+        description: ID of account
+        required: true
+        type: string
+        x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      - name: first_date
+        in: query
+        description: 'The start date for the requested metrics range (inclusive).
+
+          Format: `YYYY-mm-dd`. Cannot be older than 13 months.
+
+          If `first_date` is provided, `last_date` must also be provided.'
+        required: false
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+      - name: last_date
+        in: query
+        description: 'The end date for the requested metrics range (inclusive).
+
+          Format: `YYYY-mm-dd`.
+
+          If `last_date` is provided, `first_date` must also be provided.'
+        required: false
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/AccountUsageInsights'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestErrorResponse'
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '502':
+          $ref: '#/definitions/BadGatewayOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/accounts/{account_id}/usage/insights
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '502':
+            statusCode: '502'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.account_id: method.request.path.account_id
+          integration.request.querystring.first_date: method.request.querystring.first_date
+          integration.request.querystring.last_date: method.request.querystring.last_date
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+  /installs/{install_id}/usage:
+    get:
+      tags:
+      - Usage
+      summary: Get a list of daily usage metrics
+      operationId: getInstallUsageMetrics
+      description: 'Get a list of daily usage metrics related to this install.
+
+        If the optional `first_date` and `last_date` arguments are omitted, the response will include metrics for the last 30 days.
+
+        For days where there are no storage metrics, they will be artificially filled with the last known storage metrics.'
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        description: The UUID of the install.
+        required: true
+        type: string
+        format: uuid
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      - name: first_date
+        in: query
+        description: 'The start date for the requested metrics range (inclusive).
+
+          Format: `YYYY-mm-dd`. Cannot be older than 13 months.
+
+          If `first_date` is provided, `last_date` must also be provided.'
+        required: false
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+      - name: last_date
+        in: query
+        description: 'The end date for the requested metrics range (inclusive).
+
+          Format: `YYYY-mm-dd`.
+
+          If `last_date` is provided, `first_date` must also be provided.'
+        required: false
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/InstallDailyUsageMetricsSeries'
+        '400':
+          description: Bad Request. The request was improperly formatted or contained invalid parameters.
+          schema:
+            $ref: '#/definitions/UsageErrorResponse'
+        '404':
+          description: Not Found. The requested install id does not exist.
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+          examples:
+            application/json:
+              message: Not found
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/usage
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+          integration.request.querystring.first_date: method.request.querystring.first_date
+          integration.request.querystring.last_date: method.request.querystring.last_date
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+  /installs/{install_id}/usage/refresh_disk_usage:
+    post:
+      tags:
+      - Usage
+      summary: Refresh disk usage for the given WordPress site environment
+      operationId: refreshEnvironmentDiskUsage
+      description: 'Triggers an asynchronous job to recalculate the disk usage for the given WordPress site environment.
+
+
+        This endpoint initiates the refresh process and returns immediately with a success status. **It does not return the updated usage data.**
+
+
+        To check the status of the job and view the new data once it''s available, you must poll for daily usage metrics at `GET /installs/{install_id}/usage`. The estimated time of completion can be viewed in daily usage metrics as the `storage_refresh_expected_time` field. If the field is `null`, the job has already completed.
+
+
+        The last time storage was refreshed can be viewed in the `storage_update_time` field of daily usage metrics.
+
+
+        Multiple requests for the same environment will result in a single recalculation.'
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/authorization'
+      - name: install_id
+        in: path
+        description: The UUID of the install.
+        required: true
+        type: string
+        format: uuid
+        x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+      responses:
+        '200':
+          description: OK. The disk usage refresh has been successfully initiated. The response body for this request is always `null`.
+        '400':
+          description: Bad Request
+        '401':
+          description: Authentication Error
+          schema:
+            $ref: '#/definitions/AuthenticationErrorResponse'
+        '403':
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/ForbiddenErrorResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/NotFoundErrorResponse'
+        '429':
+          $ref: '#/definitions/TooManyRequestsOperation'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+        '502':
+          $ref: '#/definitions/BadGatewayOperation'
+        '503':
+          $ref: '#/definitions/ServiceUnavailableOperation'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/InternalServerErrorResponse'
+      security:
+      - basicAuth: []
+      x-amazon-apigateway-integration:
+        uri: https://my.wpengine.com/capi/v1/installs/{install_id}/usage/refresh_disk_usage
+        responses:
+          '200':
+            statusCode: '200'
+          '400':
+            statusCode: '400'
+          '401':
+            statusCode: '401'
+          '403':
+            statusCode: '403'
+          '404':
+            statusCode: '404'
+          '429':
+            statusCode: '429'
+          '500':
+            statusCode: '500'
+          '502':
+            statusCode: '502'
+          '503':
+            statusCode: '503'
+          default:
+            statusCode: '500'
+        requestParameters:
+          integration.request.header.X-Request-ID: context.requestId
+          integration.request.header.sourceIp: context.identity.sourceIp
+          integration.request.header.authorization: method.request.header.Authorization
+          integration.request.path.install_id: method.request.path.install_id
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http
+definitions:
+  InternalServerErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: An unexpected error occurred, please try again in a few minutes
+  NotFoundErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Not Found
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  UsageMetricsRollup:
+    type: object
+    properties:
+      visit_count:
+        $ref: '#/definitions/UsageRollup'
+        description: 'A rollup of total visits.
+
+
+          The average field represents the average total visits per day on all installs.
+
+          The sum field represents the sum of all the total visits on all installs.
+
+          The latest field is not applicable to the total visits and will be empty.
+
+          '
+      network_origin_bytes:
+        $ref: '#/definitions/UsageRollup'
+        description: 'A Rollup of data transfer metrics.
+
+
+          The average field represents the average data transfer metrics per day on all installs.
+
+          The sum field represents the sum of all the data transfer metrics on all installs.
+
+          The latest field is not applicable to the data transfer metrics and will be empty.
+
+          '
+      storage_file_bytes:
+        $ref: '#/definitions/UsageRollup'
+        description: 'A rollup of file storage metrics.
+
+
+          The latest field represents the sum of all the latest metrics for file storage on all installs.
+
+          The average and sum fields will be empty.
+
+          '
+      storage_database_bytes:
+        $ref: '#/definitions/UsageRollup'
+        description: 'A rollup of database storage metrics.
+
+
+          The latest field represents the sum of all the latest metrics for database storage on all installs.
+
+          The average and sum fields will be empty.
+
+          '
+      billable_visits:
+        $ref: '#/definitions/UsageRollup'
+        description: 'A rollup of billable visits.
+
+
+          The average field represents the average billable visits per day on all installs.
+
+          The sum field represents the sum of all the billable visits on all installs.
+
+          The latest field is not applicable to the billable visits and will be empty.
+
+          '
+      request_origin_count:
+        $ref: '#/definitions/UsageRollup'
+        description: 'A rollup of total number of requests.
+
+
+          The average field represents the average requests per day on all installs.
+
+          The sum field represents the sum of all requests on all installs.
+
+          The latest field is not applicable to the requests and will be empty.
+
+          '
+      network_cdn_bytes:
+        $ref: '#/definitions/UsageRollup'
+        description: 'A rollup of total number of bytes served by CDN.
+
+
+          The average field represents the average bytes per day on all installs.
+
+          The sum field represents the sum of all bytes on all installs.
+
+          The latest field is not applicable to the bytes and will be empty.
+
+          '
+      network_total_bytes:
+        $ref: '#/definitions/UsageRollup'
+        description: 'A rollup of total number of bytes served by CDN and origin.
+
+
+          The average field represents the average bytes per day on all installs.
+
+          The sum field represents the sum of all network bytes on all installs.
+
+          The latest field is not applicable to the bytes and will be empty.
+
+          '
+    description: A rollup of usage metrics.
+  AccountUsageInsights:
+    type: object
+    properties:
+      visit_count:
+        $ref: '#/definitions/UsageMetricBreakdown'
+      billable_visits:
+        $ref: '#/definitions/UsageMetricBreakdown'
+      network_origin_bytes:
+        $ref: '#/definitions/UsageMetricBreakdown'
+      network_cdn_bytes:
+        $ref: '#/definitions/UsageMetricBreakdown'
+      network_total_bytes:
+        $ref: '#/definitions/UsageMetricBreakdown'
+      storage_file_bytes:
+        $ref: '#/definitions/UsageMetricBreakdown'
+      storage_database_bytes:
+        $ref: '#/definitions/UsageMetricBreakdown'
+      request_origin_count:
+        $ref: '#/definitions/UsageMetricBreakdown'
+    description: Comprehensive account usage insights broken down by environment types and site types
+  LatestMetricValue:
+    type: object
+    properties:
+      date:
+        type: string
+        description: The date (ISO 8601).
+      value:
+        type: string
+        format: int64
+        description: The value.
+    description: The latest information.
+  ResourceError:
+    type: object
+    required:
+    - resource
+    - field
+    - type
+    - code
+    - message
+    properties:
+      resource:
+        type: string
+        description: The name of the resource that was being processed when the error occurred
+        example: Site
+      field:
+        type: string
+        description: (Optional) The specific field associated with the error
+        example: name
+      type:
+        type: string
+        description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+        example: invalid_value
+      code:
+        type: string
+        description: (Optional) A machine code relating to the error that occurred with the field and resource
+        example: too_long
+      message:
+        type: string
+        description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+        example: Name is too long (maximum is 40 characters)
+  ServiceUnavailableOperation:
+    description: Service unavailable
+  DailyUsageMetrics:
+    type: object
+    properties:
+      date:
+        type: string
+        description: The date (ISO 8601).
+      visit_count:
+        type: string
+        format: int64
+        x-nullable: true
+        description: Total visits.
+      network_origin_bytes:
+        type: string
+        format: int64
+        x-nullable: true
+        description: 'Data served over HTTP by the origin server.
+
+
+          This does not include cached data served from a CDN.
+
+          '
+      storage_file_bytes:
+        type: string
+        format: int64
+        x-nullable: true
+        description: 'Storage used by this environment''s files.
+
+
+          This includes all files in the web root directory.
+
+          '
+      storage_database_bytes:
+        type: string
+        format: int64
+        x-nullable: true
+        description: Storage used by this environment's database.
+      billable_visits:
+        type: string
+        format: int64
+        x-nullable: true
+        description: Billable visits.
+      request_origin_count:
+        type: string
+        format: int64
+        x-nullable: true
+        description: 'The total number of HTTP requests received by the origin server.
+
+
+          This does not include cached requests that were served from a CDN.
+
+          '
+      network_cdn_bytes:
+        type: string
+        format: int64
+        x-nullable: true
+        description: The data served by the CDN.
+      storage_update_time:
+        type: string
+        format: date-time
+        x-nullable: true
+        description: The most recent storage usage measurement time (in UTC).
+      network_total_bytes:
+        type: string
+        format: int64
+        x-nullable: true
+        description: The sum of CDN and origin network bytes.
+      traffic_metrics_source:
+        $ref: '#/definitions/DailyUsageMetricsTrafficMetricsSource'
+        x-nullable: true
+        description: The source of the traffic metrics.
+      database_tables_count:
+        type: string
+        format: int64
+        x-nullable: true
+        description: The number of tables in the install's database.
+      database_sql_bytes:
+        type: string
+        format: int64
+        x-nullable: true
+        description: The sum of bytes of the database content in MySQL for an install.
+      autoloaded_bytes:
+        type: string
+        format: int64
+        x-nullable: true
+        description: The sum of bytes that is automatically loaded on each request to the install.
+    description: 'Usage metrics collected over the period of one day.
+
+
+      In JSON format, the DailyUsageMetrics int64 values are encoded as a string rather
+
+      than a number, following the [proto3 specification](https://developers.google.com/protocol-buffers/docs/proto3#json).
+
+      '
+  UsageMetricBreakdown:
+    type: object
+    properties:
+      total:
+        type: string
+        description: The total usage value
+        example: '1695'
+        x-nullable: true
+      environment_types:
+        $ref: '#/definitions/EnvironmentTypeBreakdown'
+      site_types:
+        $ref: '#/definitions/SiteTypeBreakdown'
+    description: Usage metric with breakdown by environment and site types
+  DailyUsageMetricsTrafficMetricsSource:
+    type: string
+    enum:
+    - TRAFFIC_METRICS_SOURCE_UNSPECIFIED
+    - ONHOST
+    - BIGQUERY
+    default: TRAFFIC_METRICS_SOURCE_UNSPECIFIED
+    description: "The source of the traffic metrics.\n\n - TRAFFIC_METRICS_SOURCE_UNSPECIFIED: The source of the traffic metrics is unknown.\n - ONHOST: The traffic metrics is sourced from onhost logcrunch (legacy).\n - BIGQUERY: The traffic metrics is sourced from BigQuery logcrunch.\n"
+  TooManyRequestsOperation:
+    description: Too many requests
+  InstallDailyUsageMetricsSeries:
+    type: object
+    properties:
+      install_name:
+        type: string
+        description: The name of the install for the included metrics.
+      metrics:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/DailyUsageMetrics'
+        description: 'The requested metrics for an install.
+
+          Metrics will include daily usage metrics for the last 30 days.
+
+          Metrics will be sorted in descending order (most recent date first).
+
+          '
+      metrics_rollup:
+        $ref: '#/definitions/UsageMetricsRollup'
+        description: Rollup of the usage metrics.
+      storage_refresh_expected_time:
+        type: string
+        format: date-time
+        x-nullable: true
+        description: 'Represents the estimated completion time (in UTC) for a refresh disk usage operation.
+
+          If a refresh is not in progress, then this field will be null.
+
+          '
+    description: A daily usage metrics series.
+  EnvironmentTypeBreakdown:
+    type: object
+    properties:
+      production:
+        type: string
+        description: Usage for production environments
+        example: '1354'
+        x-nullable: true
+      staging:
+        type: string
+        description: Usage for staging environments
+        example: '177'
+        x-nullable: true
+      development:
+        type: string
+        description: Usage for development environments
+        example: '164'
+        x-nullable: true
+    description: Breakdown of usage by environment type
+  EnvironmentMetrics:
+    type: object
+    properties:
+      environment_name:
+        type: string
+        description: The name of the environment
+      metrics:
+        type: array
+        items:
+          $ref: '#/definitions/DailyUsageMetrics'
+        description: Daily usage metrics for this environment
+      metrics_rollup:
+        $ref: '#/definitions/UsageMetricsRollup'
+        description: Rollup of the usage metrics for this environment
+      storage_refresh_expected_time:
+        type: string
+        format: date-time
+        x-nullable: true
+        description: The expected time when the storage refresh will complete for this environment
+  UsageErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message explaining the error.
+        example: Must provide or omit both first_date and last_date.
+  BadRequestErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: 'Invalid Site: Name cannot be empty.'
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+      errors:
+        type: array
+        description: An array of error objects describing specific errors that arose when servicing the request
+        items:
+          $ref: '#/definitions/ResourceError'
+  AccountUsageMetricsResponse:
+    type: object
+    properties:
+      environment_metrics:
+        type: array
+        items:
+          $ref: '#/definitions/EnvironmentMetrics'
+        description: Usage metrics for each environment in the account
+      total_size:
+        type: integer
+        description: Total number of environments
+      next_page_token:
+        type: string
+        description: Token for the next page of results
+        x-nullable: true
+      all_environments_included:
+        type: boolean
+        description: Whether all environments can be returned based on account permissions
+        x-nullable: true
+      last_account_storage_refresh_time:
+        type: string
+        format: date-time
+        x-nullable: true
+        description: The time when the account storage was last refreshed
+      account_storage_refresh_expected_time:
+        type: string
+        format: date-time
+        x-nullable: true
+        description: The expected time when the account storage refresh will complete
+  BadGatewayOperation:
+    description: An invalid response was received from an upstream server
+  SiteTypeBreakdown:
+    type: object
+    properties:
+      standard:
+        type: string
+        description: Usage for standard sites
+        example: '1683'
+        x-nullable: true
+      transferable:
+        type: string
+        description: Usage for transferable sites
+        example: '7'
+        x-nullable: true
+      sandbox:
+        type: string
+        description: Usage for sandbox sites
+        example: '5'
+        x-nullable: true
+    description: Breakdown of usage by site type
+  UsageRollup:
+    type: object
+    properties:
+      average:
+        type: string
+        format: int64
+        x-nullable: true
+        description: The average value of the metric.
+      sum:
+        type: string
+        format: int64
+        x-nullable: true
+        description: The total sum value of the metric.
+      latest:
+        $ref: '#/definitions/LatestMetricValue'
+        x-nullable: true
+        description: The latest value of the metric.
+    description: A metric rollup.
+  ForbiddenErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: You don't have permission to perform that action
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+  AuthenticationErrorResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: string
+        description: A message regarding the error that occurred on the server
+        example: Bad Credentials
+      documentation_url:
+        type: string
+        description: (Optional) A URL where documentation regarding this specific error can be found
+parameters:
+  authorization:
+    name: Authorization
+    in: header
+    type: string
+    format: uuid
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'
