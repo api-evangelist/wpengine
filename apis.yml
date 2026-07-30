@@ -1,7 +1,20 @@
 aid: wpengine
 name: WP Engine
 description: WP Engine is a WordPress digital experience platform offering managed WordPress hosting with a REST API for programmatically managing sites, environments (installs), domains, SSH keys, SSL certificates, backups, and cache operations. The API uses Basic Authentication with credentials generated from the WP Engine User Portal.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/wpengine.png
 url: https://raw.githubusercontent.com/api-evangelist/wpengine/refs/heads/main/apis.yml
 created: "2026-06-13"
 modified: "2026-06-13"
@@ -13,30 +26,210 @@ tags:
   - Site Management
   - Digital Experience Platform
 apis:
-  - aid: wpengine:wpengine-hosting-platform-api
-    name: WP Engine Hosting Platform API
-    description: REST API for programmatically managing WP Engine WordPress hosting accounts, sites, installs (environments), domains, SSH keys, SSL certificates, backups, users, and cache operations.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
-    baseURL: https://api.wpengineapi.com/v1
-    tags:
-      - WordPress
-      - Managed Hosting
-      - Site Management
-      - Environments
-      - Domains
-      - Backups
-      - SSH Keys
-      - SSL Certificates
-    properties:
-      - type: Documentation
-        url: https://developers.wpengine.com/docs/managed-hosting-platform/api
-      - type: OpenAPI
-        url: https://developers.wpengine.com/docs/managed-hosting-platform/api/reference
-    contact:
-      - FN: WP Engine Support
-        url: https://wpengine.com/support/
-        email: support@wpengine.com
+- aid: wpengine:wpengine-account-api
+  name: WP Engine Account API
+  description: The Account API from WP Engine — 3 operation(s) for account.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-account-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-account-user-api
+  name: WP Engine Account User API
+  description: The Account User API from WP Engine — 2 operation(s) for account user.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Account User
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-account-user-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-archive-api
+  name: WP Engine Archive API
+  description: The Archive API from WP Engine — 1 operation(s) for archive.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Archive
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-archive-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-backup-api
+  name: WP Engine Backup API
+  description: The Backup API from WP Engine — 3 operation(s) for backup.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Backup
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-backup-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-cache-api
+  name: WP Engine Cache API
+  description: The Cache API from WP Engine — 1 operation(s) for cache.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Cache
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-cache-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-certificates-api
+  name: WP Engine Certificates API
+  description: The Certificates API from WP Engine — 3 operation(s) for certificates.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Certificates
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-certificates-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-domain-api
+  name: WP Engine Domain API
+  description: The Domain API from WP Engine — 6 operation(s) for domain.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Domain
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-domain-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-install-api
+  name: WP Engine Install API
+  description: The Install API from WP Engine — 3 operation(s) for install.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Install
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-install-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-offload-settings-api
+  name: WP Engine Offload Settings API
+  description: The Offload Settings API from WP Engine — 2 operation(s) for offload settings.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Offload Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-offload-settings-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-site-api
+  name: WP Engine Site API
+  description: The Site API from WP Engine — 2 operation(s) for site.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Site
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-site-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-site-reports-api
+  name: WP Engine Site Reports API
+  description: The Site Reports API from WP Engine — 1 operation(s) for site reports.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Site Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-site-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-site-transfer-api
+  name: WP Engine Site Transfer API
+  description: The Site Transfer API from WP Engine — 3 operation(s) for site transfer.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Site Transfer
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-site-transfer-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-ssh-key-api
+  name: WP Engine SSH Key API
+  description: The SSH Key API from WP Engine — 2 operation(s) for ssh key.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - SSH Key
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-ssh-key-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-status-api
+  name: WP Engine Status API
+  description: The Status API from WP Engine — 1 operation(s) for status.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-status-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-swagger-api
+  name: WP Engine Swagger API
+  description: The Swagger API from WP Engine — 1 operation(s) for swagger.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Swagger
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-swagger-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-usage-api
+  name: WP Engine Usage API
+  description: The Usage API from WP Engine — 6 operation(s) for usage.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - Usage
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-usage-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
+- aid: wpengine:wpengine-user-api
+  name: WP Engine User API
+  description: The User API from WP Engine — 1 operation(s) for user.
+  humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
+  baseURL: https://api.wpengineapi.com/v1
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/wpengine-user-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wpengine.com/docs/managed-hosting-platform/api
 common:
   - type: AgenticAccess
     url: agentic-access/wpengine-agentic-access.yml
