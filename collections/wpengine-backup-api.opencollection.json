@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Backup API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Backup",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List backups for a WordPress installation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/backups",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The first record of the result set to be retrieved"
+              },
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of backups for the specified WordPress installation,\nin all states (`requested`, `in_progress`, `completed`, `aborted`).\n"
+        },
+        {
+          "info": {
+            "name": "Requests a new backup of a WordPress installation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/backups",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Kicks off a backup of a WordPress installation."
+        },
+        {
+          "info": {
+            "name": "Retrieves the status of a backup of a WordPress installation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/backups/:backup_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "backup_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of backup"
+              }
+            ]
+          },
+          "docs": "Retrieves the status of a backup of a WordPress installation.\nPossible statuses include\n- `requested`\n- `in_progress`\n- `completed`\n- `aborted`\n`initiated` has been deprecated for `in_progress`.\n"
+        },
+        {
+          "info": {
+            "name": "Restores a WordPress installation from a backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/backups/:backup_id/restore",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "backup_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of backup to restore from"
+              }
+            ]
+          },
+          "docs": "Initiates a restore operation from a specific backup. This will restore the WordPress installation\nto the state captured in the specified backup.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

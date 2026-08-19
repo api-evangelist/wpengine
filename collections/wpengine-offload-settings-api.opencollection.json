@@ -1,0 +1,118 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Offload Settings API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Offload Settings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the validation file needed to configure LargeFS",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/offload_settings/largefs_validation_file",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Returns the validation filename and contents necessary to configure an S3 bucket for LargeFS"
+        },
+        {
+          "info": {
+            "name": "Get the offload settings for an install",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/offload_settings/files",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Returns the offload settings configuration for a specific install"
+        },
+        {
+          "info": {
+            "name": "Configure offload settings for an install",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/offload_settings/files",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Updates the offload settings configuration for a specific install"
+        },
+        {
+          "info": {
+            "name": "Update specific offload settings for an install",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/installs/:install_id/offload_settings/files",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Partially updates the offload settings configuration for a specific install"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

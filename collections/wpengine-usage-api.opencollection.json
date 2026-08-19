@@ -1,0 +1,228 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Usage API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Usage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get account usage metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/accounts/:account_id/usage",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              },
+              {
+                "name": "first_date",
+                "value": "",
+                "type": "query",
+                "description": "The start date for the requested metrics range (inclusive).\nFormat: `YYYY-mm-dd`. Cannot be older than 13 months.\nIf `first_date` is provided, `last_date` must also be provided."
+              },
+              {
+                "name": "last_date",
+                "value": "",
+                "type": "query",
+                "description": "The end date for the requested metrics range (inclusive).\nFormat: `YYYY-mm-dd`.\nIf `last_date` is provided, `first_date` must also be provided."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of environments to return. A maximum of 1000 environments can be requested per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "String-encoded offset for pagination. The next_page_token from the response can be used to paginate accordingly."
+              }
+            ]
+          },
+          "docs": "Get usage metrics for all environments in an account.\nIf the optional `first_date` and `last_date` arguments are omitted, the response will include metrics for the last 30 days.\n"
+        },
+        {
+          "info": {
+            "name": "Refresh Disk Usage for all installs associated with account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/accounts/:account_id/usage/refresh_disk_usage",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the account."
+              }
+            ]
+          },
+          "docs": "Triggers an asynchronous job to recalculate the disk usage of installs associated with a specific account.\n\nThis endpoint initiates the refresh process and returns immediately with a success status. **It does not return the updated usage data.**\n\nTo check the status of the job and view the new data once it's available, you must poll the `GET /accounts/{account_id}/usage` endpoint. A successful request will populate the `account_storage_refresh_expected_time` attribute in that endpoint's response"
+        },
+        {
+          "info": {
+            "name": "Get account level usage summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/accounts/:account_id/usage/summary",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              },
+              {
+                "name": "first_date",
+                "value": "",
+                "type": "query",
+                "description": "The start date for the requested metrics range (inclusive).\nFormat: `YYYY-mm-dd`. Cannot be older than 13 months.\nIf `first_date` is provided, `last_date` must also be provided."
+              },
+              {
+                "name": "last_date",
+                "value": "",
+                "type": "query",
+                "description": "The end date for the requested metrics range (inclusive).\nFormat: `YYYY-mm-dd`.\nIf `last_date` is provided, `first_date` must also be provided."
+              }
+            ]
+          },
+          "docs": "Get the usage summary over a time period for the specificied account. The default response is a summary of the\nlast 30 days. The optional `first_date` and `last_date` arguments can be specified to retrieve a summary over\na custom date range. Both arguments must be provided and the range cannot exceed 31 days."
+        },
+        {
+          "info": {
+            "name": "Get account usage insights",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/accounts/:account_id/usage/insights",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              },
+              {
+                "name": "first_date",
+                "value": "",
+                "type": "query",
+                "description": "The start date for the requested metrics range (inclusive).\nFormat: `YYYY-mm-dd`. Cannot be older than 13 months.\nIf `first_date` is provided, `last_date` must also be provided."
+              },
+              {
+                "name": "last_date",
+                "value": "",
+                "type": "query",
+                "description": "The end date for the requested metrics range (inclusive).\nFormat: `YYYY-mm-dd`.\nIf `last_date` is provided, `first_date` must also be provided."
+              }
+            ]
+          },
+          "docs": "Get detailed usage insights for the specified account across different environment types and site types.\nThe default response is a summary of the last 30 days. The optional `first_date` and `last_date` arguments\ncan be specified to retrieve insights over a custom date range. Both arguments must be provided and the\nrange cannot exceed 31 days."
+        },
+        {
+          "info": {
+            "name": "Get a list of daily usage metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/usage",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the install."
+              },
+              {
+                "name": "first_date",
+                "value": "",
+                "type": "query",
+                "description": "The start date for the requested metrics range (inclusive).\nFormat: `YYYY-mm-dd`. Cannot be older than 13 months.\nIf `first_date` is provided, `last_date` must also be provided."
+              },
+              {
+                "name": "last_date",
+                "value": "",
+                "type": "query",
+                "description": "The end date for the requested metrics range (inclusive).\nFormat: `YYYY-mm-dd`.\nIf `last_date` is provided, `first_date` must also be provided."
+              }
+            ]
+          },
+          "docs": "Get a list of daily usage metrics related to this install.\nIf the optional `first_date` and `last_date` arguments are omitted, the response will include metrics for the last 30 days.\nFor days where there are no storage metrics, they will be artificially filled with the last known storage metrics."
+        },
+        {
+          "info": {
+            "name": "Refresh disk usage for the given WordPress site environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/usage/refresh_disk_usage",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the install."
+              }
+            ]
+          },
+          "docs": "Triggers an asynchronous job to recalculate the disk usage for the given WordPress site environment.\n\nThis endpoint initiates the refresh process and returns immediately with a success status. **It does not return the updated usage data.**\n\nTo check the status of the job and view the new data once it's available, you must poll for daily usage metrics at `GET /installs/{install_id}/usage`. The estimated time of completion can be viewed in daily usage metrics as the `storage_refresh_expected_time`"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

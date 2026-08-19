@@ -1,0 +1,164 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Install API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Install",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List your WordPress installations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The first record of the result set to be retrieved"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The uuid of an account"
+              }
+            ]
+          },
+          "docs": "List your WordPress installations"
+        },
+        {
+          "info": {
+            "name": "Create a new WordPress installation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Create a new WordPress installation"
+        },
+        {
+          "info": {
+            "name": "Get an install by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Returns a single Install"
+        },
+        {
+          "info": {
+            "name": "Update a WordPress installation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/installs/:install_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "The install ID"
+              }
+            ]
+          },
+          "docs": "Update a WordPress installation"
+        },
+        {
+          "info": {
+            "name": "Delete an install by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/installs/:install_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "This will delete the install, The delete is permanent and there is no confirmation prompt."
+        },
+        {
+          "info": {
+            "name": "Copy the full file system and database from one WordPress installation to another",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/install_copy",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Copy the full file system and database from one WordPress installation to another"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

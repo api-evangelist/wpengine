@@ -1,0 +1,179 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Site Transfer API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Site Transfer",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List site transfers for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/accounts/:account_id/site_transfers",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The first record of the result set to be retrieved"
+              }
+            ]
+          },
+          "docs": "# Description\nReturns a paginated list of site transfers initiated from the given account.\nRequires Owner or Full with Billing access.\n\n> **Note:** This endpoint represents the state of Sites at time of transfer,\n> not necessarily the current Site name or environments.\n"
+        },
+        {
+          "info": {
+            "name": "List site transfers for a site",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sites/:site_id/site_transfers",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the site"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The first record of the result set to be retrieved"
+              }
+            ]
+          },
+          "docs": "# Description\nReturns a paginated list of transfers associated with the given site.\nRequires Owner or Full with Billing access.\n"
+        },
+        {
+          "info": {
+            "name": "Initiate a site transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sites/:site_id/site_transfers",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the site to transfer"
+              }
+            ]
+          },
+          "docs": "# Description\nRequests a transfer of the given site to a destination account.\nThe transfer is accepted asynchronously and will initially have a `pending` or `scheduled` status.\n\nRequires Owner or Full with Billing access on both the origin and destination accounts.\n\n##### Constraints\n* Origin and destination accounts must be different\n* Sandbox sites cannot be transferred\n* The destination account must have a preferred Data Center configured\n* If `scheduled_time` is provided, it must be an RFC 3"
+        },
+        {
+          "info": {
+            "name": "Get a site transfer by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sites/:site_id/site_transfers/:transfer_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the site"
+              },
+              {
+                "name": "transfer_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the site transfer"
+              }
+            ]
+          },
+          "docs": "Returns a single site transfer for the given site."
+        },
+        {
+          "info": {
+            "name": "Cancel a scheduled site transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/sites/:site_id/site_transfers/:transfer_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the site"
+              },
+              {
+                "name": "transfer_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the site transfer to cancel"
+              }
+            ]
+          },
+          "docs": "# Description\nCancels a site transfer. Only transfers that have not yet started can be cancelled;\na transfer that has already started will return `409 Conflict`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

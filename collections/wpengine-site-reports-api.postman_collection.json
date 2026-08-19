@@ -1,0 +1,570 @@
+{
+  "item": [
+    {
+      "id": "fecd72a0-dacf-400b-99cf-208bf57a1604",
+      "name": "Site Reports",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a293c534-f474-46e6-84f0-450d15298787",
+          "name": "List report templates",
+          "request": {
+            "name": "List report templates",
+            "description": {
+              "content": "# Description\nReturns a list of report templates available for Site Reports.\n\nTemplates define the structure, branding, and sections included in generated reports.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "site_reports",
+                "templates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<uuid>",
+                  "description": "(Required) Account ID to filter templates. This parameter is required."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1382675c-ce35-42c9-8cc0-acf188197417",
+              "name": "List of report templates",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"templates\": [\n    {\n      \"template_uuid\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"template_name\": \"Site Report\",\n      \"description\": \"Comprehensive site performance and analytics report\",\n      \"company_name\": \"WP Engine\",\n      \"brand_colour\": \"#0ECAD4\",\n      \"logo_url\": \"https://storage.googleapis.com/crs-assets/logos/wpengine-logo.png\",\n      \"preview_image_url\": \"https://storage.googleapis.com/crs-assets/previews/site-report-preview.png\",\n      \"sections\": [\n        {\n          \"name\": \"cover\"\n        },\n        {\n          \"name\": \"overview\"\n        },\n        {\n          \"name\": \"usage\"\n        },\n        {\n          \"name\": \"themes\"\n        }\n      ],\n      \"created_at\": \"2024-01-15T10:30:00Z\",\n      \"updated_at\": \"2024-03-20T14:45:00Z\"\n    },\n    {\n      \"template_uuid\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"template_name\": \"Site Report\",\n      \"description\": \"Comprehensive site performance and analytics report\",\n      \"company_name\": \"WP Engine\",\n      \"brand_colour\": \"#0ECAD4\",\n      \"logo_url\": \"https://storage.googleapis.com/crs-assets/logos/wpengine-logo.png\",\n      \"preview_image_url\": \"https://storage.googleapis.com/crs-assets/previews/site-report-preview.png\",\n      \"sections\": [\n        {\n          \"name\": \"cover\"\n        },\n        {\n          \"name\": \"overview\"\n        },\n        {\n          \"name\": \"usage\"\n        },\n        {\n          \"name\": \"themes\"\n        }\n      ],\n      \"created_at\": \"2024-01-15T10:30:00Z\",\n      \"updated_at\": \"2024-03-20T14:45:00Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5d6aaa9-c185-4919-bbdc-f8561c4f4caf",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid Site: Name cannot be empty.\",\n  \"documentation_url\": \"string\",\n  \"errors\": [\n    {\n      \"resource\": \"Site\",\n      \"field\": \"name\",\n      \"type\": \"invalid_value\",\n      \"code\": \"too_long\",\n      \"message\": \"Name is too long (maximum is 40 characters)\"\n    },\n    {\n      \"resource\": \"Site\",\n      \"field\": \"name\",\n      \"type\": \"invalid_value\",\n      \"code\": \"too_long\",\n      \"message\": \"Name is too long (maximum is 40 characters)\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36664b17-14bc-4f56-bc1d-4e6090f10298",
+              "name": "Authentication Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Credentials\",\n  \"documentation_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c23f335-4587-4857-8b70-af7dc406711d",
+              "name": "Not authorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"You don't have permission to perform that action\",\n  \"documentation_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce2e8ba0-3e34-4799-b916-660c0bac6c30",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not Found\",\n  \"documentation_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5ec2ec7-c3d2-4602-b715-4d9d303b77cc",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6b2d8f05-4488-46c6-b3ec-d7dc38a6c6cf",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"An unexpected error occurred, please try again in a few minutes\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef3a97e4-40ec-4909-85c3-a33e21863aca",
+              "name": "An invalid response was received from an upstream server",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8af7c9fb-c1d2-4a8c-9b82-b8a366817474",
+              "name": "Service unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "site_reports",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "eeda3227-9a39-46ae-9e14-20958bb4e6c9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Authorization",
+                    "value": "967f31f2-84da-7005-dd09-920b3203cba6",
+                    "description": ""
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.wpengineapi.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5a34672f-fe0c-4970-9234-33d6fc868b1d",
+    "name": "WP Engine Hosting Platform Account Site Reports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The API described in this document is subject to change.\n",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Archive API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Archive",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List archives for a WordPress installation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/archives",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The first record of the result set to be retrieved"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of archives for a WordPress installation.\nArchives create downloadable zip files from backups.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Site Reports API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Site Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List report templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/site_reports/templates",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Account ID to filter templates. This parameter is required."
+              }
+            ]
+          },
+          "docs": "# Description\nReturns a list of report templates available for Site Reports.\n\nTemplates define the structure, branding, and sections included in generated reports.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

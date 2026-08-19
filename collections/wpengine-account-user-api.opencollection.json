@@ -1,0 +1,161 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Account User API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account User",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List your account users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/accounts/:account_id/account_users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              }
+            ]
+          },
+          "docs": "List your account users"
+        },
+        {
+          "info": {
+            "name": "Create a new account user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/accounts/:account_id/account_users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              }
+            ]
+          },
+          "docs": "Create a new account user"
+        },
+        {
+          "info": {
+            "name": "Get an account user by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/accounts/:account_id/account_users/:user_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the user"
+              }
+            ]
+          },
+          "docs": "Returns a single account user"
+        },
+        {
+          "info": {
+            "name": "Update an account user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/accounts/:account_id/account_users/:user_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the user"
+              }
+            ]
+          },
+          "docs": "Update an account user"
+        },
+        {
+          "info": {
+            "name": "Delete an account user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/accounts/:account_id/account_users/:user_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of account"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the user"
+              }
+            ]
+          },
+          "docs": "This will remove the association this user has to this account. This delete is permanent and there is no confirmation prompt."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

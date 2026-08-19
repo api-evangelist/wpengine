@@ -1,0 +1,289 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Domain API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the domains for an install by install id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/domains",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The first record of the result set to be retrieved"
+              },
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Returns domains for a specific install"
+        },
+        {
+          "info": {
+            "name": "Add a new domain or redirect to an existing install",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/domains",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Adds a domain or redirect to a specific install and optionally sets it as the primary domain. For domain verification, see the [Adding and Verifying Domains](https://developers.wpengine.com/docs/managed-hosting-platform/api/guides/adding-and-verifying-domains) guide."
+        },
+        {
+          "info": {
+            "name": "Add multiple domains and redirects to an existing install",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/domains/bulk",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Adds multiple domains and redirects to a specific install"
+        },
+        {
+          "info": {
+            "name": "Get a specific domain for an install",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/domains/:domain_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "domain_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of domain"
+              }
+            ]
+          },
+          "docs": "Returns specific domain for an install"
+        },
+        {
+          "info": {
+            "name": "Update an existing domain for an install",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/installs/:install_id/domains/:domain_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "The install ID"
+              },
+              {
+                "name": "domain_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of domain"
+              }
+            ]
+          },
+          "docs": "Updates an existing domain for an install. Cannot set a duplicate, wildcard, or redirected domain as the primary. For domain verification, see the [Adding and Verifying Domains](https://developers.wpengine.com/docs/managed-hosting-platform/api/guides/adding-and-verifying-domains) guide."
+        },
+        {
+          "info": {
+            "name": "Delete a specific domain for an install",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/installs/:install_id/domains/:domain_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "domain_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of domain"
+              }
+            ]
+          },
+          "docs": "Delete specific domain for an install"
+        },
+        {
+          "info": {
+            "name": "Trigger domain TXT record verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/domains/:domain_id/verification",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "domain_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of domain"
+              }
+            ]
+          },
+          "docs": "Triggers verification of the TXT record for a domain to confirm ownership."
+        },
+        {
+          "info": {
+            "name": "Submit a status report for a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/domains/:domain_id/check_status",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "domain_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of domain"
+              }
+            ]
+          },
+          "docs": "Submit a status report for a domain. Returns a `report_id` that can be used to check the domain's status."
+        },
+        {
+          "info": {
+            "name": "Retrieve a status report for a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/domains/check_status/:report_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetches a status report for a specific domain. Accepts a `report_id`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

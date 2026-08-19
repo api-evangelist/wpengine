@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Site API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Site",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List your sites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sites",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The first record of the result set to be retrieved"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The uuid of an account"
+              }
+            ]
+          },
+          "docs": "List your sites"
+        },
+        {
+          "info": {
+            "name": "Create a new site",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sites",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Create a new site"
+        },
+        {
+          "info": {
+            "name": "Get a site by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sites/:site_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path",
+                "description": "The site ID"
+              }
+            ]
+          },
+          "docs": "Returns a single site"
+        },
+        {
+          "info": {
+            "name": "Change a site name",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/sites/:site_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the site to change the name of *(For accounts with sites enabled)*"
+              }
+            ]
+          },
+          "docs": "Change a site name"
+        },
+        {
+          "info": {
+            "name": "Delete a site",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/sites/:site_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the site to delete *(For accounts with sites enabled)*"
+              }
+            ]
+          },
+          "docs": "This will delete the site and any installs associated with this site. This delete is permanent and there is no confirmation prompt."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

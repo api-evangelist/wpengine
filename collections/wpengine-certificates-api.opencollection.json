@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WP Engine Hosting Platform Account Certificates API",
+    "version": "1.17.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Certificates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List SSL certificates for an install",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/ssl_certificates",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) The first record of the result set to be retrieved"
+              }
+            ]
+          },
+          "docs": "Returns a list of SSL certificates for a given install. If no certificates exist, returns 404 with a specific error message."
+        },
+        {
+          "info": {
+            "name": "Get SSL certificate information for a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/installs/:install_id/domains/:domain_id/ssl_certificate",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "domain_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of domain"
+              }
+            ]
+          },
+          "docs": "Returns certificate information for a given domain on an install"
+        },
+        {
+          "info": {
+            "name": "Request a Let's Encrypt Certificate for a legacy domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/domains/:domain_id/ssl_certificate",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              },
+              {
+                "name": "domain_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of domain"
+              }
+            ]
+          },
+          "docs": "Submits a request for a Let's Encrypt Certificate for a given domain on an install. This is for domains on the legacy network."
+        },
+        {
+          "info": {
+            "name": "Import third-party SSL certificate for an install",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/installs/:install_id/ssl_certificates/third_party",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "install_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of install"
+              }
+            ]
+          },
+          "docs": "Imports a third-party PEM formatted SSL certificate and key for an install"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
