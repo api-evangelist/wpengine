@@ -1,6 +1,18 @@
 aid: wpengine
 name: WP Engine
 description: WP Engine is a WordPress digital experience platform offering managed WordPress hosting with a REST API for programmatically managing sites, environments (installs), domains, SSH keys, SSL certificates, backups, and cache operations. The API uses Basic Authentication with credentials generated from the WP Engine User Portal.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
