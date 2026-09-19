@@ -69,6 +69,8 @@ apis:
   humanURL: https://developers.wpengine.com/docs/managed-hosting-platform/api
   baseURL: https://api.wpengineapi.com/v1
   tags:
+  - Archives
+  tags_raw:
   - Archive
   properties:
   - type: OpenAPI
