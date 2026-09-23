@@ -1,15 +1,11 @@
-swagger: '2.0'
+openapi: 3.2.0
 info:
-  description: 'The API described in this document is subject to change.
-
-    '
+  description: The API described in this document is subject to change.
   version: 1.17.0
-  title: WP Engine Hosting Platform Account Swagger API
+  title: WP Engine Hosting Platform Swagger API
   termsOfService: https://wpengine.com/legal/terms-of-service/
-host: api.wpengineapi.com
-basePath: /v1
-schemes:
-- https
+servers:
+- url: https://api.wpengineapi.com/v1
 tags:
 - name: Swagger
 paths:
@@ -20,19 +16,15 @@ paths:
       summary: The current swagger specification
       description: '# Description
 
-        This will output the current swagger specification
-
-        '
+        This will output the current swagger specification'
       operationId: swagger
-      produces:
-      - application/json
       responses:
         '200':
           description: Current swagger specification
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       x-amazon-apigateway-integration:
         uri: https://my.wpengine.com/capi/v1/swagger
         responses:
@@ -50,12 +42,14 @@ paths:
           integration.request.header.sourceIp: context.identity.sourceIp
         httpMethod: GET
         type: http
-definitions:
-  ServiceUnavailableOperation:
-    description: Service unavailable
-  TooManyRequestsOperation:
-    description: Too many requests
-securityDefinitions:
-  basicAuth:
-    type: basic
-    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'
+components:
+  schemas:
+    TooManyRequestsOperation:
+      description: Too many requests
+    ServiceUnavailableOperation:
+      description: Service unavailable
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

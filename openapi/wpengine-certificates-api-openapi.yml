@@ -1,15 +1,11 @@
-swagger: '2.0'
+openapi: 3.2.0
 info:
-  description: 'The API described in this document is subject to change.
-
-    '
+  description: The API described in this document is subject to change.
   version: 1.17.0
-  title: WP Engine Hosting Platform Account Certificates API
+  title: WP Engine Hosting Platform Certificates API
   termsOfService: https://wpengine.com/legal/terms-of-service/
-host: api.wpengineapi.com
-basePath: /v1
-schemes:
-- https
+servers:
+- url: https://api.wpengineapi.com/v1
 tags:
 - name: Certificates
 paths:
@@ -20,47 +16,54 @@ paths:
       summary: List SSL certificates for an install
       description: Returns a list of SSL certificates for a given install. If no certificates exist, returns 404 with a specific error message.
       operationId: getInstallCertificates
-      produces:
-      - application/json
       parameters:
-      - $ref: '#/parameters/authorization'
+      - $ref: '#/components/parameters/authorization'
       - name: install_id
         in: path
-        format: uuid
         description: ID of install
         required: true
-        type: string
         x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
-      - $ref: '#/parameters/limitParam'
-      - $ref: '#/parameters/offsetParam'
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/limitParam'
+      - $ref: '#/components/parameters/offsetParam'
       responses:
         '200':
           description: List of SSL certificates for the install
-          schema:
-            $ref: '#/definitions/InstallSSLCertificatesResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallSSLCertificatesResponse'
         '401':
           description: Authentication Error
-          schema:
-            $ref: '#/definitions/AuthenticationErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
         '403':
           description: Not authorized
-          schema:
-            $ref: '#/definitions/ForbiddenErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
         '404':
           description: No SSL certificates found
-          schema:
-            type: object
-            required:
-            - message
-            properties:
-              message:
-                type: string
-                description: Error message indicating no SSL certificates were found
-                example: No SSL certs found for environment 'testinstall'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating no SSL certificates were found
+                    example: No SSL certs found for environment 'testinstall'
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       security:
       - basicAuth: []
       x-amazon-apigateway-integration:
@@ -97,47 +100,53 @@ paths:
       summary: Get SSL certificate information for a domain
       description: Returns certificate information for a given domain on an install
       operationId: getDomainCertificate
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - $ref: '#/parameters/authorization'
+      - $ref: '#/components/parameters/authorization'
       - name: install_id
         in: path
-        format: uuid
         description: ID of install
         required: true
-        type: string
         x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+        schema:
+          type: string
+          format: uuid
       - name: domain_id
         in: path
-        format: uuid
         description: ID of domain
         required: true
-        type: string
         x-example: e41fa98f-ea80-4654-b229-a9b765d0863a
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Domain certificate information
-          schema:
-            $ref: '#/definitions/DomainCertificate'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainCertificate'
         '401':
           description: Authentication Error
-          schema:
-            $ref: '#/definitions/AuthenticationErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
         '403':
           description: Not authorized
-          schema:
-            $ref: '#/definitions/ForbiddenErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
         '404':
           description: Not found
-          schema:
-            $ref: '#/definitions/NotFoundErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       security:
       - basicAuth: []
       x-amazon-apigateway-integration:
@@ -172,71 +181,55 @@ paths:
       summary: Request a Let's Encrypt Certificate for a legacy domain
       description: Submits a request for a Let's Encrypt Certificate for a given domain on an install. This is for domains on the legacy network.
       operationId: createDomainCertificateOrder
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - $ref: '#/parameters/authorization'
+      - $ref: '#/components/parameters/authorization'
       - name: install_id
         in: path
-        format: uuid
         description: ID of install
         required: true
-        type: string
         x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
+        schema:
+          type: string
+          format: uuid
       - name: domain_id
         in: path
-        format: uuid
         description: ID of domain
         required: true
-        type: string
         x-example: e41fa98f-ea80-4654-b229-a9b765d0863a
-      - name: body
-        in: body
-        description: '##### Properties
-
-          * email_address - **required** - The certificate''s holder''s email address
-
-          * given_name - **required** - The certificate holder''s first / given name
-
-          * family_name - **required** - The certificate holder''s last / family name
-
-          * region_code - **required** - The two-letter ISO 3166-1 alpha-2 code for the certificate''s country
-
-          * state - **optional** - The certificate''s state / region
-
-          * city - **optional** - The certificate''s city / locality
-
-          * phone - **optional** - The certificate holder''s phone number
-
-          '
-        required: true
         schema:
-          $ref: '#/definitions/CertificateOrder'
+          type: string
+          format: uuid
       responses:
         '202':
           description: Accepted. Order has been accepted for processing.
         '401':
           description: Authentication Error
-          schema:
-            $ref: '#/definitions/AuthenticationErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
         '403':
           description: Not authorized
-          schema:
-            $ref: '#/definitions/ForbiddenErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
         '404':
           description: Not found
-          schema:
-            $ref: '#/definitions/NotFoundErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '500':
           description: Internal server error
-          schema:
-            $ref: '#/definitions/InternalServerErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       security:
       - basicAuth: []
       x-amazon-apigateway-integration:
@@ -267,6 +260,29 @@ paths:
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: http
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateOrder'
+        description: '##### Properties
+
+          * email_address - **required** - The certificate''s holder''s email address
+
+          * given_name - **required** - The certificate holder''s first / given name
+
+          * family_name - **required** - The certificate holder''s last / family name
+
+          * region_code - **required** - The two-letter ISO 3166-1 alpha-2 code for the certificate''s country
+
+          * state - **optional** - The certificate''s state / region
+
+          * city - **optional** - The certificate''s city / locality
+
+          * phone - **optional** - The certificate holder''s phone number
+
+          '
+        required: true
   /installs/{install_id}/ssl_certificates/third_party:
     post:
       tags:
@@ -274,71 +290,57 @@ paths:
       summary: Import third-party SSL certificate for an install
       description: Imports a third-party PEM formatted SSL certificate and key for an install
       operationId: importThirdPartySSLCertificate
-      produces:
-      - application/json
       parameters:
-      - $ref: '#/parameters/authorization'
+      - $ref: '#/components/parameters/authorization'
       - name: install_id
         in: path
-        format: uuid
         description: ID of install
         required: true
-        type: string
         x-example: 294deacc-d8b8-4005-82c4-0727ba8ddde0
-      - in: body
-        name: body
-        description: '##### Properties
-
-          * certificate - **required**  - Base64 encoded PEM certificate
-
-          * private_key - **required** - Base64 encoded PEM private key
-
-          '
-        required: true
         schema:
-          type: object
-          required:
-          - certificate
-          - private_key
-          properties:
-            certificate:
-              type: string
-              description: Base64 encoded PEM certificate chain including the end-entity certificate and all intermediate CA certificates
-            private_key:
-              type: string
-              description: The corresponding base64 encoded PEM private key
-          example:
-            certificate: aGVsbG8K
-            private_key: d29ybGQK
+          type: string
+          format: uuid
       responses:
         '200':
           description: Successful import of third party certificate
-          schema:
-            $ref: '#/definitions/ThirdPartySuccessfulImportResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThirdPartySuccessfulImportResponse'
         '400':
           description: Bad Request
-          schema:
-            $ref: '#/definitions/BadRequestErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestErrorResponse'
         '401':
           description: Authentication Error
-          schema:
-            $ref: '#/definitions/AuthenticationErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
         '403':
           description: Not authorized
-          schema:
-            $ref: '#/definitions/ForbiddenErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
         '404':
           description: Not found
-          schema:
-            $ref: '#/definitions/NotFoundErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '500':
           description: Internal server error
-          schema:
-            $ref: '#/definitions/InternalServerErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       security:
       - basicAuth: []
       x-amazon-apigateway-integration:
@@ -368,278 +370,309 @@ paths:
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: http
-definitions:
-  ThirdPartySuccessfulImportResponse:
-    type: object
-    required:
-    - certificate
-    - private_key
-    properties:
-      certificate:
-        type: string
-        description: Base64 encoded PEM certificate
-        example: aGVsbG8gd29ybGQK
-      private_key:
-        type: string
-        description: Base64 encoded PEM private key
-        example: aGVsbG8gd29ybGQK
-  InternalServerErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: An unexpected error occurred, please try again in a few minutes
-  NotFoundErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: Not Found
-      documentation_url:
-        type: string
-        description: (Optional) A URL where documentation regarding this specific error can be found
-  InstallSSLCertificatesResponse:
-    type: object
-    required:
-    - certificates
-    properties:
-      certificates:
-        type: array
-        items:
-          $ref: '#/definitions/Certificate'
-      next_page_token:
-        type: string
-        description: A token to retrieve the next page of results, if available.
-        example: '1'
-  Certificate:
-    properties:
-      id:
-        type: integer
-        description: The id of the certificate
-      account:
-        type: string
-        description: The account name of the owner of the certificate
-        example: myaccountname
-      auto_renew:
-        type: boolean
-        description: Whether auto renew is enabled (true) or disabled (false)
-      auth_file:
-        type: string
-        description: The auth file for the certificate
-      approver_email:
-        type: string
-        description: The approver email for the certificate
-      common_name:
-        type: string
-        description: The common name for the domain
-        example: customdomain.com
-      cancel_time:
-        type: string
-        description: The time when the certificate was cancelled
-      cert_source:
-        type: string
-        description: The source of the certificate
-        enum:
-        - CERT_SOURCE_UNSPECIFIED
-        - THIRD_PARTY
-        - LETS_ENCRYPT
-        - SELF_SIGNED
-      ordered_time:
-        type: string
-        description: The time when the certificate was ordered
-      wildcard:
-        type: boolean
-        description: A boolean flag that indicates if the certificate is for a wildcard domain
-      domains:
-        type: array
-        items:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - certificate
+              - private_key
+              properties:
+                certificate:
+                  type: string
+                  description: Base64 encoded PEM certificate chain including the end-entity certificate and all intermediate CA certificates
+                private_key:
+                  type: string
+                  description: The corresponding base64 encoded PEM private key
+              example:
+                certificate: aGVsbG8K
+                private_key: d29ybGQK
+        description: '##### Properties
+
+          * certificate - **required**  - Base64 encoded PEM certificate
+
+          * private_key - **required** - Base64 encoded PEM private key
+
+          '
+        required: true
+components:
+  schemas:
+    InstallSSLCertificatesResponse:
+      type: object
+      required:
+      - certificates
+      properties:
+        certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Certificate'
+        next_page_token:
           type: string
-        description: A list of domains for the certificate
-        example:
-        - customdomain.com
-        - www.customdomain.com
-      status:
-        type: string
-        enum:
-        - SSL_STATE_UNSPECIFIED
-        - ENABLED
-        - DISABLED
-        - EXPIRED
-        - CANCELED
-        - REJECTED
-        - SUBMITTED
-        description: The current status of the certificate
-      approved_time:
-        type: string
-        description: The time the certificate was approved
-      expires_time:
-        type: string
-        description: The time when the certificate expires
-      serial_number:
-        type: string
-        description: The **Certificate Serial Number** as defined in the X.509 standard. Presented as a **hexadecimal string**.
-        example: 18F662FB207C19E7841E8F41E6771BEE
-  BadRequestErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: 'Invalid Site: Name cannot be empty.'
-      documentation_url:
-        type: string
-        description: (Optional) A URL where documentation regarding this specific error can be found
-      errors:
-        type: array
-        description: An array of error objects describing specific errors that arose when servicing the request
-        items:
-          $ref: '#/definitions/ResourceError'
-  TooManyRequestsOperation:
-    description: Too many requests
-  ResourceError:
-    type: object
-    required:
-    - resource
-    - field
-    - type
-    - code
-    - message
-    properties:
-      resource:
-        type: string
-        description: The name of the resource that was being processed when the error occurred
-        example: Site
-      field:
-        type: string
-        description: (Optional) The specific field associated with the error
-        example: name
-      type:
-        type: string
-        description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
-        example: invalid_value
-      code:
-        type: string
-        description: (Optional) A machine code relating to the error that occurred with the field and resource
-        example: too_long
-      message:
-        type: string
-        description: (Optional) A human-readable message relating to the error that occurred with the field and resource
-        example: Name is too long (maximum is 40 characters)
-  ServiceUnavailableOperation:
-    description: Service unavailable
-  CertificateOrder:
-    type: object
-    required:
-    - email_address
-    - given_name
-    - family_name
-    - region_code
-    properties:
-      email_address:
-        type: string
-        description: The certificate's holder's email address
-        example: jane@example.com
-      given_name:
-        type: string
-        description: The certificate holder's first / given name
-        example: Jane
-      family_name:
-        type: string
-        description: The certificate holder's last / family name
-        example: Doe
-      region_code:
-        type: string
-        description: The two-letter ISO 3166-1 alpha-2 code for the certificate's country
-        example: US
-      state:
-        type: string
-        description: The certificate's state/region
-        example: Texas
-      city:
-        type: string
-        description: The certificate's city/locality
-        example: Austin
-      phone:
-        type: string
-        description: The certificate holder's phone number
-        example: 800-123-4567
-  DomainCertificate:
-    type: object
-    properties:
-      cert_name:
-        type: string
-        description: The name of the certificate
-        example: customdomain.com
-      cert_info:
-        type: object
-        properties:
-          key:
+          description: A token to retrieve the next page of results, if available.
+          example: '1'
+    ThirdPartySuccessfulImportResponse:
+      type: object
+      required:
+      - certificate
+      - private_key
+      properties:
+        certificate:
+          type: string
+          description: Base64 encoded PEM certificate
+          example: aGVsbG8gd29ybGQK
+        private_key:
+          type: string
+          description: Base64 encoded PEM private key
+          example: aGVsbG8gd29ybGQK
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    CertificateOrder:
+      type: object
+      required:
+      - email_address
+      - given_name
+      - family_name
+      - region_code
+      properties:
+        email_address:
+          type: string
+          description: The certificate's holder's email address
+          example: jane@example.com
+        given_name:
+          type: string
+          description: The certificate holder's first / given name
+          example: Jane
+        family_name:
+          type: string
+          description: The certificate holder's last / family name
+          example: Doe
+        region_code:
+          type: string
+          description: The two-letter ISO 3166-1 alpha-2 code for the certificate's country
+          example: US
+        state:
+          type: string
+          description: The certificate's state/region
+          example: Texas
+        city:
+          type: string
+          description: The certificate's city/locality
+          example: Austin
+        phone:
+          type: string
+          description: The certificate holder's phone number
+          example: 800-123-4567
+    TooManyRequestsOperation:
+      description: Too many requests
+    NotFoundErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Not Found
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ResourceError:
+      type: object
+      required:
+      - resource
+      - field
+      - type
+      - code
+      - message
+      properties:
+        resource:
+          type: string
+          description: The name of the resource that was being processed when the error occurred
+          example: Site
+        field:
+          type: string
+          description: (Optional) The specific field associated with the error
+          example: name
+        type:
+          type: string
+          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+          example: invalid_value
+        code:
+          type: string
+          description: (Optional) A machine code relating to the error that occurred with the field and resource
+          example: too_long
+        message:
+          type: string
+          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+          example: Name is too long (maximum is 40 characters)
+    Certificate:
+      properties:
+        id:
+          type: integer
+          description: The id of the certificate
+        account:
+          type: string
+          description: The account name of the owner of the certificate
+          example: myaccountname
+        auto_renew:
+          type: boolean
+          description: Whether auto renew is enabled (true) or disabled (false)
+        auth_file:
+          type: string
+          description: The auth file for the certificate
+        approver_email:
+          type: string
+          description: The approver email for the certificate
+        common_name:
+          type: string
+          description: The common name for the domain
+          example: customdomain.com
+        cancel_time:
+          type: string
+          description: The time when the certificate was cancelled
+        cert_source:
+          type: string
+          description: The source of the certificate
+          enum:
+          - CERT_SOURCE_UNSPECIFIED
+          - THIRD_PARTY
+          - LETS_ENCRYPT
+          - SELF_SIGNED
+        ordered_time:
+          type: string
+          description: The time when the certificate was ordered
+        wildcard:
+          type: boolean
+          description: A boolean flag that indicates if the certificate is for a wildcard domain
+        domains:
+          type: array
+          items:
             type: string
-            description: The private key of the certificate
-          cert:
-            type: string
-            description: The certificate
-      certificate:
-        $ref: '#/definitions/Certificate'
-      criteria:
+          description: A list of domains for the certificate
+          example:
+          - customdomain.com
+          - www.customdomain.com
+        status:
+          type: string
+          enum:
+          - SSL_STATE_UNSPECIFIED
+          - ENABLED
+          - DISABLED
+          - EXPIRED
+          - CANCELED
+          - REJECTED
+          - SUBMITTED
+          description: The current status of the certificate
+        approved_time:
+          type: string
+          description: The time the certificate was approved
+        expires_time:
+          type: string
+          description: The time when the certificate expires
+        serial_number:
+          type: string
+          description: The **Certificate Serial Number** as defined in the X.509 standard. Presented as a **hexadecimal string**.
+          example: 18F662FB207C19E7841E8F41E6771BEE
+    InternalServerErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: An unexpected error occurred, please try again in a few minutes
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    BadRequestErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: 'Invalid Site: Name cannot be empty.'
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
+    DomainCertificate:
+      type: object
+      properties:
+        cert_name:
+          type: string
+          description: The name of the certificate
+          example: customdomain.com
+        cert_info:
+          type: object
+          properties:
+            key:
+              type: string
+              description: The private key of the certificate
+            cert:
+              type: string
+              description: The certificate
+        certificate:
+          $ref: '#/components/schemas/Certificate'
+        criteria:
+          type: string
+          description: The criteria of the certificate
+    AuthenticationErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Bad Credentials
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+  parameters:
+    limitParam:
+      name: limit
+      in: query
+      required: false
+      description: (Optional) The number of records to return
+      schema:
+        type: integer
+        default: 100
+        maximum: 100
+        minimum: 0
+    authorization:
+      name: Authorization
+      in: header
+      schema:
         type: string
-        description: The criteria of the certificate
-  ForbiddenErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: You don't have permission to perform that action
-      documentation_url:
-        type: string
-        description: (Optional) A URL where documentation regarding this specific error can be found
-  AuthenticationErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: Bad Credentials
-      documentation_url:
-        type: string
-        description: (Optional) A URL where documentation regarding this specific error can be found
-parameters:
-  offsetParam:
-    name: offset
-    in: query
-    type: integer
-    required: false
-    default: 0
-    minimum: 0
-    description: (Optional) The first record of the result set to be retrieved
-  authorization:
-    name: Authorization
-    in: header
-    type: string
-    format: uuid
-  limitParam:
-    name: limit
-    in: query
-    type: integer
-    required: false
-    default: 100
-    minimum: 0
-    maximum: 100
-    description: (Optional) The number of records to return
-securityDefinitions:
-  basicAuth:
-    type: basic
-    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'
+        format: uuid
+    offsetParam:
+      name: offset
+      in: query
+      required: false
+      description: (Optional) The first record of the result set to be retrieved
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

@@ -1,15 +1,11 @@
-swagger: '2.0'
+openapi: 3.2.0
 info:
-  description: 'The API described in this document is subject to change.
-
-    '
+  description: The API described in this document is subject to change.
   version: 1.17.0
   title: WP Engine Hosting Platform Account API
   termsOfService: https://wpengine.com/legal/terms-of-service/
-host: api.wpengineapi.com
-basePath: /v1
-schemes:
-- https
+servers:
+- url: https://api.wpengineapi.com/v1
 tags:
 - name: Account
 paths:
@@ -20,44 +16,46 @@ paths:
       summary: List your WP Engine accounts
       description: '# Description
 
-        Use this to list your WP Engine accounts.
-
-        '
+        Use this to list your WP Engine accounts.'
       operationId: listAccounts
-      produces:
-      - application/json
       parameters:
-      - $ref: '#/parameters/authorization'
-      - $ref: '#/parameters/limitParam'
-      - $ref: '#/parameters/offsetParam'
+      - $ref: '#/components/parameters/authorization'
+      - $ref: '#/components/parameters/limitParam'
+      - $ref: '#/components/parameters/offsetParam'
       responses:
         '200':
           description: List of WP Engine accounts
-          schema:
-            type: object
-            properties:
-              previous:
-                $ref: '#/definitions/PreviousPage'
-              next:
-                $ref: '#/definitions/NextPage'
-              count:
-                $ref: '#/definitions/ResultsCount'
-              results:
-                type: array
-                items:
-                  $ref: '#/definitions/Account'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  previous:
+                    $ref: '#/components/schemas/PreviousPage'
+                  next:
+                    $ref: '#/components/schemas/NextPage'
+                  count:
+                    $ref: '#/components/schemas/ResultsCount'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Account'
         '400':
           description: Bad Request
-          schema:
-            $ref: '#/definitions/BadRequestErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestErrorResponse'
         '401':
           description: Authentication Error
-          schema:
-            $ref: '#/definitions/AuthenticationErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       security:
       - basicAuth: []
       x-amazon-apigateway-integration:
@@ -91,34 +89,39 @@ paths:
       summary: Get an account by ID
       description: Returns a single Account
       operationId: getAccount
-      produces:
-      - application/json
       parameters:
-      - $ref: '#/parameters/authorization'
+      - $ref: '#/components/parameters/authorization'
       - name: account_id
         in: path
-        format: uuid
         description: ID of account
         required: true
-        type: string
         x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Success
-          schema:
-            $ref: '#/definitions/Account'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
         '401':
           description: Authentication Error
-          schema:
-            $ref: '#/definitions/AuthenticationErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
         '404':
           description: Not found
-          schema:
-            $ref: '#/definitions/NotFoundErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       security:
       - basicAuth: []
       x-amazon-apigateway-integration:
@@ -151,50 +154,59 @@ paths:
       summary: Fetch account usage limits
       description: Fetch account limits such as visitors, storage (GB) and bandwidth (GB) to compare against your current usage.
       operationId: getAccountsLimits
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - $ref: '#/parameters/authorization'
+      - $ref: '#/components/parameters/authorization'
       - name: account_id
         in: path
         description: ID of account
         required: true
-        type: string
-        format: uuid
         x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/AccountLimits'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountLimits'
         '400':
           description: Bad Request
-          schema:
-            $ref: '#/definitions/BadRequestErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestErrorResponse'
         '401':
           description: Authentication Error
-          schema:
-            $ref: '#/definitions/AuthenticationErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
         '403':
           description: Not authorized
-          schema:
-            $ref: '#/definitions/ForbiddenErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
         '404':
           description: Not found
-          schema:
-            $ref: '#/definitions/NotFoundErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '500':
           description: Internal Server Error
-          schema:
-            $ref: '#/definitions/InternalServerErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
         '502':
-          $ref: '#/definitions/BadGatewayOperation'
+          $ref: '#/components/schemas/BadGatewayOperation'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       security:
       - basicAuth: []
       x-amazon-apigateway-integration:
@@ -228,180 +240,190 @@ paths:
         passthroughBehavior: when_no_match
         httpMethod: GET
         type: http
-definitions:
-  InternalServerErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: An unexpected error occurred, please try again in a few minutes
-  AccountLimits:
-    type: object
-    properties:
-      visitors:
-        type: integer
-        description: Maximum number of visitors
-        x-nullable: true
-        example: 25000
-      storage:
-        type: integer
-        description: Maximum storage allowance in GB
-        x-nullable: true
-        example: 150
-      bandwidth:
-        type: integer
-        description: Maximum bandwidth allowance in GB
-        x-nullable: true
-        example: 1000
-    description: Account limits for environments, storage, bandwidth, and billable visits
-  NotFoundErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: Not Found
-      documentation_url:
-        type: string
-        description: (Optional) A URL where documentation regarding this specific error can be found
-  PreviousPage:
-    type: string
-    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
-    x-nullable: true
-    description: Path to the previous page of results
-  BadGatewayOperation:
-    description: An invalid response was received from an upstream server
-  NextPage:
-    type: string
-    example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
-    x-nullable: true
-    description: Path to the next page of results
-  TooManyRequestsOperation:
-    description: Too many requests
-  BadRequestErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: 'Invalid Site: Name cannot be empty.'
-      documentation_url:
-        type: string
-        description: (Optional) A URL where documentation regarding this specific error can be found
-      errors:
-        type: array
-        description: An array of error objects describing specific errors that arose when servicing the request
-        items:
-          $ref: '#/definitions/ResourceError'
-  ResourceError:
-    type: object
-    required:
-    - resource
-    - field
-    - type
-    - code
-    - message
-    properties:
-      resource:
-        type: string
-        description: The name of the resource that was being processed when the error occurred
-        example: Site
-      field:
-        type: string
-        description: (Optional) The specific field associated with the error
-        example: name
+components:
+  schemas:
+    Account:
+      type: object
+      required:
+      - id
+      - name
+      - nickname
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+        name:
+          type: string
+          description: The account name
+          example: joesaccount
+        nickname:
+          type: string
+          description: The account nickname
+          example: joesaccount
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    NextPage:
       type:
-        type: string
-        description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
-        example: invalid_value
-      code:
-        type: string
-        description: (Optional) A machine code relating to the error that occurred with the field and resource
-        example: too_long
-      message:
-        type: string
-        description: (Optional) A human-readable message relating to the error that occurred with the field and resource
-        example: Name is too long (maximum is 40 characters)
-  ServiceUnavailableOperation:
-    description: Service unavailable
-  Account:
-    type: object
-    required:
-    - id
-    - name
-    - nickname
-    properties:
-      id:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+      description: Path to the next page of results
+    AccountLimits:
+      type: object
+      properties:
+        visitors:
+          type:
+          - integer
+          - 'null'
+          description: Maximum number of visitors
+          example: 25000
+        storage:
+          type:
+          - integer
+          - 'null'
+          description: Maximum storage allowance in GB
+          example: 150
+        bandwidth:
+          type:
+          - integer
+          - 'null'
+          description: Maximum bandwidth allowance in GB
+          example: 1000
+      description: Account limits for environments, storage, bandwidth, and billable visits
+    BadGatewayOperation:
+      description: An invalid response was received from an upstream server
+    ResultsCount:
+      type: integer
+      example: 225
+      description: The total number of results
+    PreviousPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+      description: Path to the previous page of results
+    TooManyRequestsOperation:
+      description: Too many requests
+    NotFoundErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Not Found
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ResourceError:
+      type: object
+      required:
+      - resource
+      - field
+      - type
+      - code
+      - message
+      properties:
+        resource:
+          type: string
+          description: The name of the resource that was being processed when the error occurred
+          example: Site
+        field:
+          type: string
+          description: (Optional) The specific field associated with the error
+          example: name
+        type:
+          type: string
+          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+          example: invalid_value
+        code:
+          type: string
+          description: (Optional) A machine code relating to the error that occurred with the field and resource
+          example: too_long
+        message:
+          type: string
+          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+          example: Name is too long (maximum is 40 characters)
+    InternalServerErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: An unexpected error occurred, please try again in a few minutes
+    AuthenticationErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Bad Credentials
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    BadRequestErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: 'Invalid Site: Name cannot be empty.'
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
+  parameters:
+    limitParam:
+      name: limit
+      in: query
+      required: false
+      description: (Optional) The number of records to return
+      schema:
+        type: integer
+        default: 100
+        maximum: 100
+        minimum: 0
+    authorization:
+      name: Authorization
+      in: header
+      schema:
         type: string
         format: uuid
-        example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
-      name:
-        type: string
-        description: The account name
-        example: joesaccount
-      nickname:
-        type: string
-        description: The account nickname
-        example: joesaccount
-  ResultsCount:
-    type: integer
-    example: 225
-    description: The total number of results
-  ForbiddenErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: You don't have permission to perform that action
-      documentation_url:
-        type: string
-        description: (Optional) A URL where documentation regarding this specific error can be found
-  AuthenticationErrorResponse:
-    type: object
-    required:
-    - message
-    properties:
-      message:
-        type: string
-        description: A message regarding the error that occurred on the server
-        example: Bad Credentials
-      documentation_url:
-        type: string
-        description: (Optional) A URL where documentation regarding this specific error can be found
-parameters:
-  offsetParam:
-    name: offset
-    in: query
-    type: integer
-    required: false
-    default: 0
-    minimum: 0
-    description: (Optional) The first record of the result set to be retrieved
-  authorization:
-    name: Authorization
-    in: header
-    type: string
-    format: uuid
-  limitParam:
-    name: limit
-    in: query
-    type: integer
-    required: false
-    default: 100
-    minimum: 0
-    maximum: 100
-    description: (Optional) The number of records to return
-securityDefinitions:
-  basicAuth:
-    type: basic
-    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'
+    offsetParam:
+      name: offset
+      in: query
+      required: false
+      description: (Optional) The first record of the result set to be retrieved
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'

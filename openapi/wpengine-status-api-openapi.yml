@@ -1,15 +1,11 @@
-swagger: '2.0'
+openapi: 3.2.0
 info:
-  description: 'The API described in this document is subject to change.
-
-    '
+  description: The API described in this document is subject to change.
   version: 1.17.0
-  title: WP Engine Hosting Platform Account Status API
+  title: WP Engine Hosting Platform Status API
   termsOfService: https://wpengine.com/legal/terms-of-service/
-host: api.wpengineapi.com
-basePath: /v1
-schemes:
-- https
+servers:
+- url: https://api.wpengineapi.com/v1
 tags:
 - name: Status
 paths:
@@ -20,21 +16,19 @@ paths:
       summary: The status of the WP Engine Hosting Platform API
       description: '# Description
 
-        This endpoint will report the system status and any outages that might be occurring.
-
-        '
+        This endpoint will report the system status and any outages that might be occurring.'
       operationId: status
-      produces:
-      - application/json
       responses:
         '200':
           description: Status of API
-          schema:
-            $ref: '#/definitions/Status'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
         '429':
-          $ref: '#/definitions/TooManyRequestsOperation'
+          $ref: '#/components/schemas/TooManyRequestsOperation'
         '503':
-          $ref: '#/definitions/ServiceUnavailableOperation'
+          $ref: '#/components/schemas/ServiceUnavailableOperation'
       x-amazon-apigateway-integration:
         uri: https://my.wpengine.com/capi/v1/status
         responses:
@@ -52,22 +46,24 @@ paths:
         passthroughBehavior: when_no_match
         httpMethod: GET
         type: http
-definitions:
-  ServiceUnavailableOperation:
-    description: Service unavailable
-  Status:
-    type: object
-    properties:
-      success:
-        type: boolean
-        example: true
-      created_on:
-        type: string
-        example: '2018-05-17T16:20:40+00:00'
-        description: The time when the status was requested in rfc3339 format
-  TooManyRequestsOperation:
-    description: Too many requests
-securityDefinitions:
-  basicAuth:
-    type: basic
-    description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'
+components:
+  schemas:
+    Status:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        created_on:
+          type: string
+          example: '2018-05-17T16:20:40+00:00'
+          description: The time when the status was requested in rfc3339 format
+    TooManyRequestsOperation:
+      description: Too many requests
+    ServiceUnavailableOperation:
+      description: Service unavailable
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'API username and password from Portal''s API Access page: https://my.wpengine.com/api_access'
