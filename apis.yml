@@ -246,6 +246,8 @@ apis:
   - type: Documentation
     url: https://developers.wpengine.com/docs/managed-hosting-platform/api
 common:
+  - type: VendorFacets
+    url: vendor-facets/wpengine-vendor-facets.yml
   - type: AgenticAccess
     url: agentic-access/wpengine-agentic-access.yml
   - type: VulnerabilityDisclosure
