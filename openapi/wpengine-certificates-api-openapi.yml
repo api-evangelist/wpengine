@@ -398,114 +398,27 @@ paths:
         required: true
 components:
   schemas:
-    InstallSSLCertificatesResponse:
+    DomainCertificate:
       type: object
-      required:
-      - certificates
       properties:
-        certificates:
-          type: array
-          items:
-            $ref: '#/components/schemas/Certificate'
-        next_page_token:
+        cert_name:
           type: string
-          description: A token to retrieve the next page of results, if available.
-          example: '1'
-    ThirdPartySuccessfulImportResponse:
-      type: object
-      required:
-      - certificate
-      - private_key
-      properties:
+          description: The name of the certificate
+          example: customdomain.com
+        cert_info:
+          type: object
+          properties:
+            key:
+              type: string
+              description: The private key of the certificate
+            cert:
+              type: string
+              description: The certificate
         certificate:
+          $ref: '#/components/schemas/Certificate'
+        criteria:
           type: string
-          description: Base64 encoded PEM certificate
-          example: aGVsbG8gd29ybGQK
-        private_key:
-          type: string
-          description: Base64 encoded PEM private key
-          example: aGVsbG8gd29ybGQK
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    CertificateOrder:
-      type: object
-      required:
-      - email_address
-      - given_name
-      - family_name
-      - region_code
-      properties:
-        email_address:
-          type: string
-          description: The certificate's holder's email address
-          example: jane@example.com
-        given_name:
-          type: string
-          description: The certificate holder's first / given name
-          example: Jane
-        family_name:
-          type: string
-          description: The certificate holder's last / family name
-          example: Doe
-        region_code:
-          type: string
-          description: The two-letter ISO 3166-1 alpha-2 code for the certificate's country
-          example: US
-        state:
-          type: string
-          description: The certificate's state/region
-          example: Texas
-        city:
-          type: string
-          description: The certificate's city/locality
-          example: Austin
-        phone:
-          type: string
-          description: The certificate holder's phone number
-          example: 800-123-4567
-    TooManyRequestsOperation:
-      description: Too many requests
-    NotFoundErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Not Found
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    ResourceError:
-      type: object
-      required:
-      - resource
-      - field
-      - type
-      - code
-      - message
-      properties:
-        resource:
-          type: string
-          description: The name of the resource that was being processed when the error occurred
-          example: Site
-        field:
-          type: string
-          description: (Optional) The specific field associated with the error
-          example: name
-        type:
-          type: string
-          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
-          example: invalid_value
-        code:
-          type: string
-          description: (Optional) A machine code relating to the error that occurred with the field and resource
-          example: too_long
-        message:
-          type: string
-          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
-          example: Name is too long (maximum is 40 characters)
+          description: The criteria of the certificate
     Certificate:
       properties:
         id:
@@ -574,7 +487,7 @@ components:
           type: string
           description: The **Certificate Serial Number** as defined in the X.509 standard. Presented as a **hexadecimal string**.
           example: 18F662FB207C19E7841E8F41E6771BEE
-    InternalServerErrorResponse:
+    AuthenticationErrorResponse:
       type: object
       required:
       - message
@@ -582,7 +495,10 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: An unexpected error occurred, please try again in a few minutes
+          example: Bad Credentials
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
     ForbiddenErrorResponse:
       type: object
       required:
@@ -595,6 +511,69 @@ components:
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    ThirdPartySuccessfulImportResponse:
+      type: object
+      required:
+      - certificate
+      - private_key
+      properties:
+        certificate:
+          type: string
+          description: Base64 encoded PEM certificate
+          example: aGVsbG8gd29ybGQK
+        private_key:
+          type: string
+          description: Base64 encoded PEM private key
+          example: aGVsbG8gd29ybGQK
+    TooManyRequestsOperation:
+      description: Too many requests
+    CertificateOrder:
+      type: object
+      required:
+      - email_address
+      - given_name
+      - family_name
+      - region_code
+      properties:
+        email_address:
+          type: string
+          description: The certificate's holder's email address
+          example: jane@example.com
+        given_name:
+          type: string
+          description: The certificate holder's first / given name
+          example: Jane
+        family_name:
+          type: string
+          description: The certificate holder's last / family name
+          example: Doe
+        region_code:
+          type: string
+          description: The two-letter ISO 3166-1 alpha-2 code for the certificate's country
+          example: US
+        state:
+          type: string
+          description: The certificate's state/region
+          example: Texas
+        city:
+          type: string
+          description: The certificate's city/locality
+          example: Austin
+        phone:
+          type: string
+          description: The certificate holder's phone number
+          example: 800-123-4567
+    InternalServerErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: An unexpected error occurred, please try again in a few minutes
     BadRequestErrorResponse:
       type: object
       required:
@@ -612,28 +591,20 @@ components:
           description: An array of error objects describing specific errors that arose when servicing the request
           items:
             $ref: '#/components/schemas/ResourceError'
-    DomainCertificate:
+    InstallSSLCertificatesResponse:
       type: object
+      required:
+      - certificates
       properties:
-        cert_name:
+        certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Certificate'
+        next_page_token:
           type: string
-          description: The name of the certificate
-          example: customdomain.com
-        cert_info:
-          type: object
-          properties:
-            key:
-              type: string
-              description: The private key of the certificate
-            cert:
-              type: string
-              description: The certificate
-        certificate:
-          $ref: '#/components/schemas/Certificate'
-        criteria:
-          type: string
-          description: The criteria of the certificate
-    AuthenticationErrorResponse:
+          description: A token to retrieve the next page of results, if available.
+          example: '1'
+    NotFoundErrorResponse:
       type: object
       required:
       - message
@@ -641,10 +612,39 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: Bad Credentials
+          example: Not Found
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    ResourceError:
+      type: object
+      required:
+      - resource
+      - field
+      - type
+      - code
+      - message
+      properties:
+        resource:
+          type: string
+          description: The name of the resource that was being processed when the error occurred
+          example: Site
+        field:
+          type: string
+          description: (Optional) The specific field associated with the error
+          example: name
+        type:
+          type: string
+          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+          example: invalid_value
+        code:
+          type: string
+          description: (Optional) A machine code relating to the error that occurred with the field and resource
+          example: too_long
+        message:
+          type: string
+          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+          example: Name is too long (maximum is 40 characters)
   parameters:
     limitParam:
       name: limit
@@ -656,12 +656,6 @@ components:
         default: 100
         maximum: 100
         minimum: 0
-    authorization:
-      name: Authorization
-      in: header
-      schema:
-        type: string
-        format: uuid
     offsetParam:
       name: offset
       in: query
@@ -671,6 +665,12 @@ components:
         type: integer
         default: 0
         minimum: 0
+    authorization:
+      name: Authorization
+      in: header
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     basicAuth:
       type: http

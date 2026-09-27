@@ -417,27 +417,7 @@ paths:
         type: http
 components:
   schemas:
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    NextPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
-      description: Path to the next page of results
-    ResultsCount:
-      type: integer
-      example: 225
-      description: The total number of results
-    PreviousPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
-      description: Path to the previous page of results
-    TooManyRequestsOperation:
-      description: Too many requests
-    NotFoundErrorResponse:
+    AuthenticationErrorResponse:
       type: object
       required:
       - message
@@ -445,10 +425,30 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: Not Found
+          example: Bad Credentials
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    NextPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+      description: Path to the next page of results
+    ServiceUnavailableOperation:
+      description: Service unavailable
     ResourceError:
       type: object
       required:
@@ -478,6 +478,41 @@ components:
           type: string
           description: (Optional) A human-readable message relating to the error that occurred with the field and resource
           example: Name is too long (maximum is 40 characters)
+    ResultsCount:
+      type: integer
+      example: 225
+      description: The total number of results
+    TooManyRequestsOperation:
+      description: Too many requests
+    BadRequestErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: 'Invalid Site: Name cannot be empty.'
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
+    NotFoundErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Not Found
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
     Site:
       type: object
       required:
@@ -562,48 +597,22 @@ components:
                 - boolean
                 - 'null'
                 example: false
-    ForbiddenErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    AuthenticationErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Bad Credentials
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    BadRequestErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: 'Invalid Site: Name cannot be empty.'
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-        errors:
-          type: array
-          description: An array of error objects describing specific errors that arose when servicing the request
-          items:
-            $ref: '#/components/schemas/ResourceError'
+    PreviousPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+      description: Path to the previous page of results
   parameters:
+    account_id:
+      name: account_id
+      in: query
+      required: false
+      description: (Optional) The uuid of an account
+      x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      schema:
+        type: string
+        format: uuid
     limitParam:
       name: limit
       in: query
@@ -614,12 +623,6 @@ components:
         default: 100
         maximum: 100
         minimum: 0
-    authorization:
-      name: Authorization
-      in: header
-      schema:
-        type: string
-        format: uuid
     offsetParam:
       name: offset
       in: query
@@ -629,12 +632,9 @@ components:
         type: integer
         default: 0
         minimum: 0
-    account_id:
-      name: account_id
-      in: query
-      required: false
-      description: (Optional) The uuid of an account
-      x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+    authorization:
+      name: Authorization
+      in: header
       schema:
         type: string
         format: uuid

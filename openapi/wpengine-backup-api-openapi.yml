@@ -453,14 +453,72 @@ paths:
         required: true
 components:
   schemas:
-    ServiceUnavailableOperation:
-      description: Service unavailable
+    AuthenticationErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Bad Credentials
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
     NextPage:
       type:
       - string
       - 'null'
       example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
       description: Path to the next page of results
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    ResultsCount:
+      type: integer
+      example: 225
+      description: The total number of results
+    TooManyRequestsOperation:
+      description: Too many requests
+    InternalServerErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: An unexpected error occurred, please try again in a few minutes
+    BadRequestErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: 'Invalid Site: Name cannot be empty.'
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
+    BadGatewayOperation:
+      description: An invalid response was received from an upstream server
     Backup:
       type: object
       required:
@@ -507,20 +565,6 @@ components:
           - 'null'
           description: WordPress version of the install at the time the backup was taken
           example: 6.4.2
-    BadGatewayOperation:
-      description: An invalid response was received from an upstream server
-    ResultsCount:
-      type: integer
-      example: 225
-      description: The total number of results
-    PreviousPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
-      description: Path to the previous page of results
-    TooManyRequestsOperation:
-      description: Too many requests
     NotFoundErrorResponse:
       type: object
       required:
@@ -562,56 +606,12 @@ components:
           type: string
           description: (Optional) A human-readable message relating to the error that occurred with the field and resource
           example: Name is too long (maximum is 40 characters)
-    InternalServerErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: An unexpected error occurred, please try again in a few minutes
-    AuthenticationErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Bad Credentials
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    ForbiddenErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    BadRequestErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: 'Invalid Site: Name cannot be empty.'
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-        errors:
-          type: array
-          description: An array of error objects describing specific errors that arose when servicing the request
-          items:
-            $ref: '#/components/schemas/ResourceError'
+    PreviousPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+      description: Path to the previous page of results
   parameters:
     limitParam:
       name: limit
@@ -623,12 +623,6 @@ components:
         default: 100
         maximum: 100
         minimum: 0
-    authorization:
-      name: Authorization
-      in: header
-      schema:
-        type: string
-        format: uuid
     offsetParam:
       name: offset
       in: query
@@ -638,6 +632,12 @@ components:
         type: integer
         default: 0
         minimum: 0
+    authorization:
+      name: Authorization
+      in: header
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     basicAuth:
       type: http

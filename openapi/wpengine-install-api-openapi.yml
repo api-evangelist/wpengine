@@ -560,107 +560,6 @@ paths:
         required: true
 components:
   schemas:
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    NextPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
-      description: Path to the next page of results
-    BadGatewayOperation:
-      description: An invalid response was received from an upstream server
-    ResultsCount:
-      type: integer
-      example: 225
-      description: The total number of results
-    PreviousPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
-      description: Path to the previous page of results
-    TooManyRequestsOperation:
-      description: Too many requests
-    NotFoundErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Not Found
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    ResourceError:
-      type: object
-      required:
-      - resource
-      - field
-      - type
-      - code
-      - message
-      properties:
-        resource:
-          type: string
-          description: The name of the resource that was being processed when the error occurred
-          example: Site
-        field:
-          type: string
-          description: (Optional) The specific field associated with the error
-          example: name
-        type:
-          type: string
-          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
-          example: invalid_value
-        code:
-          type: string
-          description: (Optional) A machine code relating to the error that occurred with the field and resource
-          example: too_long
-        message:
-          type: string
-          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
-          example: Name is too long (maximum is 40 characters)
-    InternalServerErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: An unexpected error occurred, please try again in a few minutes
-    ForbiddenErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    BadRequestErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: 'Invalid Site: Name cannot be empty.'
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-        errors:
-          type: array
-          description: An array of error objects describing specific errors that arose when servicing the request
-          items:
-            $ref: '#/components/schemas/ResourceError'
     AuthenticationErrorResponse:
       type: object
       required:
@@ -769,7 +668,117 @@ components:
           format: date-time
           description: If set, automatic WordPress core major updates will be deferred until this date. Only returned when requesting an individual install.
           example: '2025-12-31T23:59:59.999Z'
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    NextPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+      description: Path to the next page of results
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    ResultsCount:
+      type: integer
+      example: 225
+      description: The total number of results
+    TooManyRequestsOperation:
+      description: Too many requests
+    InternalServerErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: An unexpected error occurred, please try again in a few minutes
+    BadRequestErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: 'Invalid Site: Name cannot be empty.'
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
+    BadGatewayOperation:
+      description: An invalid response was received from an upstream server
+    NotFoundErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Not Found
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ResourceError:
+      type: object
+      required:
+      - resource
+      - field
+      - type
+      - code
+      - message
+      properties:
+        resource:
+          type: string
+          description: The name of the resource that was being processed when the error occurred
+          example: Site
+        field:
+          type: string
+          description: (Optional) The specific field associated with the error
+          example: name
+        type:
+          type: string
+          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+          example: invalid_value
+        code:
+          type: string
+          description: (Optional) A machine code relating to the error that occurred with the field and resource
+          example: too_long
+        message:
+          type: string
+          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+          example: Name is too long (maximum is 40 characters)
+    PreviousPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+      description: Path to the previous page of results
   parameters:
+    account_id:
+      name: account_id
+      in: query
+      required: false
+      description: (Optional) The uuid of an account
+      x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+      schema:
+        type: string
+        format: uuid
     limitParam:
       name: limit
       in: query
@@ -780,12 +789,6 @@ components:
         default: 100
         maximum: 100
         minimum: 0
-    authorization:
-      name: Authorization
-      in: header
-      schema:
-        type: string
-        format: uuid
     offsetParam:
       name: offset
       in: query
@@ -795,12 +798,9 @@ components:
         type: integer
         default: 0
         minimum: 0
-    account_id:
-      name: account_id
-      in: query
-      required: false
-      description: (Optional) The uuid of an account
-      x-example: eeda3227-9a39-46ae-9e14-20958bb4e6c9
+    authorization:
+      name: Authorization
+      in: header
       schema:
         type: string
         format: uuid

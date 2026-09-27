@@ -495,11 +495,7 @@ paths:
         type: http
 components:
   schemas:
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    TooManyRequestsOperation:
-      description: Too many requests
-    NotFoundErrorResponse:
+    AuthenticationErrorResponse:
       type: object
       required:
       - message
@@ -507,39 +503,22 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: Not Found
+          example: Bad Credentials
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-    ResourceError:
+    ForbiddenErrorResponse:
       type: object
       required:
-      - resource
-      - field
-      - type
-      - code
       - message
       properties:
-        resource:
-          type: string
-          description: The name of the resource that was being processed when the error occurred
-          example: Site
-        field:
-          type: string
-          description: (Optional) The specific field associated with the error
-          example: name
-        type:
-          type: string
-          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
-          example: invalid_value
-        code:
-          type: string
-          description: (Optional) A machine code relating to the error that occurred with the field and resource
-          example: too_long
         message:
           type: string
-          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
-          example: Name is too long (maximum is 40 characters)
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
     AccountUser:
       type: object
       required:
@@ -615,6 +594,10 @@ components:
                 type: string
                 description: The name of the install
                 example: install1
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    TooManyRequestsOperation:
+      description: Too many requests
     InternalServerErrorResponse:
       type: object
       required:
@@ -624,18 +607,6 @@ components:
           type: string
           description: A message regarding the error that occurred on the server
           example: An unexpected error occurred, please try again in a few minutes
-    ForbiddenErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
     BadRequestErrorResponse:
       type: object
       required:
@@ -653,7 +624,7 @@ components:
           description: An array of error objects describing specific errors that arose when servicing the request
           items:
             $ref: '#/components/schemas/ResourceError'
-    AuthenticationErrorResponse:
+    NotFoundErrorResponse:
       type: object
       required:
       - message
@@ -661,10 +632,39 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: Bad Credentials
+          example: Not Found
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    ResourceError:
+      type: object
+      required:
+      - resource
+      - field
+      - type
+      - code
+      - message
+      properties:
+        resource:
+          type: string
+          description: The name of the resource that was being processed when the error occurred
+          example: Site
+        field:
+          type: string
+          description: (Optional) The specific field associated with the error
+          example: name
+        type:
+          type: string
+          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+          example: invalid_value
+        code:
+          type: string
+          description: (Optional) A machine code relating to the error that occurred with the field and resource
+          example: too_long
+        message:
+          type: string
+          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+          example: Name is too long (maximum is 40 characters)
   parameters:
     authorization:
       name: Authorization

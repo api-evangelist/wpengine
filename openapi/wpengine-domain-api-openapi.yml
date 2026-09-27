@@ -923,163 +923,6 @@ paths:
         type: http
 components:
   schemas:
-    DomainOrRedirect:
-      type: object
-      required:
-      - id
-      - name
-      - duplicate
-      - primary
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: e41fa98f-ea80-4654-b229-a9b765d0863a
-        name:
-          type: string
-          example: example.com
-        duplicate:
-          type: boolean
-          example: false
-        primary:
-          type: boolean
-          example: true
-        redirects_to:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              example: e41fa98f-ea80-4006-b229-a9b765d0863a
-            name:
-              type: string
-              example: redirect.com
-        txt_verified_time:
-          type:
-          - string
-          - 'null'
-          description: The time when the TXT record was verified
-          example: '2026-04-20T16:00:00.007Z'
-        txt_verified_domain:
-          type: string
-          description: The domain that the TXT record was verified for
-          example: example.com
-        txt_verification_key:
-          type:
-          - string
-          - 'null'
-          description: The TXT record verification key. Null if the domain is already verified.
-          example: _wpe_verification
-        txt_verification_value:
-          type:
-          - string
-          - 'null'
-          description: The TXT record verification value. Null if the domain is already verified.
-        ownership_status:
-          type: string
-          enum:
-          - TXT_VERIFIED
-          - TXT_VERIFICATION_PENDING
-          description: 'Ownership verification status of the domain.
-
-            * TXT_VERIFIED indicates the domain ownership has been verified.
-
-            * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
-
-
-            **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
-
-            and `txt_verification_value` fields provided with the domain. After the TXT record is in place, POST to
-
-            `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
-
-            '
-    ResourceError:
-      type: object
-      required:
-      - resource
-      - field
-      - type
-      - code
-      - message
-      properties:
-        resource:
-          type: string
-          description: The name of the resource that was being processed when the error occurred
-          example: Site
-        field:
-          type: string
-          description: (Optional) The specific field associated with the error
-          example: name
-        type:
-          type: string
-          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
-          example: invalid_value
-        code:
-          type: string
-          description: (Optional) A machine code relating to the error that occurred with the field and resource
-          example: too_long
-        message:
-          type: string
-          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
-          example: Name is too long (maximum is 40 characters)
-    NextPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
-      description: Path to the next page of results
-    ResultsCount:
-      type: integer
-      example: 225
-      description: The total number of results
-    DomainVerification:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: The UUID of the domain
-          example: e41fa98f-ea80-4654-b229-a9b765d0863a
-        name:
-          type: string
-          description: The domain name
-          example: example.com
-        txt_verified_time:
-          type:
-          - string
-          - 'null'
-          description: The time when the TXT record was verified
-          example: '2026-04-20T16:00:00.007Z'
-        txt_verified_domain:
-          type: string
-          description: The domain that the TXT record was verified for
-          example: example.com
-        txt_verification_key:
-          type:
-          - string
-          - 'null'
-          description: The TXT record verification key. Null if the domain is already verified.
-          example: _wpe_verification
-        txt_verification_value:
-          type:
-          - string
-          - 'null'
-          description: The TXT record verification value. Null if the domain is already verified.
-    TooManyRequestsOperation:
-      description: Too many requests
-    AuthenticationErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Bad Credentials
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
     Domain:
       type: object
       required:
@@ -1193,46 +1036,6 @@ components:
             `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
 
             '
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    DomainStatusReport:
-      type: object
-      properties:
-        complete:
-          type: boolean
-          description: The status of the report
-          example: true
-        id:
-          type: string
-          description: The UUID of the report
-          example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
-        install_name:
-          type: string
-          description: Name of the install
-        install_ip:
-          type: string
-          description: IP address for the install
-        admin:
-          type: boolean
-          description: Admin status
-          example: false
-        domains:
-          type: array
-          description: The list of domains associated with this report
-          items:
-            $ref: '#/components/schemas/DomainStatus'
-    NotFoundErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Not Found
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
     InternalServerErrorResponse:
       type: object
       required:
@@ -1242,24 +1045,77 @@ components:
           type: string
           description: A message regarding the error that occurred on the server
           example: An unexpected error occurred, please try again in a few minutes
-    ForbiddenErrorResponse:
+    DomainOrRedirect:
       type: object
       required:
-      - message
+      - id
+      - name
+      - duplicate
+      - primary
       properties:
-        message:
+        id:
           type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
+          format: uuid
+          example: e41fa98f-ea80-4654-b229-a9b765d0863a
+        name:
           type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    PreviousPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
-      description: Path to the previous page of results
+          example: example.com
+        duplicate:
+          type: boolean
+          example: false
+        primary:
+          type: boolean
+          example: true
+        redirects_to:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: e41fa98f-ea80-4006-b229-a9b765d0863a
+            name:
+              type: string
+              example: redirect.com
+        txt_verified_time:
+          type:
+          - string
+          - 'null'
+          description: The time when the TXT record was verified
+          example: '2026-04-20T16:00:00.007Z'
+        txt_verified_domain:
+          type: string
+          description: The domain that the TXT record was verified for
+          example: example.com
+        txt_verification_key:
+          type:
+          - string
+          - 'null'
+          description: The TXT record verification key. Null if the domain is already verified.
+          example: _wpe_verification
+        txt_verification_value:
+          type:
+          - string
+          - 'null'
+          description: The TXT record verification value. Null if the domain is already verified.
+        ownership_status:
+          type: string
+          enum:
+          - TXT_VERIFIED
+          - TXT_VERIFICATION_PENDING
+          description: 'Ownership verification status of the domain.
+
+            * TXT_VERIFIED indicates the domain ownership has been verified.
+
+            * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
+
+
+            **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
+
+            and `txt_verification_value` fields provided with the domain. After the TXT record is in place, POST to
+
+            `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
+
+            '
     DomainStatus:
       type: object
       properties:
@@ -1454,6 +1310,8 @@ components:
               description: Subject Alternative Names in the certificate
               items:
                 type: string
+    ServiceUnavailableOperation:
+      description: Service unavailable
     BadRequestErrorResponse:
       type: object
       required:
@@ -1471,6 +1329,122 @@ components:
           description: An array of error objects describing specific errors that arose when servicing the request
           items:
             $ref: '#/components/schemas/ResourceError'
+    ResourceError:
+      type: object
+      required:
+      - resource
+      - field
+      - type
+      - code
+      - message
+      properties:
+        resource:
+          type: string
+          description: The name of the resource that was being processed when the error occurred
+          example: Site
+        field:
+          type: string
+          description: (Optional) The specific field associated with the error
+          example: name
+        type:
+          type: string
+          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+          example: invalid_value
+        code:
+          type: string
+          description: (Optional) A machine code relating to the error that occurred with the field and resource
+          example: too_long
+        message:
+          type: string
+          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+          example: Name is too long (maximum is 40 characters)
+    PreviousPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+      description: Path to the previous page of results
+    ResultsCount:
+      type: integer
+      example: 225
+      description: The total number of results
+    TooManyRequestsOperation:
+      description: Too many requests
+    NotFoundErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Not Found
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    DomainVerification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The UUID of the domain
+          example: e41fa98f-ea80-4654-b229-a9b765d0863a
+        name:
+          type: string
+          description: The domain name
+          example: example.com
+        txt_verified_time:
+          type:
+          - string
+          - 'null'
+          description: The time when the TXT record was verified
+          example: '2026-04-20T16:00:00.007Z'
+        txt_verified_domain:
+          type: string
+          description: The domain that the TXT record was verified for
+          example: example.com
+        txt_verification_key:
+          type:
+          - string
+          - 'null'
+          description: The TXT record verification key. Null if the domain is already verified.
+          example: _wpe_verification
+        txt_verification_value:
+          type:
+          - string
+          - 'null'
+          description: The TXT record verification value. Null if the domain is already verified.
+    AuthenticationErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Bad Credentials
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    NextPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+      description: Path to the next page of results
     DomainReport:
       type: object
       required:
@@ -1480,6 +1454,32 @@ components:
           type: string
           format: uuid
           example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
+    DomainStatusReport:
+      type: object
+      properties:
+        complete:
+          type: boolean
+          description: The status of the report
+          example: true
+        id:
+          type: string
+          description: The UUID of the report
+          example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
+        install_name:
+          type: string
+          description: Name of the install
+        install_ip:
+          type: string
+          description: IP address for the install
+        admin:
+          type: boolean
+          description: Admin status
+          example: false
+        domains:
+          type: array
+          description: The list of domains associated with this report
+          items:
+            $ref: '#/components/schemas/DomainStatus'
   parameters:
     authorization:
       name: Authorization
@@ -1487,15 +1487,6 @@ components:
       schema:
         type: string
         format: uuid
-    offsetParam:
-      name: offset
-      in: query
-      required: false
-      description: (Optional) The first record of the result set to be retrieved
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
     limitParam:
       name: limit
       in: query
@@ -1505,6 +1496,15 @@ components:
         type: integer
         default: 100
         maximum: 100
+        minimum: 0
+    offsetParam:
+      name: offset
+      in: query
+      required: false
+      description: (Optional) The first record of the result set to be retrieved
+      schema:
+        type: integer
+        default: 0
         minimum: 0
   securitySchemes:
     basicAuth:
