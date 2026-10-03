@@ -48,10 +48,10 @@ paths:
         type: http
 components:
   schemas:
-    TooManyRequestsOperation:
-      description: Too many requests
     ServiceUnavailableOperation:
       description: Service unavailable
+    TooManyRequestsOperation:
+      description: Too many requests
     Status:
       type: object
       properties:

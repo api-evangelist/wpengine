@@ -673,133 +673,28 @@ paths:
         type: http
 components:
   schemas:
-    UsageMetricsRollup:
+    BadGatewayOperation:
+      description: An invalid response was received from an upstream server
+    EnvironmentMetrics:
       type: object
       properties:
-        visit_count:
-          $ref: '#/components/schemas/UsageRollup'
-          description: 'A rollup of total visits.
-
-
-            The average field represents the average total visits per day on all installs.
-
-            The sum field represents the sum of all the total visits on all installs.
-
-            The latest field is not applicable to the total visits and will be empty.
-
-            '
-        network_origin_bytes:
-          $ref: '#/components/schemas/UsageRollup'
-          description: 'A Rollup of data transfer metrics.
-
-
-            The average field represents the average data transfer metrics per day on all installs.
-
-            The sum field represents the sum of all the data transfer metrics on all installs.
-
-            The latest field is not applicable to the data transfer metrics and will be empty.
-
-            '
-        storage_file_bytes:
-          $ref: '#/components/schemas/UsageRollup'
-          description: 'A rollup of file storage metrics.
-
-
-            The latest field represents the sum of all the latest metrics for file storage on all installs.
-
-            The average and sum fields will be empty.
-
-            '
-        storage_database_bytes:
-          $ref: '#/components/schemas/UsageRollup'
-          description: 'A rollup of database storage metrics.
-
-
-            The latest field represents the sum of all the latest metrics for database storage on all installs.
-
-            The average and sum fields will be empty.
-
-            '
-        billable_visits:
-          $ref: '#/components/schemas/UsageRollup'
-          description: 'A rollup of billable visits.
-
-
-            The average field represents the average billable visits per day on all installs.
-
-            The sum field represents the sum of all the billable visits on all installs.
-
-            The latest field is not applicable to the billable visits and will be empty.
-
-            '
-        request_origin_count:
-          $ref: '#/components/schemas/UsageRollup'
-          description: 'A rollup of total number of requests.
-
-
-            The average field represents the average requests per day on all installs.
-
-            The sum field represents the sum of all requests on all installs.
-
-            The latest field is not applicable to the requests and will be empty.
-
-            '
-        network_cdn_bytes:
-          $ref: '#/components/schemas/UsageRollup'
-          description: 'A rollup of total number of bytes served by CDN.
-
-
-            The average field represents the average bytes per day on all installs.
-
-            The sum field represents the sum of all bytes on all installs.
-
-            The latest field is not applicable to the bytes and will be empty.
-
-            '
-        network_total_bytes:
-          $ref: '#/components/schemas/UsageRollup'
-          description: 'A rollup of total number of bytes served by CDN and origin.
-
-
-            The average field represents the average bytes per day on all installs.
-
-            The sum field represents the sum of all network bytes on all installs.
-
-            The latest field is not applicable to the bytes and will be empty.
-
-            '
-      description: A rollup of usage metrics.
-    SiteTypeBreakdown:
-      type: object
-      properties:
-        standard:
-          type:
-          - string
-          - 'null'
-          description: Usage for standard sites
-          example: '1683'
-        transferable:
-          type:
-          - string
-          - 'null'
-          description: Usage for transferable sites
-          example: '7'
-        sandbox:
-          type:
-          - string
-          - 'null'
-          description: Usage for sandbox sites
-          example: '5'
-      description: Breakdown of usage by site type
-    InternalServerErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
+        environment_name:
           type: string
-          description: A message regarding the error that occurred on the server
-          example: An unexpected error occurred, please try again in a few minutes
+          description: The name of the environment
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyUsageMetrics'
+          description: Daily usage metrics for this environment
+        metrics_rollup:
+          $ref: '#/components/schemas/UsageMetricsRollup'
+          description: Rollup of the usage metrics for this environment
+        storage_refresh_expected_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The expected time when the storage refresh will complete for this environment
     UsageRollup:
       type: object
       properties:
@@ -819,6 +714,73 @@ components:
           $ref: '#/components/schemas/LatestMetricValue'
           description: The latest value of the metric.
       description: A metric rollup.
+    InternalServerErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: An unexpected error occurred, please try again in a few minutes
+    NotFoundErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Not Found
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    InstallDailyUsageMetricsSeries:
+      type: object
+      properties:
+        install_name:
+          type: string
+          description: The name of the install for the included metrics.
+        metrics:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/DailyUsageMetrics'
+          description: 'The requested metrics for an install.
+
+            Metrics will include daily usage metrics for the last 30 days.
+
+            Metrics will be sorted in descending order (most recent date first).
+
+            '
+        metrics_rollup:
+          $ref: '#/components/schemas/UsageMetricsRollup'
+          description: Rollup of the usage metrics.
+        storage_refresh_expected_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'Represents the estimated completion time (in UTC) for a refresh disk usage operation.
+
+            If a refresh is not in progress, then this field will be null.
+
+            '
+      description: A daily usage metrics series.
+    UsageMetricBreakdown:
+      type: object
+      properties:
+        total:
+          type:
+          - string
+          - 'null'
+          description: The total usage value
+          example: '1695'
+        environment_types:
+          $ref: '#/components/schemas/EnvironmentTypeBreakdown'
+        site_types:
+          $ref: '#/components/schemas/SiteTypeBreakdown'
+      description: Usage metric with breakdown by environment and site types
     AccountUsageMetricsResponse:
       type: object
       properties:
@@ -852,23 +814,7 @@ components:
           - 'null'
           format: date-time
           description: The expected time when the account storage refresh will complete
-    UsageMetricBreakdown:
-      type: object
-      properties:
-        total:
-          type:
-          - string
-          - 'null'
-          description: The total usage value
-          example: '1695'
-        environment_types:
-          $ref: '#/components/schemas/EnvironmentTypeBreakdown'
-        site_types:
-          $ref: '#/components/schemas/SiteTypeBreakdown'
-      description: Usage metric with breakdown by environment and site types
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    BadRequestErrorResponse:
+    ForbiddenErrorResponse:
       type: object
       required:
       - message
@@ -876,47 +822,56 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: 'Invalid Site: Name cannot be empty.'
+          example: You don't have permission to perform that action
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-        errors:
-          type: array
-          description: An array of error objects describing specific errors that arose when servicing the request
-          items:
-            $ref: '#/components/schemas/ResourceError'
-    InstallDailyUsageMetricsSeries:
+    SiteTypeBreakdown:
       type: object
       properties:
-        install_name:
-          type: string
-          description: The name of the install for the included metrics.
-        metrics:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/DailyUsageMetrics'
-          description: 'The requested metrics for an install.
-
-            Metrics will include daily usage metrics for the last 30 days.
-
-            Metrics will be sorted in descending order (most recent date first).
-
-            '
-        metrics_rollup:
-          $ref: '#/components/schemas/UsageMetricsRollup'
-          description: Rollup of the usage metrics.
-        storage_refresh_expected_time:
+        standard:
           type:
           - string
           - 'null'
-          format: date-time
-          description: 'Represents the estimated completion time (in UTC) for a refresh disk usage operation.
-
-            If a refresh is not in progress, then this field will be null.
-
-            '
-      description: A daily usage metrics series.
+          description: Usage for standard sites
+          example: '1683'
+        transferable:
+          type:
+          - string
+          - 'null'
+          description: Usage for transferable sites
+          example: '7'
+        sandbox:
+          type:
+          - string
+          - 'null'
+          description: Usage for sandbox sites
+          example: '5'
+      description: Breakdown of usage by site type
+    EnvironmentTypeBreakdown:
+      type: object
+      properties:
+        production:
+          type:
+          - string
+          - 'null'
+          description: Usage for production environments
+          example: '1354'
+        staging:
+          type:
+          - string
+          - 'null'
+          description: Usage for staging environments
+          example: '177'
+        development:
+          type:
+          - string
+          - 'null'
+          description: Usage for development environments
+          example: '164'
+      description: Breakdown of usage by environment type
+    ServiceUnavailableOperation:
+      description: Service unavailable
     ResourceError:
       type: object
       required:
@@ -946,6 +901,14 @@ components:
           type: string
           description: (Optional) A human-readable message relating to the error that occurred with the field and resource
           example: Name is too long (maximum is 40 characters)
+    DailyUsageMetricsTrafficMetricsSource:
+      type: string
+      enum:
+      - TRAFFIC_METRICS_SOURCE_UNSPECIFIED
+      - ONHOST
+      - BIGQUERY
+      default: TRAFFIC_METRICS_SOURCE_UNSPECIFIED
+      description: "The source of the traffic metrics.\n\n - TRAFFIC_METRICS_SOURCE_UNSPECIFIED: The source of the traffic metrics is unknown.\n - ONHOST: The traffic metrics is sourced from onhost logcrunch (legacy).\n - BIGQUERY: The traffic metrics is sourced from BigQuery logcrunch.\n"
     AccountUsageInsights:
       type: object
       properties:
@@ -966,6 +929,40 @@ components:
         request_origin_count:
           $ref: '#/components/schemas/UsageMetricBreakdown'
       description: Comprehensive account usage insights broken down by environment types and site types
+    AuthenticationErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Bad Credentials
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    TooManyRequestsOperation:
+      description: Too many requests
+    LatestMetricValue:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date (ISO 8601).
+        value:
+          type: string
+          format: int64
+          description: The value.
+      description: The latest information.
+    UsageErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message explaining the error.
+          example: Must provide or omit both first_date and last_date.
     DailyUsageMetrics:
       type: object
       properties:
@@ -1070,17 +1067,7 @@ components:
         than a number, following the [proto3 specification](https://developers.google.com/protocol-buffers/docs/proto3#json).
 
         '
-    TooManyRequestsOperation:
-      description: Too many requests
-    DailyUsageMetricsTrafficMetricsSource:
-      type: string
-      enum:
-      - TRAFFIC_METRICS_SOURCE_UNSPECIFIED
-      - ONHOST
-      - BIGQUERY
-      default: TRAFFIC_METRICS_SOURCE_UNSPECIFIED
-      description: "The source of the traffic metrics.\n\n - TRAFFIC_METRICS_SOURCE_UNSPECIFIED: The source of the traffic metrics is unknown.\n - ONHOST: The traffic metrics is sourced from onhost logcrunch (legacy).\n - BIGQUERY: The traffic metrics is sourced from BigQuery logcrunch.\n"
-    NotFoundErrorResponse:
+    BadRequestErrorResponse:
       type: object
       required:
       - message
@@ -1088,98 +1075,111 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: Not Found
+          example: 'Invalid Site: Name cannot be empty.'
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-    AuthenticationErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Bad Credentials
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    ForbiddenErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    EnvironmentMetrics:
-      type: object
-      properties:
-        environment_name:
-          type: string
-          description: The name of the environment
-        metrics:
+        errors:
           type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
           items:
-            $ref: '#/components/schemas/DailyUsageMetrics'
-          description: Daily usage metrics for this environment
-        metrics_rollup:
-          $ref: '#/components/schemas/UsageMetricsRollup'
-          description: Rollup of the usage metrics for this environment
-        storage_refresh_expected_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The expected time when the storage refresh will complete for this environment
-    UsageErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message explaining the error.
-          example: Must provide or omit both first_date and last_date.
-    LatestMetricValue:
+            $ref: '#/components/schemas/ResourceError'
+    UsageMetricsRollup:
       type: object
       properties:
-        date:
-          type: string
-          description: The date (ISO 8601).
-        value:
-          type: string
-          format: int64
-          description: The value.
-      description: The latest information.
-    BadGatewayOperation:
-      description: An invalid response was received from an upstream server
-    EnvironmentTypeBreakdown:
-      type: object
-      properties:
-        production:
-          type:
-          - string
-          - 'null'
-          description: Usage for production environments
-          example: '1354'
-        staging:
-          type:
-          - string
-          - 'null'
-          description: Usage for staging environments
-          example: '177'
-        development:
-          type:
-          - string
-          - 'null'
-          description: Usage for development environments
-          example: '164'
-      description: Breakdown of usage by environment type
+        visit_count:
+          $ref: '#/components/schemas/UsageRollup'
+          description: 'A rollup of total visits.
+
+
+            The average field represents the average total visits per day on all installs.
+
+            The sum field represents the sum of all the total visits on all installs.
+
+            The latest field is not applicable to the total visits and will be empty.
+
+            '
+        network_origin_bytes:
+          $ref: '#/components/schemas/UsageRollup'
+          description: 'A Rollup of data transfer metrics.
+
+
+            The average field represents the average data transfer metrics per day on all installs.
+
+            The sum field represents the sum of all the data transfer metrics on all installs.
+
+            The latest field is not applicable to the data transfer metrics and will be empty.
+
+            '
+        storage_file_bytes:
+          $ref: '#/components/schemas/UsageRollup'
+          description: 'A rollup of file storage metrics.
+
+
+            The latest field represents the sum of all the latest metrics for file storage on all installs.
+
+            The average and sum fields will be empty.
+
+            '
+        storage_database_bytes:
+          $ref: '#/components/schemas/UsageRollup'
+          description: 'A rollup of database storage metrics.
+
+
+            The latest field represents the sum of all the latest metrics for database storage on all installs.
+
+            The average and sum fields will be empty.
+
+            '
+        billable_visits:
+          $ref: '#/components/schemas/UsageRollup'
+          description: 'A rollup of billable visits.
+
+
+            The average field represents the average billable visits per day on all installs.
+
+            The sum field represents the sum of all the billable visits on all installs.
+
+            The latest field is not applicable to the billable visits and will be empty.
+
+            '
+        request_origin_count:
+          $ref: '#/components/schemas/UsageRollup'
+          description: 'A rollup of total number of requests.
+
+
+            The average field represents the average requests per day on all installs.
+
+            The sum field represents the sum of all requests on all installs.
+
+            The latest field is not applicable to the requests and will be empty.
+
+            '
+        network_cdn_bytes:
+          $ref: '#/components/schemas/UsageRollup'
+          description: 'A rollup of total number of bytes served by CDN.
+
+
+            The average field represents the average bytes per day on all installs.
+
+            The sum field represents the sum of all bytes on all installs.
+
+            The latest field is not applicable to the bytes and will be empty.
+
+            '
+        network_total_bytes:
+          $ref: '#/components/schemas/UsageRollup'
+          description: 'A rollup of total number of bytes served by CDN and origin.
+
+
+            The average field represents the average bytes per day on all installs.
+
+            The sum field represents the sum of all network bytes on all installs.
+
+            The latest field is not applicable to the bytes and will be empty.
+
+            '
+      description: A rollup of usage metrics.
   parameters:
     authorization:
       name: Authorization
