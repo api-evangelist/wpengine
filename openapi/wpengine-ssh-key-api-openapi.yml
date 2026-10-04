@@ -225,71 +225,30 @@ paths:
         type: http
 components:
   schemas:
-    TooManyRequestsOperation:
-      description: Too many requests
-    ForbiddenErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    PreviousPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
-      description: Path to the previous page of results
-    SshKey:
-      type: object
-      properties:
-        comment:
-          type: string
-          example: joe@gmail.com
-        created_at:
-          type: string
-          example: '2019-09-01T15:59:24.277Z'
-        fingerprint:
-          type: string
-          example: a1:b2:c3:d4:e5:46:a7:88:c9:40:d2:d7:9b:cd:42:05
-        uuid:
-          type: string
-          format: uuid
-          example: e41fa98f-ea80-1f16-a7b7-d748bcc9e64d
-    ResultsCount:
-      type: integer
-      example: 225
-      description: The total number of results
-    BadRequestErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: 'Invalid Site: Name cannot be empty.'
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-        errors:
-          type: array
-          description: An array of error objects describing specific errors that arose when servicing the request
-          items:
-            $ref: '#/components/schemas/ResourceError'
     NextPage:
       type:
       - string
       - 'null'
       example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
       description: Path to the next page of results
-    ServiceUnavailableOperation:
-      description: Service unavailable
+    PreviousPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+      description: Path to the previous page of results
+    AuthenticationErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Bad Credentials
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
     ResourceError:
       type: object
       required:
@@ -319,7 +278,9 @@ components:
           type: string
           description: (Optional) A human-readable message relating to the error that occurred with the field and resource
           example: Name is too long (maximum is 40 characters)
-    AuthenticationErrorResponse:
+    TooManyRequestsOperation:
+      description: Too many requests
+    ForbiddenErrorResponse:
       type: object
       required:
       - message
@@ -327,17 +288,50 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: Bad Credentials
+          example: You don't have permission to perform that action
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    BadRequestErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: 'Invalid Site: Name cannot be empty.'
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
+    SshKey:
+      type: object
+      properties:
+        comment:
+          type: string
+          example: joe@gmail.com
+        created_at:
+          type: string
+          example: '2019-09-01T15:59:24.277Z'
+        fingerprint:
+          type: string
+          example: a1:b2:c3:d4:e5:46:a7:88:c9:40:d2:d7:9b:cd:42:05
+        uuid:
+          type: string
+          format: uuid
+          example: e41fa98f-ea80-1f16-a7b7-d748bcc9e64d
+    ResultsCount:
+      type: integer
+      example: 225
+      description: The total number of results
   parameters:
-    authorization:
-      name: Authorization
-      in: header
-      schema:
-        type: string
-        format: uuid
     offsetParam:
       name: offset
       in: query
@@ -347,6 +341,12 @@ components:
         type: integer
         default: 0
         minimum: 0
+    authorization:
+      name: Authorization
+      in: header
+      schema:
+        type: string
+        format: uuid
     limitParam:
       name: limit
       in: query

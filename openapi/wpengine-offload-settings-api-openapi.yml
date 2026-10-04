@@ -331,9 +331,7 @@ paths:
         required: true
 components:
   schemas:
-    TooManyRequestsOperation:
-      description: Too many requests
-    ForbiddenErrorResponse:
+    BadRequestErrorResponse:
       type: object
       required:
       - message
@@ -341,52 +339,16 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
+          example: 'Invalid Site: Name cannot be empty.'
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-    LargeFSValidationFile:
-      type: object
-      properties:
-        name:
-          type: string
-          example: 64f1250c.largefs
-        content:
-          type: string
-          example: e4ccd0696cff6f94
-    LargeFSConfig:
-      type: object
-      properties:
-        largefs_settings:
-          type: object
-          properties:
-            cloud:
-              type: string
-              enum:
-              - s3
-            bucket:
-              type: string
-            bucket_region:
-              type: string
-            path_settings:
-              type: array
-              items:
-                type: object
-                properties:
-                  path:
-                    type: string
-                  excluded_paths:
-                    type: array
-                    items:
-                      type: string
-                  redirect_type:
-                    type: string
-                    enum:
-                    - break
-                    - permanent
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    NotFoundErrorResponse:
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
+    AuthenticationErrorResponse:
       type: object
       required:
       - message
@@ -394,7 +356,7 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: Not Found
+          example: Bad Credentials
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
@@ -427,7 +389,7 @@ components:
           type: string
           description: (Optional) A human-readable message relating to the error that occurred with the field and resource
           example: Name is too long (maximum is 40 characters)
-    BadRequestErrorResponse:
+    NotFoundErrorResponse:
       type: object
       required:
       - message
@@ -435,16 +397,13 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: 'Invalid Site: Name cannot be empty.'
+          example: Not Found
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-        errors:
-          type: array
-          description: An array of error objects describing specific errors that arose when servicing the request
-          items:
-            $ref: '#/components/schemas/ResourceError'
-    AuthenticationErrorResponse:
+    TooManyRequestsOperation:
+      description: Too many requests
+    ForbiddenErrorResponse:
       type: object
       required:
       - message
@@ -452,10 +411,51 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: Bad Credentials
+          example: You don't have permission to perform that action
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    LargeFSValidationFile:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 64f1250c.largefs
+        content:
+          type: string
+          example: e4ccd0696cff6f94
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    LargeFSConfig:
+      type: object
+      properties:
+        largefs_settings:
+          type: object
+          properties:
+            cloud:
+              type: string
+              enum:
+              - s3
+            bucket:
+              type: string
+            bucket_region:
+              type: string
+            path_settings:
+              type: array
+              items:
+                type: object
+                properties:
+                  path:
+                    type: string
+                  excluded_paths:
+                    type: array
+                    items:
+                      type: string
+                  redirect_type:
+                    type: string
+                    enum:
+                    - break
+                    - permanent
   parameters:
     authorization:
       name: Authorization

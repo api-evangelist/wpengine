@@ -114,9 +114,7 @@ paths:
         type: http
 components:
   schemas:
-    TooManyRequestsOperation:
-      description: Too many requests
-    ForbiddenErrorResponse:
+    InternalServerErrorResponse:
       type: object
       required:
       - message
@@ -124,12 +122,21 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
+          example: An unexpected error occurred, please try again in a few minutes
+    BadGatewayOperation:
+      description: An invalid response was received from an upstream server
+    AuthenticationErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Bad Credentials
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-    BadGatewayOperation:
-      description: An invalid response was received from an upstream server
     Template:
       type: object
       required:
@@ -193,29 +200,6 @@ components:
           example: '2024-03-20T14:45:00Z'
           description: Timestamp when the template was last updated
       description: Report template defining structure and branding for generated reports
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    InternalServerErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: An unexpected error occurred, please try again in a few minutes
-    NotFoundErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Not Found
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
     ResourceError:
       type: object
       required:
@@ -245,6 +229,34 @@ components:
           type: string
           description: (Optional) A human-readable message relating to the error that occurred with the field and resource
           example: Name is too long (maximum is 40 characters)
+    NotFoundErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Not Found
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    TooManyRequestsOperation:
+      description: Too many requests
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ServiceUnavailableOperation:
+      description: Service unavailable
     BadRequestErrorResponse:
       type: object
       required:
@@ -262,18 +274,6 @@ components:
           description: An array of error objects describing specific errors that arose when servicing the request
           items:
             $ref: '#/components/schemas/ResourceError'
-    AuthenticationErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Bad Credentials
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
   parameters:
     authorization:
       name: Authorization

@@ -673,48 +673,40 @@ paths:
         type: http
 components:
   schemas:
-    BadGatewayOperation:
-      description: An invalid response was received from an upstream server
-    EnvironmentMetrics:
+    AccountUsageMetricsResponse:
       type: object
       properties:
-        environment_name:
-          type: string
-          description: The name of the environment
-        metrics:
+        environment_metrics:
           type: array
           items:
-            $ref: '#/components/schemas/DailyUsageMetrics'
-          description: Daily usage metrics for this environment
-        metrics_rollup:
-          $ref: '#/components/schemas/UsageMetricsRollup'
-          description: Rollup of the usage metrics for this environment
-        storage_refresh_expected_time:
+            $ref: '#/components/schemas/EnvironmentMetrics'
+          description: Usage metrics for each environment in the account
+        total_size:
+          type: integer
+          description: Total number of environments
+        next_page_token:
+          type:
+          - string
+          - 'null'
+          description: Token for the next page of results
+        all_environments_included:
+          type:
+          - boolean
+          - 'null'
+          description: Whether all environments can be returned based on account permissions
+        last_account_storage_refresh_time:
           type:
           - string
           - 'null'
           format: date-time
-          description: The expected time when the storage refresh will complete for this environment
-    UsageRollup:
-      type: object
-      properties:
-        average:
+          description: The time when the account storage was last refreshed
+        account_storage_refresh_expected_time:
           type:
           - string
           - 'null'
-          format: int64
-          description: The average value of the metric.
-        sum:
-          type:
-          - string
-          - 'null'
-          format: int64
-          description: The total sum value of the metric.
-        latest:
-          $ref: '#/components/schemas/LatestMetricValue'
-          description: The latest value of the metric.
-      description: A metric rollup.
-    InternalServerErrorResponse:
+          format: date-time
+          description: The expected time when the account storage refresh will complete
+    AuthenticationErrorResponse:
       type: object
       required:
       - message
@@ -722,19 +714,55 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: An unexpected error occurred, please try again in a few minutes
-    NotFoundErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Not Found
+          example: Bad Credentials
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    DailyUsageMetricsTrafficMetricsSource:
+      type: string
+      enum:
+      - TRAFFIC_METRICS_SOURCE_UNSPECIFIED
+      - ONHOST
+      - BIGQUERY
+      default: TRAFFIC_METRICS_SOURCE_UNSPECIFIED
+      description: "The source of the traffic metrics.\n\n - TRAFFIC_METRICS_SOURCE_UNSPECIFIED: The source of the traffic metrics is unknown.\n - ONHOST: The traffic metrics is sourced from onhost logcrunch (legacy).\n - BIGQUERY: The traffic metrics is sourced from BigQuery logcrunch.\n"
+    AccountUsageInsights:
+      type: object
+      properties:
+        visit_count:
+          $ref: '#/components/schemas/UsageMetricBreakdown'
+        billable_visits:
+          $ref: '#/components/schemas/UsageMetricBreakdown'
+        network_origin_bytes:
+          $ref: '#/components/schemas/UsageMetricBreakdown'
+        network_cdn_bytes:
+          $ref: '#/components/schemas/UsageMetricBreakdown'
+        network_total_bytes:
+          $ref: '#/components/schemas/UsageMetricBreakdown'
+        storage_file_bytes:
+          $ref: '#/components/schemas/UsageMetricBreakdown'
+        storage_database_bytes:
+          $ref: '#/components/schemas/UsageMetricBreakdown'
+        request_origin_count:
+          $ref: '#/components/schemas/UsageMetricBreakdown'
+      description: Comprehensive account usage insights broken down by environment types and site types
+    BadRequestErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: 'Invalid Site: Name cannot be empty.'
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
     InstallDailyUsageMetricsSeries:
       type: object
       properties:
@@ -781,51 +809,6 @@ components:
         site_types:
           $ref: '#/components/schemas/SiteTypeBreakdown'
       description: Usage metric with breakdown by environment and site types
-    AccountUsageMetricsResponse:
-      type: object
-      properties:
-        environment_metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnvironmentMetrics'
-          description: Usage metrics for each environment in the account
-        total_size:
-          type: integer
-          description: Total number of environments
-        next_page_token:
-          type:
-          - string
-          - 'null'
-          description: Token for the next page of results
-        all_environments_included:
-          type:
-          - boolean
-          - 'null'
-          description: Whether all environments can be returned based on account permissions
-        last_account_storage_refresh_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The time when the account storage was last refreshed
-        account_storage_refresh_expected_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The expected time when the account storage refresh will complete
-    ForbiddenErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
     SiteTypeBreakdown:
       type: object
       properties:
@@ -848,112 +831,26 @@ components:
           description: Usage for sandbox sites
           example: '5'
       description: Breakdown of usage by site type
-    EnvironmentTypeBreakdown:
+    EnvironmentMetrics:
       type: object
       properties:
-        production:
+        environment_name:
+          type: string
+          description: The name of the environment
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyUsageMetrics'
+          description: Daily usage metrics for this environment
+        metrics_rollup:
+          $ref: '#/components/schemas/UsageMetricsRollup'
+          description: Rollup of the usage metrics for this environment
+        storage_refresh_expected_time:
           type:
           - string
           - 'null'
-          description: Usage for production environments
-          example: '1354'
-        staging:
-          type:
-          - string
-          - 'null'
-          description: Usage for staging environments
-          example: '177'
-        development:
-          type:
-          - string
-          - 'null'
-          description: Usage for development environments
-          example: '164'
-      description: Breakdown of usage by environment type
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    ResourceError:
-      type: object
-      required:
-      - resource
-      - field
-      - type
-      - code
-      - message
-      properties:
-        resource:
-          type: string
-          description: The name of the resource that was being processed when the error occurred
-          example: Site
-        field:
-          type: string
-          description: (Optional) The specific field associated with the error
-          example: name
-        type:
-          type: string
-          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
-          example: invalid_value
-        code:
-          type: string
-          description: (Optional) A machine code relating to the error that occurred with the field and resource
-          example: too_long
-        message:
-          type: string
-          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
-          example: Name is too long (maximum is 40 characters)
-    DailyUsageMetricsTrafficMetricsSource:
-      type: string
-      enum:
-      - TRAFFIC_METRICS_SOURCE_UNSPECIFIED
-      - ONHOST
-      - BIGQUERY
-      default: TRAFFIC_METRICS_SOURCE_UNSPECIFIED
-      description: "The source of the traffic metrics.\n\n - TRAFFIC_METRICS_SOURCE_UNSPECIFIED: The source of the traffic metrics is unknown.\n - ONHOST: The traffic metrics is sourced from onhost logcrunch (legacy).\n - BIGQUERY: The traffic metrics is sourced from BigQuery logcrunch.\n"
-    AccountUsageInsights:
-      type: object
-      properties:
-        visit_count:
-          $ref: '#/components/schemas/UsageMetricBreakdown'
-        billable_visits:
-          $ref: '#/components/schemas/UsageMetricBreakdown'
-        network_origin_bytes:
-          $ref: '#/components/schemas/UsageMetricBreakdown'
-        network_cdn_bytes:
-          $ref: '#/components/schemas/UsageMetricBreakdown'
-        network_total_bytes:
-          $ref: '#/components/schemas/UsageMetricBreakdown'
-        storage_file_bytes:
-          $ref: '#/components/schemas/UsageMetricBreakdown'
-        storage_database_bytes:
-          $ref: '#/components/schemas/UsageMetricBreakdown'
-        request_origin_count:
-          $ref: '#/components/schemas/UsageMetricBreakdown'
-      description: Comprehensive account usage insights broken down by environment types and site types
-    AuthenticationErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Bad Credentials
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    TooManyRequestsOperation:
-      description: Too many requests
-    LatestMetricValue:
-      type: object
-      properties:
-        date:
-          type: string
-          description: The date (ISO 8601).
-        value:
-          type: string
-          format: int64
-          description: The value.
-      description: The latest information.
+          format: date-time
+          description: The expected time when the storage refresh will complete for this environment
     UsageErrorResponse:
       type: object
       required:
@@ -963,6 +860,15 @@ components:
           type: string
           description: A message explaining the error.
           example: Must provide or omit both first_date and last_date.
+    InternalServerErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: An unexpected error occurred, please try again in a few minutes
     DailyUsageMetrics:
       type: object
       properties:
@@ -1067,23 +973,49 @@ components:
         than a number, following the [proto3 specification](https://developers.google.com/protocol-buffers/docs/proto3#json).
 
         '
-    BadRequestErrorResponse:
+    BadGatewayOperation:
+      description: An invalid response was received from an upstream server
+    UsageRollup:
       type: object
-      required:
-      - message
       properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: 'Invalid Site: Name cannot be empty.'
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-        errors:
-          type: array
-          description: An array of error objects describing specific errors that arose when servicing the request
-          items:
-            $ref: '#/components/schemas/ResourceError'
+        average:
+          type:
+          - string
+          - 'null'
+          format: int64
+          description: The average value of the metric.
+        sum:
+          type:
+          - string
+          - 'null'
+          format: int64
+          description: The total sum value of the metric.
+        latest:
+          $ref: '#/components/schemas/LatestMetricValue'
+          description: The latest value of the metric.
+      description: A metric rollup.
+    EnvironmentTypeBreakdown:
+      type: object
+      properties:
+        production:
+          type:
+          - string
+          - 'null'
+          description: Usage for production environments
+          example: '1354'
+        staging:
+          type:
+          - string
+          - 'null'
+          description: Usage for staging environments
+          example: '177'
+        development:
+          type:
+          - string
+          - 'null'
+          description: Usage for development environments
+          example: '164'
+      description: Breakdown of usage by environment type
     UsageMetricsRollup:
       type: object
       properties:
@@ -1180,6 +1112,74 @@ components:
 
             '
       description: A rollup of usage metrics.
+    ResourceError:
+      type: object
+      required:
+      - resource
+      - field
+      - type
+      - code
+      - message
+      properties:
+        resource:
+          type: string
+          description: The name of the resource that was being processed when the error occurred
+          example: Site
+        field:
+          type: string
+          description: (Optional) The specific field associated with the error
+          example: name
+        type:
+          type: string
+          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+          example: invalid_value
+        code:
+          type: string
+          description: (Optional) A machine code relating to the error that occurred with the field and resource
+          example: too_long
+        message:
+          type: string
+          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+          example: Name is too long (maximum is 40 characters)
+    NotFoundErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: Not Found
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    TooManyRequestsOperation:
+      description: Too many requests
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    LatestMetricValue:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date (ISO 8601).
+        value:
+          type: string
+          format: int64
+          description: The value.
+      description: The latest information.
   parameters:
     authorization:
       name: Authorization

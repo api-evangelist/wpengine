@@ -48,10 +48,6 @@ paths:
         type: http
 components:
   schemas:
-    ServiceUnavailableOperation:
-      description: Service unavailable
-    TooManyRequestsOperation:
-      description: Too many requests
     Status:
       type: object
       properties:
@@ -62,6 +58,10 @@ components:
           type: string
           example: '2018-05-17T16:20:40+00:00'
           description: The time when the status was requested in rfc3339 format
+    TooManyRequestsOperation:
+      description: Too many requests
+    ServiceUnavailableOperation:
+      description: Service unavailable
   securitySchemes:
     basicAuth:
       type: http
