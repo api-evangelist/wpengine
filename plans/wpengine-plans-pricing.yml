@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: WP Engine Plans and Pricing
 description: WP Engine managed WordPress hosting plans with visit-based pricing tiers.
 url: https://wpengine.com/pricing/
@@ -166,3 +170,47 @@ notes:
   - Annual billing provides approximately 16.7% savings (roughly 2 months free).
   - WP Engine counts visitors by unique IP addresses daily, which typically runs 20-50% higher than standard analytics tools.
   - Visitor counting methodology may cause unexpected overages if budgeting against Google Analytics data.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - negotiated
+  - subscription
+  units:
+  - period
+  plans:
+  - name: Startup
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - period
+    periods: []
+  - name: Professional
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - period
+    periods: []
+  - name: Growth
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - period
+    periods: []
+  - name: Scale
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - period
+    periods: []
+  - name: Enterprise
+    access: other
+    model: negotiated
+    model_how: derived
+    units:
+    - period
+    periods: []
