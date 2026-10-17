@@ -133,18 +133,6 @@ paths:
         required: true
 components:
   schemas:
-    AuthenticationErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: Bad Credentials
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
     ResourceError:
       type: object
       required:
@@ -186,7 +174,7 @@ components:
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-    ForbiddenErrorResponse:
+    AuthenticationErrorResponse:
       type: object
       required:
       - message
@@ -194,12 +182,10 @@ components:
         message:
           type: string
           description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
+          example: Bad Credentials
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-    ServiceUnavailableOperation:
-      description: Service unavailable
     BadRequestErrorResponse:
       type: object
       required:
@@ -217,6 +203,20 @@ components:
           description: An array of error objects describing specific errors that arose when servicing the request
           items:
             $ref: '#/components/schemas/ResourceError'
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    ServiceUnavailableOperation:
+      description: Service unavailable
   parameters:
     authorization:
       name: Authorization

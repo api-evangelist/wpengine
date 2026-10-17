@@ -71,6 +71,8 @@ components:
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    ServiceUnavailableOperation:
+      description: Service unavailable
     User:
       type: object
       required:
@@ -94,8 +96,6 @@ components:
           - string
           - 'null'
           example: '123456789'
-    ServiceUnavailableOperation:
-      description: Service unavailable
   parameters:
     authorization:
       name: Authorization

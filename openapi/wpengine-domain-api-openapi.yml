@@ -923,6 +923,114 @@ paths:
         type: http
 components:
   schemas:
+    ResourceError:
+      type: object
+      required:
+      - resource
+      - field
+      - type
+      - code
+      - message
+      properties:
+        resource:
+          type: string
+          description: The name of the resource that was being processed when the error occurred
+          example: Site
+        field:
+          type: string
+          description: (Optional) The specific field associated with the error
+          example: name
+        type:
+          type: string
+          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
+          example: invalid_value
+        code:
+          type: string
+          description: (Optional) A machine code relating to the error that occurred with the field and resource
+          example: too_long
+        message:
+          type: string
+          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
+          example: Name is too long (maximum is 40 characters)
+    BadRequestErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: 'Invalid Site: Name cannot be empty.'
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+        errors:
+          type: array
+          description: An array of error objects describing specific errors that arose when servicing the request
+          items:
+            $ref: '#/components/schemas/ResourceError'
+    ForbiddenErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: You don't have permission to perform that action
+        documentation_url:
+          type: string
+          description: (Optional) A URL where documentation regarding this specific error can be found
+    InternalServerErrorResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A message regarding the error that occurred on the server
+          example: An unexpected error occurred, please try again in a few minutes
+    DomainReport:
+      type: object
+      required:
+      - report_id
+      properties:
+        report_id:
+          type: string
+          format: uuid
+          example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
+    NextPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
+      description: Path to the next page of results
+    DomainStatusReport:
+      type: object
+      properties:
+        complete:
+          type: boolean
+          description: The status of the report
+          example: true
+        id:
+          type: string
+          description: The UUID of the report
+          example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
+        install_name:
+          type: string
+          description: Name of the install
+        install_ip:
+          type: string
+          description: IP address for the install
+        admin:
+          type: boolean
+          description: Admin status
+          example: false
+        domains:
+          type: array
+          description: The list of domains associated with this report
+          items:
+            $ref: '#/components/schemas/DomainStatus'
     AuthenticationErrorResponse:
       type: object
       required:
@@ -935,6 +1043,20 @@ components:
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
+    ServiceUnavailableOperation:
+      description: Service unavailable
+    PreviousPage:
+      type:
+      - string
+      - 'null'
+      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
+      description: Path to the previous page of results
+    ResultsCount:
+      type: integer
+      example: 225
+      description: The total number of results
+    TooManyRequestsOperation:
+      description: Too many requests
     DomainStatus:
       type: object
       properties:
@@ -1129,216 +1251,6 @@ components:
               description: Subject Alternative Names in the certificate
               items:
                 type: string
-    ResultsCount:
-      type: integer
-      example: 225
-      description: The total number of results
-    BadRequestErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: 'Invalid Site: Name cannot be empty.'
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-        errors:
-          type: array
-          description: An array of error objects describing specific errors that arose when servicing the request
-          items:
-            $ref: '#/components/schemas/ResourceError'
-    NextPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=200
-      description: Path to the next page of results
-    DomainVerification:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: The UUID of the domain
-          example: e41fa98f-ea80-4654-b229-a9b765d0863a
-        name:
-          type: string
-          description: The domain name
-          example: example.com
-        txt_verified_time:
-          type:
-          - string
-          - 'null'
-          description: The time when the TXT record was verified
-          example: '2026-04-20T16:00:00.007Z'
-        txt_verified_domain:
-          type: string
-          description: The domain that the TXT record was verified for
-          example: example.com
-        txt_verification_key:
-          type:
-          - string
-          - 'null'
-          description: The TXT record verification key. Null if the domain is already verified.
-          example: _wpe_verification
-        txt_verification_value:
-          type:
-          - string
-          - 'null'
-          description: The TXT record verification value. Null if the domain is already verified.
-    DomainOrRedirect:
-      type: object
-      required:
-      - id
-      - name
-      - duplicate
-      - primary
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: e41fa98f-ea80-4654-b229-a9b765d0863a
-        name:
-          type: string
-          example: example.com
-        duplicate:
-          type: boolean
-          example: false
-        primary:
-          type: boolean
-          example: true
-        redirects_to:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              example: e41fa98f-ea80-4006-b229-a9b765d0863a
-            name:
-              type: string
-              example: redirect.com
-        txt_verified_time:
-          type:
-          - string
-          - 'null'
-          description: The time when the TXT record was verified
-          example: '2026-04-20T16:00:00.007Z'
-        txt_verified_domain:
-          type: string
-          description: The domain that the TXT record was verified for
-          example: example.com
-        txt_verification_key:
-          type:
-          - string
-          - 'null'
-          description: The TXT record verification key. Null if the domain is already verified.
-          example: _wpe_verification
-        txt_verification_value:
-          type:
-          - string
-          - 'null'
-          description: The TXT record verification value. Null if the domain is already verified.
-        ownership_status:
-          type: string
-          enum:
-          - TXT_VERIFIED
-          - TXT_VERIFICATION_PENDING
-          description: 'Ownership verification status of the domain.
-
-            * TXT_VERIFIED indicates the domain ownership has been verified.
-
-            * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
-
-
-            **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
-
-            and `txt_verification_value` fields provided with the domain. After the TXT record is in place, POST to
-
-            `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
-
-            '
-    PreviousPage:
-      type:
-      - string
-      - 'null'
-      example: https://api.wpengineapi.com/v1/example-endpoint?limit=100&offset=0
-      description: Path to the previous page of results
-    InternalServerErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: An unexpected error occurred, please try again in a few minutes
-    DomainStatusReport:
-      type: object
-      properties:
-        complete:
-          type: boolean
-          description: The status of the report
-          example: true
-        id:
-          type: string
-          description: The UUID of the report
-          example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
-        install_name:
-          type: string
-          description: Name of the install
-        install_ip:
-          type: string
-          description: IP address for the install
-        admin:
-          type: boolean
-          description: Admin status
-          example: false
-        domains:
-          type: array
-          description: The list of domains associated with this report
-          items:
-            $ref: '#/components/schemas/DomainStatus'
-    DomainReport:
-      type: object
-      required:
-      - report_id
-      properties:
-        report_id:
-          type: string
-          format: uuid
-          example: 6a6d5dbd-5cac-41d5-8f3f-14a3e8ae6f76
-    ResourceError:
-      type: object
-      required:
-      - resource
-      - field
-      - type
-      - code
-      - message
-      properties:
-        resource:
-          type: string
-          description: The name of the resource that was being processed when the error occurred
-          example: Site
-        field:
-          type: string
-          description: (Optional) The specific field associated with the error
-          example: name
-        type:
-          type: string
-          description: (Optional) A type associated with the error. `invalid_value`, `access_error`, `value_unavailable`
-          example: invalid_value
-        code:
-          type: string
-          description: (Optional) A machine code relating to the error that occurred with the field and resource
-          example: too_long
-        message:
-          type: string
-          description: (Optional) A human-readable message relating to the error that occurred with the field and resource
-          example: Name is too long (maximum is 40 characters)
     NotFoundErrorResponse:
       type: object
       required:
@@ -1351,22 +1263,6 @@ components:
         documentation_url:
           type: string
           description: (Optional) A URL where documentation regarding this specific error can be found
-    TooManyRequestsOperation:
-      description: Too many requests
-    ForbiddenErrorResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: A message regarding the error that occurred on the server
-          example: You don't have permission to perform that action
-        documentation_url:
-          type: string
-          description: (Optional) A URL where documentation regarding this specific error can be found
-    ServiceUnavailableOperation:
-      description: Service unavailable
     Domain:
       type: object
       required:
@@ -1480,13 +1376,111 @@ components:
             `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
 
             '
+    DomainVerification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The UUID of the domain
+          example: e41fa98f-ea80-4654-b229-a9b765d0863a
+        name:
+          type: string
+          description: The domain name
+          example: example.com
+        txt_verified_time:
+          type:
+          - string
+          - 'null'
+          description: The time when the TXT record was verified
+          example: '2026-04-20T16:00:00.007Z'
+        txt_verified_domain:
+          type: string
+          description: The domain that the TXT record was verified for
+          example: example.com
+        txt_verification_key:
+          type:
+          - string
+          - 'null'
+          description: The TXT record verification key. Null if the domain is already verified.
+          example: _wpe_verification
+        txt_verification_value:
+          type:
+          - string
+          - 'null'
+          description: The TXT record verification value. Null if the domain is already verified.
+    DomainOrRedirect:
+      type: object
+      required:
+      - id
+      - name
+      - duplicate
+      - primary
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: e41fa98f-ea80-4654-b229-a9b765d0863a
+        name:
+          type: string
+          example: example.com
+        duplicate:
+          type: boolean
+          example: false
+        primary:
+          type: boolean
+          example: true
+        redirects_to:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: e41fa98f-ea80-4006-b229-a9b765d0863a
+            name:
+              type: string
+              example: redirect.com
+        txt_verified_time:
+          type:
+          - string
+          - 'null'
+          description: The time when the TXT record was verified
+          example: '2026-04-20T16:00:00.007Z'
+        txt_verified_domain:
+          type: string
+          description: The domain that the TXT record was verified for
+          example: example.com
+        txt_verification_key:
+          type:
+          - string
+          - 'null'
+          description: The TXT record verification key. Null if the domain is already verified.
+          example: _wpe_verification
+        txt_verification_value:
+          type:
+          - string
+          - 'null'
+          description: The TXT record verification value. Null if the domain is already verified.
+        ownership_status:
+          type: string
+          enum:
+          - TXT_VERIFIED
+          - TXT_VERIFICATION_PENDING
+          description: 'Ownership verification status of the domain.
+
+            * TXT_VERIFIED indicates the domain ownership has been verified.
+
+            * TXT_VERIFICATION_PENDING indicates the domain ownership still requires verification using TXT record.
+
+
+            **NOTE**: To verify the domain, a DNS TXT record must be added to your domain registry using the `txt_verification_key`
+
+            and `txt_verification_value` fields provided with the domain. After the TXT record is in place, POST to
+
+            `/installs/{install_id}/domains/{domain_id}/verification` to complete verification.
+
+            '
   parameters:
-    authorization:
-      name: Authorization
-      in: header
-      schema:
-        type: string
-        format: uuid
     offsetParam:
       name: offset
       in: query
@@ -1506,6 +1500,12 @@ components:
         default: 100
         maximum: 100
         minimum: 0
+    authorization:
+      name: Authorization
+      in: header
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     basicAuth:
       type: http
